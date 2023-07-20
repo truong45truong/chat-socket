@@ -3,6 +3,7 @@ import { ref , onMounted } from 'vue'
 import { useRouter } from 'vue-router';
 import { searchUser , getAllConversation } from '@/api';
 import { Icon } from '@iconify/vue';
+import { useChatStore } from '@/store'
 
 const router = useRouter()
 
@@ -13,19 +14,28 @@ const listUserSearch = ref<any>([])
 const isOnline = ref<boolean>(true)
     const dataConversation = ref<any>([])
 
+// store
+
+const chatStore = useChatStore()
+
 // method
 
 onMounted(() => {
     getAllConversation().then( (res) : any => {
-        dataConversation.value = res.conversations
+        dataConversation.value = res.conversation
     })
 
 })
 
 function search(): void {
     searchUser(keySearch.value).then((res): any => {
-        listUserSearch.value = res.users
+        listUserSearch.value = res.users 
     })
+}
+
+function selectChat(email : string , conversation_id : string): void {
+    chatStore.setSelectChat( email , conversation_id)
+    chatStore.fetchChats()
 }
 </script>
 <template>
@@ -60,7 +70,7 @@ function search(): void {
                 <p v-if="listUserSearch.length == 0" class="m-0 text-center text-dark">
                     No have user searched
                 </p>
-                <div v-for="item in listUserSearch" class="d-flex align-items-center mb-2">
+                <div v-for="item in listUserSearch" class="d-flex align-items-center mb-2 chat-item" @click="selectChat(item.email , item.id)">
                     <div class="chat-no-image-search text-center p-3 text-white"> Chat </div>
                     <div class="ms-3 d-flex flex-column align-item-center justify-content-around">
                         <p class="m-0 text-dark"> <b>{{ item.email }}</b></p>
@@ -70,11 +80,21 @@ function search(): void {
         </div>
 
         <div class="p-3">
-            <div v-for="item in dataConversation" class="d-flex align-items-center mb-2">
+            <div v-for="item in dataConversation" class="d-flex align-items-center mb-2 chat-item" @click="selectChat(item.email_user_to , item.id)" >
                 <div class="chat-no-image text-center p-3 text-white"> Chat </div>
                 <div class="ms-3 d-flex flex-column align-item-center justify-content-around">
-                    <p class="m-0 text-dark"> <b>User 1</b></p>
-                    <p class="m-0"> You: Hello ! </p>
+                    <p class="m-0 text-dark"> <b>{{item.email_user_to}}</b></p>
+                    <p  v-if="!item.is_seen" class="m-0"> 
+                        <b v-if="item.is_sent" > 
+                            <span>{{item.content_last}}</span>
+                        </b>
+                    </p>
+                    <p v-if="item.is_seen && item.is_sent" class="m-0"> 
+                        You: {{item.content_last}} 
+                    </p>
+                    <p v-if="item.is_seen && !item.is_sent" class="m-0"> 
+                            {{item.content_last}} 
+                    </p>
                 </div>
             </div>
         </div>
@@ -107,6 +127,9 @@ body {
 .chat-no-image-search {
     background-color: rgb(134, 30, 160);
     border-radius: 50%;
+}
+.chat-item {
+    cursor : pointer;
 }
 .slideThree {
   width: 80px;

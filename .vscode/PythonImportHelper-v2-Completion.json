@@ -56,6 +56,38 @@
         "documentation": {}
     },
     {
+        "label": "re_path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "re_path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
         "label": "path",
         "importPath": "django.urls",
         "description": "django.urls",
@@ -273,11 +305,52 @@
         "documentation": {}
     },
     {
+        "label": "AuthMiddlewareStack",
+        "importPath": "channels.auth",
+        "description": "channels.auth",
+        "isExtraImport": true,
+        "detail": "channels.auth",
+        "documentation": {}
+    },
+    {
+        "label": "ProtocolTypeRouter",
+        "importPath": "channels.routing",
+        "description": "channels.routing",
+        "isExtraImport": true,
+        "detail": "channels.routing",
+        "documentation": {}
+    },
+    {
+        "label": "URLRouter",
+        "importPath": "channels.routing",
+        "description": "channels.routing",
+        "isExtraImport": true,
+        "detail": "channels.routing",
+        "documentation": {}
+    },
+    {
+        "label": "AllowedHostsOriginValidator",
+        "importPath": "channels.security.websocket",
+        "description": "channels.security.websocket",
+        "isExtraImport": true,
+        "detail": "channels.security.websocket",
+        "documentation": {}
+    },
+    {
         "label": "get_asgi_application",
         "importPath": "django.core.asgi",
         "description": "django.core.asgi",
         "isExtraImport": true,
         "detail": "django.core.asgi",
+        "documentation": {}
+    },
+    {
+        "label": "chat.routing",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "chat.routing",
+        "description": "chat.routing",
+        "detail": "chat.routing",
         "documentation": {}
     },
     {
@@ -482,11 +555,19 @@
         "documentation": {}
     },
     {
-        "label": "JWTAuthentication",
-        "importPath": "rest_framework_simplejwt.authentication",
-        "description": "rest_framework_simplejwt.authentication",
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
         "isExtraImport": true,
-        "detail": "rest_framework_simplejwt.authentication",
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
         "documentation": {}
     },
     {
@@ -506,11 +587,11 @@
         "documentation": {}
     },
     {
-        "label": "User",
-        "importPath": "user.models",
-        "description": "user.models",
+        "label": "JWTAuthentication",
+        "importPath": "rest_framework_simplejwt.authentication",
+        "description": "rest_framework_simplejwt.authentication",
         "isExtraImport": true,
-        "detail": "user.models",
+        "detail": "rest_framework_simplejwt.authentication",
         "documentation": {}
     },
     {
@@ -535,6 +616,22 @@
         "description": "user.models",
         "isExtraImport": true,
         "detail": "user.models",
+        "documentation": {}
+    },
+    {
+        "label": "User",
+        "importPath": "user.models",
+        "description": "user.models",
+        "isExtraImport": true,
+        "detail": "user.models",
+        "documentation": {}
+    },
+    {
+        "label": "Q",
+        "importPath": "django.db.models",
+        "description": "django.db.models",
+        "isExtraImport": true,
+        "detail": "django.db.models",
         "documentation": {}
     },
     {
@@ -597,6 +694,110 @@
         "documentation": {}
     },
     {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
         "label": "models",
         "importPath": "django.db",
         "description": "django.db",
@@ -643,6 +844,22 @@
         "importPath": "django.db.models.deletion",
         "description": "django.db.models.deletion",
         "detail": "django.db.models.deletion",
+        "documentation": {}
+    },
+    {
+        "label": "async_to_sync",
+        "importPath": "asgiref.sync",
+        "description": "asgiref.sync",
+        "isExtraImport": true,
+        "detail": "asgiref.sync",
+        "documentation": {}
+    },
+    {
+        "label": "WebsocketConsumer",
+        "importPath": "channels.generic.websocket",
+        "description": "channels.generic.websocket",
+        "isExtraImport": true,
+        "detail": "channels.generic.websocket",
         "documentation": {}
     },
     {
@@ -774,11 +991,20 @@
         "documentation": {}
     },
     {
+        "label": "django_asgi_app",
+        "kind": 5,
+        "importPath": "backend.backend.asgi",
+        "description": "backend.backend.asgi",
+        "peekOfCode": "django_asgi_app = get_asgi_application()\nimport chat.routing\napplication = ProtocolTypeRouter(\n    {\n        \"http\": django_asgi_app,\n        \"websocket\": AllowedHostsOriginValidator(\n            AuthMiddlewareStack(URLRouter(chat.routing.websocket_urlpatterns))\n        ),\n    }\n)",
+        "detail": "backend.backend.asgi",
+        "documentation": {}
+    },
+    {
         "label": "application",
         "kind": 5,
         "importPath": "backend.backend.asgi",
         "description": "backend.backend.asgi",
-        "peekOfCode": "application = get_asgi_application()",
+        "peekOfCode": "application = ProtocolTypeRouter(\n    {\n        \"http\": django_asgi_app,\n        \"websocket\": AllowedHostsOriginValidator(\n            AuthMiddlewareStack(URLRouter(chat.routing.websocket_urlpatterns))\n        ),\n    }\n)\nprint(AuthMiddlewareStack(URLRouter(chat.routing.websocket_urlpatterns)))",
         "detail": "backend.backend.asgi",
         "documentation": {}
     },
@@ -787,7 +1013,7 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent.parent\nload_dotenv(dotenv_path=os.path.join(BASE_DIR, '.env'))\n# Quick-start development settings - unsuitable for production\n# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/\n# SECURITY WARNING: keep the secret key used in production secret!\nSECRET_KEY = 'django-insecure-_xw%8m(b6h!(8lkajatqr@zq&v3*-v-&nqkdchi*w0nrc_q^&q'\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = True\nALLOWED_HOSTS = [\"0.0.0.0\"]\n# Application definition",
+        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent.parent\nload_dotenv(dotenv_path=os.path.join(BASE_DIR, '.env'))\n# Quick-start development settings - unsuitable for production\n# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/\n# SECURITY WARNING: keep the secret key used in production secret!\nSECRET_KEY = 'django-insecure-_xw%8m(b6h!(8lkajatqr@zq&v3*-v-&nqkdchi*w0nrc_q^&q'\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = True\nALLOWED_HOSTS = [\"0.0.0.0\" , 'localhost']\n# Application definition",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -796,7 +1022,7 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "SECRET_KEY = 'django-insecure-_xw%8m(b6h!(8lkajatqr@zq&v3*-v-&nqkdchi*w0nrc_q^&q'\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = True\nALLOWED_HOSTS = [\"0.0.0.0\"]\n# Application definition\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',",
+        "peekOfCode": "SECRET_KEY = 'django-insecure-_xw%8m(b6h!(8lkajatqr@zq&v3*-v-&nqkdchi*w0nrc_q^&q'\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = True\nALLOWED_HOSTS = [\"0.0.0.0\" , 'localhost']\n# Application definition\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -805,7 +1031,7 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "DEBUG = True\nALLOWED_HOSTS = [\"0.0.0.0\"]\n# Application definition\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',",
+        "peekOfCode": "DEBUG = True\nALLOWED_HOSTS = [\"0.0.0.0\" , 'localhost']\n# Application definition\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'JWT.apps.JwtConfig',",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -814,7 +1040,7 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "ALLOWED_HOSTS = [\"0.0.0.0\"]\n# Application definition\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',\n    'JWT.apps.JwtConfig',",
+        "peekOfCode": "ALLOWED_HOSTS = [\"0.0.0.0\" , 'localhost']\n# Application definition\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'JWT.apps.JwtConfig',\n    'user',",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -823,7 +1049,7 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "INSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',\n    'JWT.apps.JwtConfig',\n    'user',\n    'chat' ,",
+        "peekOfCode": "INSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'JWT.apps.JwtConfig',\n    'user',\n    'chat' ,\n    'psycopg2',",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -895,7 +1121,7 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "SESSION_COOKIE_SECURE = True\nSESSION_COOKIE_SAMESITE = \"None\"\nAUTH_USER_MODEL = \"user.User\"\nTEMPLATES = [\n    {\n        'BACKEND': 'django.template.backends.django.DjangoTemplates',\n        'DIRS': [],\n        'APP_DIRS': True,\n        'OPTIONS': {\n            'context_processors': [",
+        "peekOfCode": "SESSION_COOKIE_SECURE = True\nSESSION_COOKIE_SAMESITE = \"None\"\nAUTH_USER_MODEL = \"user.User\"\nTEMPLATES = [\n    {\n        'BACKEND': 'django.template.backends.django.DjangoTemplates',\n        'DIRS': [\n             BASE_DIR / 'chat/templates',\n        ],\n        'APP_DIRS': True,",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -904,7 +1130,7 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "SESSION_COOKIE_SAMESITE = \"None\"\nAUTH_USER_MODEL = \"user.User\"\nTEMPLATES = [\n    {\n        'BACKEND': 'django.template.backends.django.DjangoTemplates',\n        'DIRS': [],\n        'APP_DIRS': True,\n        'OPTIONS': {\n            'context_processors': [\n                'django.template.context_processors.debug',",
+        "peekOfCode": "SESSION_COOKIE_SAMESITE = \"None\"\nAUTH_USER_MODEL = \"user.User\"\nTEMPLATES = [\n    {\n        'BACKEND': 'django.template.backends.django.DjangoTemplates',\n        'DIRS': [\n             BASE_DIR / 'chat/templates',\n        ],\n        'APP_DIRS': True,\n        'OPTIONS': {",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -913,7 +1139,7 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "AUTH_USER_MODEL = \"user.User\"\nTEMPLATES = [\n    {\n        'BACKEND': 'django.template.backends.django.DjangoTemplates',\n        'DIRS': [],\n        'APP_DIRS': True,\n        'OPTIONS': {\n            'context_processors': [\n                'django.template.context_processors.debug',\n                'django.template.context_processors.request',",
+        "peekOfCode": "AUTH_USER_MODEL = \"user.User\"\nTEMPLATES = [\n    {\n        'BACKEND': 'django.template.backends.django.DjangoTemplates',\n        'DIRS': [\n             BASE_DIR / 'chat/templates',\n        ],\n        'APP_DIRS': True,\n        'OPTIONS': {\n            'context_processors': [",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -922,16 +1148,25 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "TEMPLATES = [\n    {\n        'BACKEND': 'django.template.backends.django.DjangoTemplates',\n        'DIRS': [],\n        'APP_DIRS': True,\n        'OPTIONS': {\n            'context_processors': [\n                'django.template.context_processors.debug',\n                'django.template.context_processors.request',\n                'django.contrib.auth.context_processors.auth',",
+        "peekOfCode": "TEMPLATES = [\n    {\n        'BACKEND': 'django.template.backends.django.DjangoTemplates',\n        'DIRS': [\n             BASE_DIR / 'chat/templates',\n        ],\n        'APP_DIRS': True,\n        'OPTIONS': {\n            'context_processors': [\n                'django.template.context_processors.debug',",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
     {
-        "label": "WSGI_APPLICATION",
+        "label": "ASGI_APPLICATION",
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "WSGI_APPLICATION = 'backend.wsgi.application'\n# ------------------------------ REST FRAMEWORK ------------------------------ #\nREST_FRAMEWORK = {\n    'DEFAULT_PERMISSION_CLASSES': [\n        'rest_framework.permissions.AllowAny',\n    ],\n    'DEFAULT_AUTHENTICATION_CLASSES': (\n        'rest_framework_simplejwt.authentication.JWTAuthentication',\n        'user.api.authenticate.CustomAuthentication',\n    ),",
+        "peekOfCode": "ASGI_APPLICATION = 'backend.asgi.application'\nCHANNEL_LAYERS = {\n    \"default\": {\n        \"BACKEND\": \"channels_redis.core.RedisChannelLayer\",\n        \"CONFIG\": {\n            \"hosts\": [(\"127.0.0.1\", 6379)],\n        },\n    },\n}\n# ------------------------------ REST FRAMEWORK ------------------------------ #",
+        "detail": "backend.backend.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CHANNEL_LAYERS",
+        "kind": 5,
+        "importPath": "backend.backend.settings",
+        "description": "backend.backend.settings",
+        "peekOfCode": "CHANNEL_LAYERS = {\n    \"default\": {\n        \"BACKEND\": \"channels_redis.core.RedisChannelLayer\",\n        \"CONFIG\": {\n            \"hosts\": [(\"127.0.0.1\", 6379)],\n        },\n    },\n}\n# ------------------------------ REST FRAMEWORK ------------------------------ #\nREST_FRAMEWORK = {",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -940,7 +1175,16 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "REST_FRAMEWORK = {\n    'DEFAULT_PERMISSION_CLASSES': [\n        'rest_framework.permissions.AllowAny',\n    ],\n    'DEFAULT_AUTHENTICATION_CLASSES': (\n        'rest_framework_simplejwt.authentication.JWTAuthentication',\n        'user.api.authenticate.CustomAuthentication',\n    ),\n}\nSIMPLE_JWT = {",
+        "peekOfCode": "REST_FRAMEWORK = {\n    'DEFAULT_PERMISSION_CLASSES': [\n        'rest_framework.permissions.AllowAny',\n    ],\n    'DEFAULT_AUTHENTICATION_CLASSES': (\n        'rest_framework_simplejwt.authentication.JWTAuthentication',\n        'user.api.authenticate.CustomAuthentication',\n    ),\n}\nWSGI_APPLICATION = 'backend.wsgi.application'",
+        "detail": "backend.backend.settings",
+        "documentation": {}
+    },
+    {
+        "label": "WSGI_APPLICATION",
+        "kind": 5,
+        "importPath": "backend.backend.settings",
+        "description": "backend.backend.settings",
+        "peekOfCode": "WSGI_APPLICATION = 'backend.wsgi.application'\nSIMPLE_JWT = {\n  'ACCESS_TOKEN_LIFETIME': timedelta(days=30),\n  'REFRESH_TOKEN_LIFETIME': timedelta(days=365),\n  'ROTATE_REFRESH_TOKENS': False,\n  'BLACKLIST_AFTER_ROTATION': True,\n  'UPDATE_LAST_LOGIN': False,\n  'ALGORITHM': 'HS256',\n  'SIGNING_KEY': SECRET_KEY,\n  'VERIFYING_KEY': None,",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -958,7 +1202,7 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "DATABASES = {\n    'default': {\n        'ENGINE': 'django.db.backends.postgresql',\n        'NAME': 'simple_chat',\n        'USER': 'user',\n        'PASSWORD': '123123',\n        'HOST': '172.17.0.1',\n        'PORT': '5432',\n    }\n}",
+        "peekOfCode": "DATABASES = {\n    'default': {\n        'ENGINE': 'django.db.backends.postgresql',\n        'NAME': 'simple_chat',\n        'USER': 'user',\n        'PASSWORD': '123123',\n        'HOST': 'postgres',\n        'PORT': '5432',\n    }\n}",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -1057,7 +1301,7 @@
         "kind": 5,
         "importPath": "backend.backend.urls",
         "description": "backend.backend.urls",
-        "peekOfCode": "urlpatterns = [\n    path('admin/', admin.site.urls),\n    path('api/',include('user.api.urls')) ,\n    path('api/',include('chat.api.urls')) ,\n]",
+        "peekOfCode": "urlpatterns = [\n    path('admin/', admin.site.urls),\n    path('api/',include('user.api.urls')) ,\n    path('api/',include('chat.api.urls')) ,\n    path('',include('chat.urls')) ,\n]",
         "detail": "backend.backend.urls",
         "documentation": {}
     },
@@ -1075,7 +1319,7 @@
         "kind": 6,
         "importPath": "backend.chat.api.serializers",
         "description": "backend.chat.api.serializers",
-        "peekOfCode": "class ConversationSerializer(serializers.Serializer):\n    class Meta:\n        model = Conversation\n        fields = \"__all__\"\nclass ChatSerialzier(serializers.Serializer):\n    class Meta:\n        model = Chat\n        fields = \"__all__\"",
+        "peekOfCode": "class ConversationSerializer(serializers.ModelSerializer):\n    email_user_from = serializers.SerializerMethodField()\n    email_user_to = serializers.SerializerMethodField()\n    class Meta:\n        model = Conversation\n        fields = \"__all__\"\n    def get_email_user_from(self, obj):\n        return obj.user_from.email\n    def get_email_user_to(self, obj):\n        return obj.user_to.email",
         "detail": "backend.chat.api.serializers",
         "documentation": {}
     },
@@ -1084,7 +1328,7 @@
         "kind": 6,
         "importPath": "backend.chat.api.serializers",
         "description": "backend.chat.api.serializers",
-        "peekOfCode": "class ChatSerialzier(serializers.Serializer):\n    class Meta:\n        model = Chat\n        fields = \"__all__\"",
+        "peekOfCode": "class ChatSerialzier(serializers.ModelSerializer):\n    email_user_chat = serializers.SerializerMethodField()\n    class Meta:\n        model = Chat\n        fields = \"__all__\"\n    def get_email_user_chat(self, obj):\n        return obj.user_id.email",
         "detail": "backend.chat.api.serializers",
         "documentation": {}
     },
@@ -1093,7 +1337,7 @@
         "kind": 5,
         "importPath": "backend.chat.api.urls",
         "description": "backend.chat.api.urls",
-        "peekOfCode": "urlpatterns = [\n    path('conversation/create/', create_conversation, name = \"create_conversation\"),\n    path('conversation/', get_conversation, name = \"get_conversation\"),\n]",
+        "peekOfCode": "urlpatterns = [\n    path('conversation/create/', create_conversation, name = \"create_conversation\"),\n    path('conversation/', get_all_conversation, name = \"get_all_conversation\"),\n    re_path(r'^conversation/(?P<uuid>[0-9a-f-]+)/$',get_conversation, name='get_conversation'),\n]",
         "detail": "backend.chat.api.urls",
         "documentation": {}
     },
@@ -1112,6 +1356,24 @@
         "importPath": "backend.chat.api.views",
         "description": "backend.chat.api.views",
         "peekOfCode": "def get_conversation(request):\n    response = Response()\n    def notFound():\n        response.data = {\n            \"success\" : False , 'error' : {\n                'type' : \"Error Auth\" , 'value' : \"Failed\"\n            } , \n            'status' : status.HTTP_404_NOT_FOUND\n        }\n        response.status_code = status.HTTP_404_NOT_FOUND",
+        "detail": "backend.chat.api.views",
+        "documentation": {}
+    },
+    {
+        "label": "get_all_conversation",
+        "kind": 2,
+        "importPath": "backend.chat.api.views",
+        "description": "backend.chat.api.views",
+        "peekOfCode": "def get_all_conversation(request):\n    response = Response()\n    def notFound():\n        response.data = {\n            \"success\" : False , 'error' : {\n                'type' : \"Error Auth\" , 'value' : \"Failed\"\n            } , \n            'status' : status.HTTP_404_NOT_FOUND\n        }\n        response.status_code = status.HTTP_404_NOT_FOUND",
+        "detail": "backend.chat.api.views",
+        "documentation": {}
+    },
+    {
+        "label": "get_conversation",
+        "kind": 2,
+        "importPath": "backend.chat.api.views",
+        "description": "backend.chat.api.views",
+        "peekOfCode": "def get_conversation(request , uuid):\n    response = Response()\n    def notFound():\n        response.data = {\n            \"success\" : False , 'error' : {\n                'type' : \"Error Auth\" , 'value' : \"Failed\"\n            } , \n            'status' : status.HTTP_404_NOT_FOUND\n        }\n        response.status_code = status.HTTP_404_NOT_FOUND",
         "detail": "backend.chat.api.views",
         "documentation": {}
     },
@@ -1152,6 +1414,69 @@
         "documentation": {}
     },
     {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "backend.chat.migrations.0003_chat_user_id",
+        "description": "backend.chat.migrations.0003_chat_user_id",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n        ('chat', '0002_rename_user_id_conversation_user_from'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='chat',\n            name='user_id',\n            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='chat_user_id', to=settings.AUTH_USER_MODEL),",
+        "detail": "backend.chat.migrations.0003_chat_user_id",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "backend.chat.migrations.0004_alter_chat_conversation_id",
+        "description": "backend.chat.migrations.0004_alter_chat_conversation_id",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('chat', '0003_chat_user_id'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='chat',\n            name='conversation_id',\n            field=models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, related_name='conversions', to='chat.conversation'),\n        ),",
+        "detail": "backend.chat.migrations.0004_alter_chat_conversation_id",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "backend.chat.migrations.0005_alter_chat_conversation_id",
+        "description": "backend.chat.migrations.0005_alter_chat_conversation_id",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('chat', '0004_alter_chat_conversation_id'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='chat',\n            name='conversation_id',\n            field=models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, related_name='chats', to='chat.conversation'),\n        ),",
+        "detail": "backend.chat.migrations.0005_alter_chat_conversation_id",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "backend.chat.migrations.0006_alter_chat_conversation_id",
+        "description": "backend.chat.migrations.0006_alter_chat_conversation_id",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('chat', '0005_alter_chat_conversation_id'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='chat',\n            name='conversation_id',\n            field=models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, related_name='chat_conversation', to='chat.conversation'),\n        ),",
+        "detail": "backend.chat.migrations.0006_alter_chat_conversation_id",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "backend.chat.migrations.0007_conversation_is_seen_conversation_user_send",
+        "description": "backend.chat.migrations.0007_conversation_is_seen_conversation_user_send",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n        ('chat', '0006_alter_chat_conversation_id'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='conversation',\n            name='is_seen',\n            field=models.BooleanField(blank=True, null=True),",
+        "detail": "backend.chat.migrations.0007_conversation_is_seen_conversation_user_send",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "backend.chat.migrations.0008_remove_conversation_user_send",
+        "description": "backend.chat.migrations.0008_remove_conversation_user_send",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('chat', '0007_conversation_is_seen_conversation_user_send'),\n    ]\n    operations = [\n        migrations.RemoveField(\n            model_name='conversation',\n            name='user_send',\n        ),\n    ]",
+        "detail": "backend.chat.migrations.0008_remove_conversation_user_send",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "backend.chat.migrations.0009_conversation_is_sent",
+        "description": "backend.chat.migrations.0009_conversation_is_sent",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('chat', '0008_remove_conversation_user_send'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='conversation',\n            name='is_sent',\n            field=models.BooleanField(blank=True, null=True),\n        ),",
+        "detail": "backend.chat.migrations.0009_conversation_is_sent",
+        "documentation": {}
+    },
+    {
         "label": "ChatConfig",
         "kind": 6,
         "importPath": "backend.chat.apps",
@@ -1165,7 +1490,7 @@
         "kind": 6,
         "importPath": "backend.chat.models",
         "description": "backend.chat.models",
-        "peekOfCode": "class Conversation(models.Model):\n    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)\n    user_from =  models.ForeignKey(User, on_delete=models.SET_NULL, null=True,blank=True,related_name='chat_user_from')\n    user_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True,blank=True,related_name='chat_user_to')\n    content_last = models.TextField( null = True, blank = True)\n    created_at = models.DateTimeField( null = True, blank = True , default = datetime.datetime.now)\nclass Chat(models.Model):\n    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)\n    conversation_id =  models.ForeignKey(Conversation, on_delete=models.CASCADE, null=False,blank=True,related_name='chat_conversation')\n    content = models.TextField( null = True, blank = True)",
+        "peekOfCode": "class Conversation(models.Model):\n    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)\n    user_from =  models.ForeignKey(User, on_delete=models.SET_NULL, null=True,blank=True,related_name='chat_user_from')\n    user_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True,blank=True,related_name='chat_user_to')\n    content_last = models.TextField( null = True, blank = True)\n    created_at = models.DateTimeField( null = True, blank = True , default = datetime.datetime.now)\n    is_seen = models.BooleanField(null = True , blank = True)\n    is_sent = models.BooleanField(null = True , blank = True)\nclass Chat(models.Model):\n    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)",
         "detail": "backend.chat.models",
         "documentation": {}
     },
@@ -1174,8 +1499,44 @@
         "kind": 6,
         "importPath": "backend.chat.models",
         "description": "backend.chat.models",
-        "peekOfCode": "class Chat(models.Model):\n    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)\n    conversation_id =  models.ForeignKey(Conversation, on_delete=models.CASCADE, null=False,blank=True,related_name='chat_conversation')\n    content = models.TextField( null = True, blank = True)\n    created_at = models.DateTimeField( null = True, blank = True , default = datetime.datetime.now)",
+        "peekOfCode": "class Chat(models.Model):\n    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)\n    conversation_id =  models.ForeignKey(Conversation, on_delete=models.CASCADE, null=False,blank=True,related_name='chat_conversation')\n    user_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True,blank=True,related_name='chat_user_id')\n    content = models.TextField( null = True, blank = True)\n    created_at = models.DateTimeField( null = True, blank = True , default = datetime.datetime.now)",
         "detail": "backend.chat.models",
+        "documentation": {}
+    },
+    {
+        "label": "websocket_urlpatterns",
+        "kind": 5,
+        "importPath": "backend.chat.routing",
+        "description": "backend.chat.routing",
+        "peekOfCode": "websocket_urlpatterns = [\n    re_path(r\"ws/chat/(?P<room_name>\\w+)/$\", socket_server.ChatConsumer.as_asgi()),\n]",
+        "detail": "backend.chat.routing",
+        "documentation": {}
+    },
+    {
+        "label": "ChatConsumer",
+        "kind": 6,
+        "importPath": "backend.chat.socket_server",
+        "description": "backend.chat.socket_server",
+        "peekOfCode": "class ChatConsumer(WebsocketConsumer):\n    def connect(self):\n        self.room_name = self.scope[\"url_route\"][\"kwargs\"][\"room_name\"]\n        self.room_group_name = \"chat_%s\" % self.room_name\n        # Join room group\n        async_to_sync(self.channel_layer.group_add)(\n            self.room_group_name, self.channel_name\n        )\n        self.accept()\n    def disconnect(self, close_code):",
+        "detail": "backend.chat.socket_server",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "backend.chat.urls",
+        "description": "backend.chat.urls",
+        "peekOfCode": "urlpatterns = [\n    path(\"chat/socket/\", views.chat, name=\"room\"),\n]",
+        "detail": "backend.chat.urls",
+        "documentation": {}
+    },
+    {
+        "label": "chat",
+        "kind": 2,
+        "importPath": "backend.chat.views",
+        "description": "backend.chat.views",
+        "peekOfCode": "def chat(request):\n    return render(request, \"chat/chat.html\")",
+        "detail": "backend.chat.views",
         "documentation": {}
     },
     {

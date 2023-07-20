@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-_xw%8m(b6h!(8lkajatqr@zq&v3*-v-&nqkdchi*w0nrc_q^&q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0"]
+ALLOWED_HOSTS = ["0.0.0.0" , 'localhost']
 
 
 # Application definition
@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'JWT.apps.JwtConfig',
     'user',
     'chat' ,
@@ -47,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt',
+    'channels',    
 ]
 
 MIDDLEWARE = [
@@ -84,7 +84,9 @@ AUTH_USER_MODEL = "user.User"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+             BASE_DIR / 'chat/templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -97,7 +99,16 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'backend.wsgi.application'
+ASGI_APPLICATION = 'backend.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 # ------------------------------ REST FRAMEWORK ------------------------------ #
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -108,6 +119,8 @@ REST_FRAMEWORK = {
         'user.api.authenticate.CustomAuthentication',
     ),
 }
+WSGI_APPLICATION = 'backend.wsgi.application'
+
 SIMPLE_JWT = {
   'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
   'REFRESH_TOKEN_LIFETIME': timedelta(days=365),
@@ -140,10 +153,10 @@ SIMPLE_JWT = {
   'AUTH_COOKIE': 'access_token',  # Cookie name. Enables cookies if value is set.
   'AUTH_COOKIE_REFRESH': 'refresh_token',
   'AUTH_COOKIE_DOMAIN': None ,     # A string like "example.com", or None for standard domain cookie.
-  'AUTH_COOKIE_SECURE': True,    # Whether the auth cookies should be secure (https:// only).
+  'AUTH_COOKIE_SECURE': None,    # Whether the auth cookies should be secure (https:// only).
   'AUTH_COOKIE_HTTP_ONLY' : True, # Http only cookie flag.It's not fetch by javascript.
   'AUTH_COOKIE_PATH': '/',        # The path of the auth cookie.
-  'AUTH_COOKIE_SAMESITE': 'None',  # Whether to set the flag restricting cookie leaks on cross-site requests. This can be 'Lax', 'Strict', or None to disable the flag.
+  'AUTH_COOKIE_SAMESITE': 'Lax',  # Whether to set the flag restricting cookie leaks on cross-site requests. This can be 'Lax', 'Strict', or None to disable the flag.
 }
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -154,7 +167,7 @@ DATABASES = {
         'NAME': 'simple_chat',
         'USER': 'user',
         'PASSWORD': '123123',
-        'HOST': '172.17.0.1',
+        'HOST': 'postgres',
         'PORT': '5432',
     }
 }

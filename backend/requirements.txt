@@ -6,3 +6,6 @@ python-dotenv
 django-mptt == 0.14.0
 djangorestframework-simplejwt == 5.2.2
 Pillow == 9.0.0
+daphne
+channels
+channels_redis == 3.3

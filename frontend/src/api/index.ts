@@ -38,10 +38,15 @@ export function getAllConversation<T = any>() {
   })
 }
 
+export function getConversation<T = any>( conversation_id : string | undefined) {
+  return get<T>({
+    url: '/conversation/' + conversation_id + "/",
+  })
+}
 
-export function createConversation<T = any>(user_to: string) {
+export function createConversation<T = any>(user_to: string | undefined , content_last : string) {
   return post<T>({
     url: '/conversation/create/',
-    data: { user_to },
+    data: { user_to , content_last },
   })
 }

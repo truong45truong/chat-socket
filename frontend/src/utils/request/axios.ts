@@ -3,6 +3,7 @@ import { useAuthStore } from '@/store'
 
 const service = axios.create({
   baseURL: import.meta.env.VITE_GLOB_API_URL,
+  withCredentials: true,
 })
 
 service.interceptors.request.use(
@@ -10,6 +11,7 @@ service.interceptors.request.use(
     const token = useAuthStore().access_token
     if (token)
       config.headers.Authorization = `Bearer ${token}`
+
     return config
   },
   (error) => {
