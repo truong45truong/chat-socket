@@ -1,0 +1,115 @@
+<script lang="ts" setup>
+import { ref, onMounted ,computed} from 'vue'
+import { useRouter } from 'vue-router';
+import { Icon } from '@iconify/vue';
+import {
+    useUserStore , useAuthStore,
+    useSettingStore , useSelectLayoutStore
+} from '@/store'
+
+// ref
+const router = useRouter()
+
+// store
+const userStore = useUserStore()
+const authStore = useAuthStore()
+const settingStore = useSettingStore()
+const selectLayout = useSelectLayoutStore()
+
+//computed
+
+
+const showLayout = computed ( () : any => {
+  return selectLayout.show
+} )
+const emailUser = computed(() : string => userStore.userInfo.email )
+
+// method
+
+function logout(): void {
+    userStore.resetUserInfo()
+    authStore.removeAuth()
+}
+
+function showSetting() : void {
+    settingStore.showSetting()
+}
+function selectLayoutContent( type : number) : void {
+    selectLayout.selectLayout(type)
+}
+</script>
+<template>
+    <div class="d-flex flex-column align-items-center  justify-content-between w-100 h-100">
+        <div class="d-flex flex-column w-100">
+            <div class="cursor img-user border border-2 border-white text-center mt-4 mx-2 p-1 pt-2">
+                <Icon icon="clarity:user-line" class="text-white fs-3" />
+            </div>
+            <div class="text-center w-100 mt-5">
+                <div :class="{ 'bg-feature-activate' : showLayout.isShowChat }" class="py-3 feature-option"
+                @click="selectLayoutContent(1)" >
+                    <Icon icon="material-symbols:chat" class="text-white fs-3" />
+                </div>
+                <div :class="{ 'bg-feature-activate' : showLayout.isShowGroup }" class="py-3 feature-option"
+                @click="selectLayoutContent(2)" >
+                    <Icon icon="clarity:group-line" class="text-white fs-3" />
+                </div>
+                <div :class="{ 'bg-feature-activate' : showLayout.isShowFriend }" class="py-3 feature-option"
+                @click="selectLayoutContent(3)" >
+                    <Icon icon="carbon:friendship"  class="text-white fs-3" />
+                </div>
+                <div :class="{ 'bg-feature-activate' : showLayout.isShowNotification }" class="py-3 feature-option"
+                @click="selectLayoutContent(4)" >
+                    <Icon icon="iconamoon:notification-fill"  class="text-white fs-3" />
+                </div>
+            </div>
+
+        </div>
+        <div class="    ">
+            <div class="cursor" @click="showSetting">
+                <Icon icon="uiw:setting" class="text-white fs-3" />
+            </div>
+            <div class="cursor mt-2 mb-3" @click="logout">
+                <Icon icon="material-symbols:logout" class="text-white fs-3" />
+            </div>
+        </div>
+    </div>
+</template>
+<style>
+.feature-option {
+    cursor: pointer;
+}
+html, body {
+  height: 100%;
+  margin :0;
+}
+.bg-login {
+    height:100%;
+
+    background: url('./../../../public/15835.jpg');
+}
+#app {
+    height:100%;
+}
+.cursor {
+    cursor : pointer;
+}
+.cursor:hover {
+    text-decoration-line: underline;
+}
+.overflow-text {
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
+.text-email-setting {
+    max-width: 200px;
+}
+.img-user {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.bg-feature-activate {
+    background-color: #1577c2 ;
+}
+</style>

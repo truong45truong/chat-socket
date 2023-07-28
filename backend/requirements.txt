@@ -1,11 +1,15 @@
-django-cors-headers == 3.13.0
-Django == 4.1.4
+django-cors-headers 
+Django
 psycopg2 == 2.9.6
-djangorestframework == 3.13.1
+djangorestframework
 python-dotenv
 django-mptt == 0.14.0
-djangorestframework-simplejwt == 5.2.2
+djangorestframework-simplejwt
 Pillow == 9.0.0
 daphne
 channels
 channels_redis == 3.3
+pandas
+redis
+redis-server
+python-socketio

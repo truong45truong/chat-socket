@@ -1,4 +1,3 @@
-# mysite/asgi.py
 import os
 
 from channels.auth import AuthMiddlewareStack
@@ -12,7 +11,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
 django_asgi_app = get_asgi_application()
 
 import chat.routing
-
+import socketio
 application = ProtocolTypeRouter(
     {
         "http": django_asgi_app,
@@ -23,3 +22,4 @@ application = ProtocolTypeRouter(
 )
 print(AuthMiddlewareStack(URLRouter(chat.routing.websocket_urlpatterns)))
 
+# application = socketio.ASGIApp(sio, django_asgi_app)

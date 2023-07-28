@@ -105,7 +105,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [("redis", 6379)],
         },
     },
 }
@@ -221,3 +221,19 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import pandas as pd
+
+data = { 
+        'id' : pd.Series(dtype=str),
+        'user_from': pd.Series(dtype=int),
+        'address': pd.Series(dtype=str),
+        'port': pd.Series(dtype=str),
+        'conversation': pd.Series(dtype=bool),
+        'user_to': pd.Series(dtype=str),
+        'channel_name' : pd.Series()
+    }
+CLIENTS = pd.DataFrame(data)
+
+LENGTH_CLIENT = 0
+CLIENTS_ARRAY = []

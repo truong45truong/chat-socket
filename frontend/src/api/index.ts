@@ -50,3 +50,71 @@ export function createConversation<T = any>(user_to: string | undefined , conten
     data: { user_to , content_last },
   })
 }
+export function checkConversation<T = any>(user_to: string | undefined ) {
+  return post<T>({
+    url: '/conversation/check/',
+    data: { user_to },
+  })
+}
+
+
+/* -------------------------------------------------------------------------- */
+/*                                 MEMBER SHIP                                */
+/* -------------------------------------------------------------------------- */
+
+export function addMemberShip<T = any>(user_to: string ) {
+  return post<T>({
+    url: '/add-friends/',
+    data: { user_to },
+  })
+}
+
+export function getAllMemberShip<T = any>() {
+  return get<T>({
+    url: '/get-membership/',
+  })
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                 GROUP CHAT                                 */
+/* -------------------------------------------------------------------------- */
+
+export function createGroup<T = any>(name: string , list_member : Array<string> , description : string ) {
+  return post<T>({
+    url: '/group/create/',
+    data: { name ,list_member , description},
+  })
+}
+
+export function chatGroup<T = any>(conversation_id: string , content_last : string ) {
+  return post<T>({
+    url: '/group/chat/',
+    data: { conversation_id ,content_last},
+  })
+}
+
+export function getAllGroup <T = any>(){
+  return get<T>({
+    url : '/group/'
+  })
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                NOTIFICATION                                */
+/* -------------------------------------------------------------------------- */
+
+export function getAllNotification <T = any>(){
+  return get<T>({
+    url : '/notification/'
+  })
+}
+
+export function createNotification<T = any>(
+    content: string , group_id : string , 
+    email_user_chat : string , type : string 
+  ){
+    return post<T>({
+      url: '/notification/create/',
+      data: { content ,group_id , email_user_chat , type },
+  })
+}

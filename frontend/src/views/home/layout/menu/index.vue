@@ -1,12 +1,23 @@
 <script lang="ts" setup>
-import { ref , onMounted } from 'vue'
+import { ref , computed } from 'vue'
 import { useRouter } from 'vue-router';
-import { searchUser , getAllConversation } from '@/api';
+import { searchUser , checkConversation } from '@/api';
 import { Icon } from '@iconify/vue';
-import { useChatStore } from '@/store'
+import { 
+    useChatStore , useUserStore , 
+    useSocketStore , useSelectLayoutStore ,
+    useConversationStore , useMemberShipStore ,
+} from '@/store'
+
+import {getAllGroup} from '@/api'
 
 const router = useRouter()
 
+// component
+
+import ConversationComponent from './../../component/conversation/index.vue'
+import NotificationLayout from './../notification/index.vue'
+import GroupLayout from './../group/index.vue'
 //ref
 
 const keySearch = ref<string>('')
@@ -17,40 +28,88 @@ const isOnline = ref<boolean>(true)
 // store
 
 const chatStore = useChatStore()
+const userStore = useUserStore()
+const socketStore = useSocketStore()
+const selectLayout = useSelectLayoutStore()
+const conversationStore = useConversationStore()
+const membershipStore = useMemberShipStore()
+
+// fetch data
+
+conversationStore.fetchData()
+
+//computed
+
+const listDataConversation = computed( () : any => {
+    return conversationStore.list_conversation
+})
+
+const showLayout = computed ( () : any => {
+  return selectLayout.show
+} )
+const user = computed( () : string => {
+    return userStore.userInfo.email
+})
+
+const listMemberShip = computed( () : any => {
+    return membershipStore.list_membership
+})
 
 // method
 
-onMounted(() => {
-    getAllConversation().then( (res) : any => {
-        dataConversation.value = res.conversation
-    })
-
-})
 
 function search(): void {
-    searchUser(keySearch.value).then((res): any => {
+    searchUser(keySearch.value).then((res : any ) => {
         listUserSearch.value = res.users 
     })
 }
 
-function selectChat(email : string , conversation_id : string): void {
-    chatStore.setSelectChat( email , conversation_id)
+function selectChat(email : string): void {
+    checkConversation(email).then( (res : any) => {
+        if(res.empty == false){
+            chatStore.uploadDataChat(email,res.chats , res.conversation_id)
+            socketStore.initSocket(res.conversation_id , userStore.userInfo.email , email )
+        } else {
+            chatStore.uploadDataChat(email,[] , true)
+        }
+    })
+    // chatStore.setSelectChat( email , conversation_id)
+    // chatStore.fetchChats()
+}
+
+function selectChatReply(user_to : string , user_from : string , conversation_id : string): void {
+    if (userStore.userInfo.email == user_to){
+        chatStore.setSelectChat( user_from , conversation_id)
+        socketStore.initSocket(conversation_id , user_to , user_from )
+    } else{
+        chatStore.setSelectChat( user_to , conversation_id)
+        socketStore.initSocket(conversation_id , user_from , user_to )
+    }
     chatStore.fetchChats()
+    selectLayout.selectLayoutView(1)
+    
+}
+function ramdomBG() : any {
+    var predefinedColors = ['#7B68EE', '#E9967A', '#20B2AA', '#33FFFF', '#B0C4DE']; 
+    var max = 5
+    var min = 1
+    var randomInteger = Math.floor(Math.random() * (max - min + 1)) + min
+    return {
+        backgroundColor : predefinedColors[randomInteger]
+    }
 }
 </script>
 <template>
     <div class="p-3">
         <div class="d-flex align-items-center mb-2">
-            <div class="chat-no-image text-center p-3 text-white bg-dark">
-                <Icon icon="ph:user-bold" class="text-white fs-1" />
-            </div>
-            <div class="ms-3 ">
+            <div class="ms-1 ">
+                <p class="text-dark m-0 ms-1"><b>{{ user }}</b></p>
                 <div class="d-flex align-items-center">
-                    <Icon icon="carbon:circle-filled" class="ms-3" :class="[ isOnline ? 'color-online' : 'color-offline']" />
+                    <Icon icon="carbon:circle-filled" class="ms-1" :class="[ isOnline ? 'color-online' : 'color-offline']" />
                     <p v-if="isOnline" class="m-0 ms-1 color-online"> Online</p>
                     <p v-if="!isOnline" class="m-0 ms-1 color-offline"> Hide online</p>
                 </div>
-                <div title=".slideThree" class="ms-3 mt-1">
+                <div title=".slideThree" class="ms-1 mt-1">
                     <!-- .slideThree -->
                     <div class="slideThree">
                         <input v-model="isOnline" type="checkbox" value="None" id="slideThree" name="check" checked />
@@ -61,17 +120,16 @@ function selectChat(email : string , conversation_id : string): void {
             </div>
 
         </div>
-        <div class="m-3  position-relative">
-            <div class="d-flex">
-                <Icon icon="mdi:plus-outline" class="text-dark fs-1 me-2 " />
+        <div class="m-1  position-relative">
+            <div class="d-flex">    
                 <input v-model="keySearch" type="text" class="p-2 w-100" placeholder="Search" v-on:keyup.enter="search">
             </div>
             <div v-if="keySearch != ''" class="p-2 position-absolute shadow bg-white border w-100">
                 <p v-if="listUserSearch.length == 0" class="m-0 text-center text-dark">
                     No have user searched
                 </p>
-                <div v-for="item in listUserSearch" class="d-flex align-items-center mb-2 chat-item" @click="selectChat(item.email , item.id)">
-                    <div class="chat-no-image-search text-center p-3 text-white"> Chat </div>
+                <div v-for="item in listUserSearch" class="d-flex align-items-center mb-2 chat-item" @click="selectChat(item.email)">
+                    <div :style="ramdomBG()" class="chat-no-image-search text-center p-3 text-white"> Chat </div>
                     <div class="ms-3 d-flex flex-column align-item-center justify-content-around">
                         <p class="m-0 text-dark"> <b>{{ item.email }}</b></p>
                     </div>
@@ -79,24 +137,35 @@ function selectChat(email : string , conversation_id : string): void {
             </div>
         </div>
 
-        <div class="p-3">
-            <div v-for="item in dataConversation" class="d-flex align-items-center mb-2 chat-item" @click="selectChat(item.email_user_to , item.id)" >
-                <div class="chat-no-image text-center p-3 text-white"> Chat </div>
-                <div class="ms-3 d-flex flex-column align-item-center justify-content-around">
-                    <p class="m-0 text-dark"> <b>{{item.email_user_to}}</b></p>
-                    <p  v-if="!item.is_seen" class="m-0"> 
-                        <b v-if="item.is_sent" > 
-                            <span>{{item.content_last}}</span>
-                        </b>
-                    </p>
-                    <p v-if="item.is_seen && item.is_sent" class="m-0"> 
-                        You: {{item.content_last}} 
-                    </p>
-                    <p v-if="item.is_seen && !item.is_sent" class="m-0"> 
-                            {{item.content_last}} 
-                    </p>
-                </div>
+        <div v-if="showLayout.isShowChat" class="p-1 my-3">
+            <div v-for="item in listDataConversation" class="d-flex align-items-center mb-2 chat-item" @click="selectChatReply(item.email_user_to, item.email_user_from , item.id)" >
+                <ConversationComponent   
+                    :email_user_from="item.email_user_from" 
+                    :email_user_to="item.email_user_to"
+                    :is_sent="item.is_sent"
+                    :is_seen="item.is_seen"
+                    :content_last="item.content_last"
+                />
             </div>
+        </div>
+        <div v-if="showLayout.isShowNotification" class="p-1 my-3">
+            <p class="py-3">
+                <b>Notification : </b>
+            </p>
+            <hr class="my-1">
+            <NotificationLayout />
+        </div>
+        <div v-if="showLayout.isShowFriend" class="p-1 my-3">
+            <p class="py-3">
+                <b>Friends : </b>
+            </p>
+            <hr class="my-1">
+            <div v-for="item in listMemberShip" class=" my-2 ">
+                <p class="m-0"> <b class=""> {{ item.email }}</b></p>
+            </div>
+        </div>
+        <div v-if="showLayout.isShowGroup" class="p-1 my-3">
+            <GroupLayout />
         </div>
     </div>
 </template>

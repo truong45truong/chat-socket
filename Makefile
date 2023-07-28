@@ -1,10 +1,10 @@
 compose:
-	sudo docker-compose build
-	sudo docker-compose up
+	sudo docker compose build
+	sudo docker compose up
 compose-up:
-	sudo docker-compose up
+	sudo docker compose up
 compose-build:
-	sudo docker-compose build
+	sudo docker compose build
 migrate:
 	make backend-terminal cmd="python3 manage.py makemigrations"
 	make backend-terminal cmd="python3 manage.py migrate"
@@ -22,7 +22,7 @@ kill-port:
 start-app:
 	python3 ./backend/manage.py startapp  $(name)
 backend-terminal:
-	sudo docker exec -it socketchat_backend_1 $(cmd)
+	sudo docker exec -it socketchat-backend-1 $(cmd)
 postgres:
 	sudo docker exec -it postgres psql -U User  simple_chat
 .PHONY: compose createdb dropdb postgres compose-up compose-build startapp backend-terminal create-admin

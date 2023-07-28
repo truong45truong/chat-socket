@@ -34,9 +34,6 @@ onMounted(() => {
 <template>
     <div class="d-flex justify-content-between w-100">
         <div class="d-flex bg-dark w-100 p-3 align-items-center cursor" @click="logout">
-            <p class="m-0 me-2 text-white overflow-text text-email-setting">
-                {{emailUser}}
-            </p>
             <Icon icon="material-symbols:logout" class="text-white" />
             <p class="m-0 ms-2 text-white"> Logout</p>
         </div>

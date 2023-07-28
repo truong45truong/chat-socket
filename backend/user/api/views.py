@@ -9,8 +9,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
-from user.models import User
-from .serializers import UserSerializer
+from user.models import User , Membership
+from .serializers import UserSerializer , MemberShipSerializer
 import uuid
 import json
 import base64
@@ -234,4 +234,81 @@ def search_user(request):
 
         return getUsers(key_search)
     except Exception as e :
+        return notFound()
+    
+@api_view(['POST'])
+@permission_classes([])
+@authentication_classes([JWTAuthentication])
+def add_friend(request):
+    response = Response()
+    def notFound():
+        response.data = {
+            "success" : False , 'error' : {
+                'type' : "Error Auth" , 'value' : "Failed"
+            } , 
+            'status' : status.HTTP_404_NOT_FOUND
+        }
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+    def AddMemberShip(user_added , userCurrent):
+        userAdded = User.objects.get(email=user_added)
+        checkMember = Membership.objects.filter(from_user = userCurrent , to_user = userAdded)
+        if len(checkMember) > 0:
+            checkMember[0].delete()
+        else:
+            memberShip = Membership.objects.create(
+                from_user = userCurrent , 
+                to_user = userAdded,
+            )
+
+        response.data = {
+            "success" : True ,
+            "status"  : status.HTTP_200_OK
+        }
+        response.status_code = status.HTTP_200_OK
+        return response
+    try:
+        data_request= json.loads(request.body.decode('utf-8'))
+        user_added = data_request['user_to']
+        jwtToken = request.COOKIES.get('refresh_token')
+        refresh_token = RefreshToken(jwtToken)
+        decoded_token = refresh_token.payload
+        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        return AddMemberShip(user_added , userCurrent)
+    except Exception as e :
+        return notFound()
+
+@api_view(['GET'])
+@permission_classes([])
+@authentication_classes([JWTAuthentication])
+def get_all_membership(request):
+    response = Response()
+    def notFound():
+        response.data = {
+            "success" : False , 'error' : {
+                'type' : "Error Auth" , 'value' : "Failed"
+            } , 
+            'status' : status.HTTP_404_NOT_FOUND
+        }
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+    def getMemberShip(userCurrent):
+        meberships = Membership.objects.filter(from_user = userCurrent)
+        serializer = MemberShipSerializer(meberships,many = True)
+
+        response.data = {
+            "memberships" : serializer.data,
+            "success" : True ,
+            "status"  : status.HTTP_200_OK
+        }
+        response.status_code = status.HTTP_200_OK
+        return response
+    try:
+        jwtToken = request.COOKIES.get('refresh_token')
+        refresh_token = RefreshToken(jwtToken)
+        decoded_token = refresh_token.payload
+        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        return getMemberShip(userCurrent)
+    except Exception as e :
+        print(e)
         return notFound()

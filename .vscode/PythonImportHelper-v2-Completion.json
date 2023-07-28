@@ -387,6 +387,15 @@
         "documentation": {}
     },
     {
+        "label": "pandas",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pandas",
+        "description": "pandas",
+        "detail": "pandas",
+        "documentation": {}
+    },
+    {
         "label": "admin",
         "importPath": "django.contrib",
         "description": "django.contrib",
@@ -451,6 +460,22 @@
         "documentation": {}
     },
     {
+        "label": "Chat",
+        "importPath": "chat.models",
+        "description": "chat.models",
+        "isExtraImport": true,
+        "detail": "chat.models",
+        "documentation": {}
+    },
+    {
+        "label": "Conversation",
+        "importPath": "chat.models",
+        "description": "chat.models",
+        "isExtraImport": true,
+        "detail": "chat.models",
+        "documentation": {}
+    },
+    {
         "label": "make_password",
         "importPath": "django.contrib.auth.hashers",
         "description": "django.contrib.auth.hashers",
@@ -571,11 +596,11 @@
         "documentation": {}
     },
     {
-        "label": "JWTAuthentication",
-        "importPath": "rest_framework_simplejwt.authentication",
-        "description": "rest_framework_simplejwt.authentication",
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
         "isExtraImport": true,
-        "detail": "rest_framework_simplejwt.authentication",
+        "detail": "django.conf",
         "documentation": {}
     },
     {
@@ -592,6 +617,22 @@
         "description": "rest_framework_simplejwt.authentication",
         "isExtraImport": true,
         "detail": "rest_framework_simplejwt.authentication",
+        "documentation": {}
+    },
+    {
+        "label": "JWTAuthentication",
+        "importPath": "rest_framework_simplejwt.authentication",
+        "description": "rest_framework_simplejwt.authentication",
+        "isExtraImport": true,
+        "detail": "rest_framework_simplejwt.authentication",
+        "documentation": {}
+    },
+    {
+        "label": "User",
+        "importPath": "user.models",
+        "description": "user.models",
+        "isExtraImport": true,
+        "detail": "user.models",
         "documentation": {}
     },
     {
@@ -1157,16 +1198,7 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "ASGI_APPLICATION = 'backend.asgi.application'\nCHANNEL_LAYERS = {\n    \"default\": {\n        \"BACKEND\": \"channels_redis.core.RedisChannelLayer\",\n        \"CONFIG\": {\n            \"hosts\": [(\"127.0.0.1\", 6379)],\n        },\n    },\n}\n# ------------------------------ REST FRAMEWORK ------------------------------ #",
-        "detail": "backend.backend.settings",
-        "documentation": {}
-    },
-    {
-        "label": "CHANNEL_LAYERS",
-        "kind": 5,
-        "importPath": "backend.backend.settings",
-        "description": "backend.backend.settings",
-        "peekOfCode": "CHANNEL_LAYERS = {\n    \"default\": {\n        \"BACKEND\": \"channels_redis.core.RedisChannelLayer\",\n        \"CONFIG\": {\n            \"hosts\": [(\"127.0.0.1\", 6379)],\n        },\n    },\n}\n# ------------------------------ REST FRAMEWORK ------------------------------ #\nREST_FRAMEWORK = {",
+        "peekOfCode": "ASGI_APPLICATION = 'backend.asgi.application'\n# ------------------------------ REST FRAMEWORK ------------------------------ #\nREST_FRAMEWORK = {\n    'DEFAULT_PERMISSION_CLASSES': [\n        'rest_framework.permissions.AllowAny',\n    ],\n    'DEFAULT_AUTHENTICATION_CLASSES': (\n        'rest_framework_simplejwt.authentication.JWTAuthentication',\n        'user.api.authenticate.CustomAuthentication',\n    ),",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -1265,7 +1297,7 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "STATIC_URL = '/static/'\nMEDIA_ROOT = BASE_DIR\nSTATICFILES_DIRS = [\n    os.path.join(BASE_DIR,'static'),\n]\n# Default primary key field type\n# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "peekOfCode": "STATIC_URL = '/static/'\nMEDIA_ROOT = BASE_DIR\nSTATICFILES_DIRS = [\n    os.path.join(BASE_DIR,'static'),\n]\n# Default primary key field type\n# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\nimport pandas as pd\ndata = {",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -1274,7 +1306,7 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "MEDIA_ROOT = BASE_DIR\nSTATICFILES_DIRS = [\n    os.path.join(BASE_DIR,'static'),\n]\n# Default primary key field type\n# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "peekOfCode": "MEDIA_ROOT = BASE_DIR\nSTATICFILES_DIRS = [\n    os.path.join(BASE_DIR,'static'),\n]\n# Default primary key field type\n# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\nimport pandas as pd\ndata = {\n        'user_from': pd.Series(dtype=int),",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -1283,7 +1315,7 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "STATICFILES_DIRS = [\n    os.path.join(BASE_DIR,'static'),\n]\n# Default primary key field type\n# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "peekOfCode": "STATICFILES_DIRS = [\n    os.path.join(BASE_DIR,'static'),\n]\n# Default primary key field type\n# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\nimport pandas as pd\ndata = {\n        'user_from': pd.Series(dtype=int),\n        'address': pd.Series(dtype=str),",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -1292,7 +1324,34 @@
         "kind": 5,
         "importPath": "backend.backend.settings",
         "description": "backend.backend.settings",
-        "peekOfCode": "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "peekOfCode": "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\nimport pandas as pd\ndata = {\n        'user_from': pd.Series(dtype=int),\n        'address': pd.Series(dtype=str),\n        'port': pd.Series(dtype=str),\n        'conversation': pd.Series(dtype=bool),\n        'user_to': pd.Series(dtype=str),\n    }\nCLIENTS = pd.DataFrame(data)",
+        "detail": "backend.backend.settings",
+        "documentation": {}
+    },
+    {
+        "label": "data",
+        "kind": 5,
+        "importPath": "backend.backend.settings",
+        "description": "backend.backend.settings",
+        "peekOfCode": "data = {\n        'user_from': pd.Series(dtype=int),\n        'address': pd.Series(dtype=str),\n        'port': pd.Series(dtype=str),\n        'conversation': pd.Series(dtype=bool),\n        'user_to': pd.Series(dtype=str),\n    }\nCLIENTS = pd.DataFrame(data)\nLENGTH_CLIENT = 0",
+        "detail": "backend.backend.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CLIENTS",
+        "kind": 5,
+        "importPath": "backend.backend.settings",
+        "description": "backend.backend.settings",
+        "peekOfCode": "CLIENTS = pd.DataFrame(data)\nLENGTH_CLIENT = 0",
+        "detail": "backend.backend.settings",
+        "documentation": {}
+    },
+    {
+        "label": "LENGTH_CLIENT",
+        "kind": 5,
+        "importPath": "backend.backend.settings",
+        "description": "backend.backend.settings",
+        "peekOfCode": "LENGTH_CLIENT = 0",
         "detail": "backend.backend.settings",
         "documentation": {}
     },
@@ -1517,7 +1576,7 @@
         "kind": 6,
         "importPath": "backend.chat.socket_server",
         "description": "backend.chat.socket_server",
-        "peekOfCode": "class ChatConsumer(WebsocketConsumer):\n    def connect(self):\n        self.room_name = self.scope[\"url_route\"][\"kwargs\"][\"room_name\"]\n        self.room_group_name = \"chat_%s\" % self.room_name\n        # Join room group\n        async_to_sync(self.channel_layer.group_add)(\n            self.room_group_name, self.channel_name\n        )\n        self.accept()\n    def disconnect(self, close_code):",
+        "peekOfCode": "class ChatConsumer(WebsocketConsumer):\n    def connect(self):\n        length = settings.LENGTH_CLIENT\n        clients = settings.CLIENTS\n        print('before: ',clients)\n        print('len(self.clients) :' , length)\n        clientNew = [\n            False ,\n            self.scope[\"client\"][0] ,\n            self.scope[\"client\"][1] ,",
         "detail": "backend.chat.socket_server",
         "documentation": {}
     },

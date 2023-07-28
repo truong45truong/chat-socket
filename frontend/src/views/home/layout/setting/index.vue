@@ -2,7 +2,11 @@
 import { ref, onMounted ,computed} from 'vue'
 import { useRouter } from 'vue-router';
 import { Icon } from '@iconify/vue';
-import {useUserStore , useAuthStore , useBGStore , useSettingStore} from '@/store'
+import {
+    useUserStore , useAuthStore , 
+    useBGStore , useSettingStore ,
+    useConversationStore
+} from '@/store'
 
 // ref
 const router = useRouter()
@@ -13,6 +17,7 @@ const userStore = useUserStore()
 const authStore = useAuthStore()
 const BgStore = useBGStore()
 const settingStore = useSettingStore()
+
 // computed
 
 const dataBG = computed( (): any => {

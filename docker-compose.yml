@@ -7,8 +7,6 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: 123123
-      # Optional: Give a name to the database, otherwise
-      # use the default value POSTGRES_USER as a database name (user in this case.)
       POSTGRES_DB: simple_chat
     ports:
       - "5432:5432"
@@ -25,21 +23,31 @@ services:
       - ./backend/:/app/
     depends_on:
       - postgres
+      - redis  # Add dependency on the Redis service
     working_dir: "/app"
     expose:
       - 8000
     ports:
       - "8000:8000"
     command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+  redis:
+    image: redis:5  # Use Redis version 5 image
+    container_name: redis
+    expose:
+      - 6379  # Expose Redis port for communication with other services
+    volumes:
+      - redisdata:/data  # Use a volume to persist Redis data
+
   pg-admin:
     image: dpage/pgadmin4:6
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@email.com
       - PGADMIN_DEFAULT_PASSWORD=admin
       - PGADMIN_LISTEN_PORT=5050
-
     ports:
       - "5050:5050"
 
 volumes:
   dbdata:
+  redisdata:
