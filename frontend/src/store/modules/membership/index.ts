@@ -14,7 +14,11 @@ export const useMemberShipStore = defineStore('membership-store', {
 
   actions: {
     uploadData(list_membership : Array<MenberShip> ) {
-      this.list_membership = list_membership
+      let arrayList: any = []
+      for(let user of list_membership){
+        arrayList = [...arrayList, { 'email' : user.email , 'is_online' : false }]
+      }
+      this.list_membership = arrayList
     },
     checkMemberShip(user_to : MenberShip) : boolean{
         for( let item of this.list_membership){
@@ -35,6 +39,31 @@ export const useMemberShipStore = defineStore('membership-store', {
         } )
 
 
+    },
+    uploadOnline(list_status : Array<any>){
+      function checkOnline(email : string,list_status : Array<any>) : boolean{
+        for (let user of list_status){
+          if(email == user.email) { return true }
+        }
+        return false
+      }
+      let arrayList: any = []
+      for (let user of this.list_membership){
+          if( checkOnline(user.email , list_status) == true ){
+            arrayList = [...arrayList, { 'email' : user.email , 'is_online' : true }]
+          }else {
+            arrayList = [...arrayList, { 'email' : user.email , 'is_online' : false }]
+          }
+      }
+      this.list_membership = arrayList
+    },
+    uploadUserOnline(email : string) {
+      this.list_membership = this.list_membership.filter(
+        (user : any) => {
+          if( user.email == email ) user.is_online = true
+          return user
+        }
+      )
     }
 
   },

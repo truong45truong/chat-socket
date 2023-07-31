@@ -22,9 +22,14 @@ export const useSocketStore = defineStore('socket-store', {
           resolve();
         });
       });
+        chatSocket.send(JSON.stringify({
+          'user_from' : user_from ,
+          'init_socket' : 0,
+          'client_id' : this.id_socket ,
+        }));
       chatSocket.send(JSON.stringify({
-        'user_from' : user_from ,
-        'init_socket' : 0,
+        'email_user_chat' : user_from ,
+        'init_socket' : 5,
         'client_id' : this.id_socket ,
       }));
       chatSocket.onmessage = (e) => {
@@ -32,16 +37,18 @@ export const useSocketStore = defineStore('socket-store', {
         if( data.is_chat == false){
           console.log("notify : ", data)
           this.notification =  data
-          var audio = new Audio(soundNoticy);
-          const promise = audio.play();
-          if(promise !== undefined){
-              promise.then(() => {
-                // Autoplay started
-            }).catch(error => {
-                // Autoplay was prevented.
-                audio.muted = true;
-                audio.play();
-            });
+          if(data.type != "GUO" && data.type != "NTFUO"){
+            var audio = new Audio(soundNoticy);
+            const promise = audio.play();
+            if(promise !== undefined){
+                promise.then(() => {
+                  // Autoplay started
+              }).catch(error => {
+                  // Autoplay was prevented.
+                  audio.muted = true;
+                  audio.play();
+              });
+            }
           }
         }else {
 
@@ -51,6 +58,7 @@ export const useSocketStore = defineStore('socket-store', {
     } ,
     async initSocket(conversation : string ,  user_from : string , user_to : string) : Promise<any> {
       this.is_group = false
+      this.list_chat_receiver = []
       if (this.socket !== undefined) {
         this.socket.close();
         this.socket = undefined;
@@ -83,26 +91,13 @@ export const useSocketStore = defineStore('socket-store', {
           console.log("clients : ", data)
           this.list_chat_receiver = [...this.list_chat_receiver , data]
           // conversationStore.updateNewMessage( data )
-        } else {
-          console.log("notify : ", data)
-          this.notification =  data
-          var audio = new Audio(soundNoticy);
-          const promise = audio.play();
-          if(promise !== undefined){
-              promise.then(() => {
-                // Autoplay started
-            }).catch(error => {
-                // Autoplay was prevented.
-                audio.muted = true;
-                audio.play();
-            });
-          }
-        }
+        } 
        };
        
     },
     async initSocketChatGroup(conversation : string ,  user_from : string , group_id : string ) : Promise<any>{
       this.is_group = true
+      this.list_chat_receiver = []
       if (this.socket !== undefined) {
         this.socket.close();
         this.socket = undefined;
@@ -135,21 +130,8 @@ export const useSocketStore = defineStore('socket-store', {
           console.log("clients : ", data)
           this.list_chat_receiver = [...this.list_chat_receiver , data]
           // conversationStore.updateNewMessage( data )
-        } else {
-          console.log("notify : ", data)
-          this.notification =  data
-          var audio = new Audio(soundNoticy);
-          const promise = audio.play();
-          if(promise !== undefined){
-              promise.then(() => {
-                // Autoplay started
-            }).catch(error => {
-                // Autoplay was prevented.
-                audio.muted = true;
-                audio.play();
-            });
-          }
-        }
+        } 
+        
        };
     },
     updateListChatSocket(data : string) : void {

@@ -87,17 +87,35 @@ watch( userEmailComputed , (newuserEmailComputed , olduserEmailComputed) : void 
 } )
 watch( notification , (newnotification , oldnotification) : void => {
     console.log("change notify" ,newnotification )
-    notificationStore.uploadData(newnotification)
-    if(newnotification.type == 'NTFCT'){
-      conversationStore.updateNewMessage( newnotification.content , newnotification.email_user_chat )
+    if(newnotification.type == "GUO"  ){
+      membershipStore.uploadOnline(newnotification.list_user_online)
     }
-    createNotification(
-      newnotification.content , 
-      newnotification.group_id,
-      newnotification.email_user_chat ,
-      newnotification.type
-    )
+    if(newnotification.type == "NTFUO") {
+      membershipStore.uploadUserOnline(newnotification.email_user_online)
+    }
+    if(chatStore.user_to != newnotification.email_user_chat ) {
+      if( selectLayout.show.isShowNotification == true){
+        notificationStore.uploadData(newnotification , true)
+      } else {
+        notificationStore.uploadData(newnotification , false)
+      }
+      if(newnotification.type == 'NTFCT'){
+        conversationStore.updateNewMessage( newnotification.content , newnotification.email_user_chat )
+        conversationStore.uploadSentMessageConversation( newnotification.email_user_chat , userStore.userInfo.email )
+      }
+      if(newnotification.type == 'NTFOU'){
 
+      }
+      if(newnotification.type == 'NTFCG'){
+        let conversationGroup = groupStore.getGroupById(newnotification.group_id)
+        if ( conversationGroup != false){
+          groupStore.updateNewMessage( newnotification.content , newnotification.group_id )
+          if(userStore.userInfo.email  != newnotification.email_user_chat){
+            groupStore.uploadSentMessageConversation(newnotification.group_id, userStore.userInfo.email   )
+          }
+        }
+      }
+    }
 } )
 
 //
@@ -127,22 +145,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', adjustChatLayoutHeight);
 });
-
-// const socket = io("http://0.0.0.0:8000/ws/notification/9e9fdbf5-6b66-49d9-b90e-23fff3dbfb9e/");
-
-//   // Sự kiện khi kết nối thành công
-//   socket.on('connect', () => {
-//     console.log('Connected to server');
-//   });
-
-//   // Sự kiện khi nhận được dữ liệu từ server
-//   socket.on('my_response', (data) => {
-//     console.log('Received data from server:', data);
-//   });
-
-//   // Gửi dữ liệu tới server
-//   socket.emit('my_event', { message: 'Hello from client' });
-
 
 </script>
 <template>

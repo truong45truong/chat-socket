@@ -37,21 +37,38 @@ const emailUser = computed(() : string => userStore.userInfo.email )
 
 </script>
 <template>
-    <div v-for="item in listDataNotification" class="d-flex align-items-center mb-2 chat-item" >
-        <NotificationComponent   v-if="item.type == 'NTFCT'"
-            :email_user_chat="item.email_user_chat" 
-            :content="item.content"
-            :type="item.type" 
-            :group_id="''"
-        />
-        <NotificationComponent   v-if="item.type == 'NTFCG'"
-            :email_user_chat="item.email_user_chat" 
-            :content="item.content"
-            :type="item.type"
-            :group_id="item.group_id"
-        />
+    <div class="layout-notification ">
+        <div  v-for="item in listDataNotification" class="d-flex align-items-center mb-2 chat-item " >
+            <NotificationComponent   v-if="item.type == 'NTFCT'"
+                :email_user_chat="item.email_user_chat"
+                :content="item.content"
+                :type="item.type"
+                :group_id="''"
+                :is_seem="item.is_seem"
+            />
+            <NotificationComponent   v-if="item.type == 'NTFCG'"
+                :email_user_chat="item.email_user_chat"
+                :content="item.content"
+                :type="item.type"
+                :group_id="item.group_id"
+                :is_seem="item.is_seem"
+            />
+        </div>
     </div>
 </template>
 <style>
+.layout-notification {
+    overflow-y: scroll;
+    height: 650px;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.layout-notification::-webkit-scrollbar {
+  display: none;
+}
 
+/* Hide scrollbar for IE, Edge and Firefox */
+.layout-notification {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
 </style>

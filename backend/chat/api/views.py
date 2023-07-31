@@ -20,6 +20,7 @@ import json
 import base64
 import uuid 
 import os
+import ast
 
 path_upload_image = str(settings.BASE_DIR)+"/media/photos"
 path_upload_video = str(settings.BASE_DIR)+"/media/videos"
@@ -39,42 +40,36 @@ def create_conversation(request):
         }
         response.status_code = status.HTTP_404_NOT_FOUND
         return response
-    def onConversation(userTo , userCurrent , contentLast):
-        conversation = Conversation.objects.get( 
+    
+    def createConvasertion(userTo , userCurrent , contentLast):
+        conversation = Conversation.objects.filter( 
             Q(user_from = userCurrent , user_to = userTo)
             | Q(user_from = userTo, user_to = userCurrent)
         )
-        conversation.content_last = contentLast
-        print('conversation' , conversation.user_from , conversation.user_to)
-        if conversation.user_from != userCurrent:
-            conversation.is_sent = False
-        else:
-            conversation.is_sent = True
-        conversation.save()
-
-        chatCurrent = Chat.objects.create(
-          user_id = userCurrent ,
-          conversation_id = conversation  ,
-          content = contentLast ,
-        )
-
-        chatCurrent.save()
-
-        response.data = {
-            "success" : True ,
-            "is_create" : False ,
-            "status" : status.HTTP_200_OK
-        }
-        response.status_code = status.HTTP_200_OK
-        return response
-    
-    def createConvasertion(userTo , userCurrent , contentLast):
+        if len(conversation) > 0:
+            serializer = ConversationSerializer(conversation[0] , many = False)
+            response.data = {
+                "success" : True ,
+                "is_create" : True ,
+                "conversation" : serializer.data,
+                "status" : status.HTTP_200_OK
+            }
+            response.status_code = status.HTTP_200_OK
+            return response
+        notification = [
+            { 
+                userCurrent.email : 0
+            },
+            {
+                userTo.email : 0
+            }
+        ]
         conversation = Conversation.objects.create(
             user_from = userCurrent ,
             user_to = userTo ,
             content_last = contentLast,
-            is_sent = True,
-            is_seen = False
+            list_message_sent = notification ,
+            list_user_seen = [userCurrent.email]
         )
         conversation.save()
         chatCurrent = Chat.objects.create(
@@ -103,16 +98,15 @@ def create_conversation(request):
         userCurrent = User.objects.get(id = decoded_token['user_id'])
         contentLast =data_request['content_last']
         try:
-            return onConversation(userTo , userCurrent , contentLast)
+            return createConvasertion(userTo , userCurrent ,contentLast )
         except Exception as e:
             print(e)
-            return createConvasertion(userTo , userCurrent , contentLast) 
     except Exception as e:
         print(e)
         return notFound()
 
 @api_view(['POST'])
-def create_conversation(request):
+def chat_conversation(request):
     response = Response()
 
     def notFound():
@@ -124,19 +118,30 @@ def create_conversation(request):
         }
         response.status_code = status.HTTP_404_NOT_FOUND
         return response
-    def onConversation(userTo , userCurrent , contentLast):
+    def onConversation(conversation_id , userCurrent , contentLast):
         conversation = Conversation.objects.get( 
-            Q(user_from = userCurrent , user_to = userTo)
-            | Q(user_from = userTo, user_to = userCurrent)
+            id = conversation_id
         )
         conversation.content_last = contentLast
-        print('conversation' , conversation.user_from , conversation.user_to)
-        if conversation.user_from != userCurrent:
-            conversation.is_sent = False
-        else:
-            conversation.is_sent = True
+        if conversation.group_id == None:
+            print(conversation.list_message_sent)
+            list_message_sent = json.loads(str(conversation.list_message_sent))
+            print(list_message_sent)
+            listMessageSent = []
+            for message_sent in list_message_sent:
+                print(message_sent, type(message_sent))
+                message_sent_dict = ast.literal_eval(message_sent)
+                print('message_sent_dict.keys())[0]', message_sent_dict)
+                if next(iter(message_sent_dict)) != userCurrent.email:
+                    userSent = {
+                        next(iter(message_sent_dict)): message_sent_dict[next(iter(message_sent_dict))] + 1
+                    }
+                    listMessageSent.append(userSent)
+                else:
+                    listMessageSent.append(message_sent_dict)
+            conversation.list_message_sent = listMessageSent
+        conversation.list_user_seen = [userCurrent.email]
         conversation.save()
-
         chatCurrent = Chat.objects.create(
           user_id = userCurrent ,
           conversation_id = conversation  ,
@@ -152,28 +157,73 @@ def create_conversation(request):
         }
         response.status_code = status.HTTP_200_OK
         return response
-    
-    def createConvasertion(userTo , userCurrent , contentLast):
-        conversation = Conversation.objects.create(
-            user_from = userCurrent ,
-            user_to = userTo ,
-            content_last = contentLast,
-            is_sent = True,
-            is_seen = False
-        )
-        conversation.save()
-        chatCurrent = Chat.objects.create(
-          user_id = userCurrent ,
-          conversation_id = conversation  ,
-          content = contentLast ,
-        )
 
-        chatCurrent.save()
-        serializer = ConversationSerializer(conversation , many = False)
+    try:
+        data_request= json.loads(request.body.decode('utf-8'))
+        jwtToken = request.COOKIES.get('refresh_token')
+        refresh_token = RefreshToken(jwtToken)
+        decoded_token = refresh_token.payload
+        userTo =User.objects.get( email = data_request['user_to'])
+        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        conversation_id = data_request['conversation_id']
+        contentLast =data_request['content_last']
+        try:
+            return onConversation(conversation_id , userCurrent , contentLast)
+        except Exception as e:
+            print(e)
+            return notFound()
+    except Exception as e:
+        print(e)
+        return notFound()
+
+@api_view(['POST'])
+def seem_conversation(request):
+    response = Response()
+
+    def notFound():
+        response.data = {
+            "success" : False , 'error' : {
+                'type' : "Error Auth" , 'value' : "Failed"
+            } , 
+            'status' : status.HTTP_404_NOT_FOUND
+        }
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+    def checkUserSeem(email_user , list_user_seem) -> bool:
+        for email in list_user_seem:
+            if email == email_user:
+                return True
+        return False
+    def seemConversation(conversation_id , userCurrent):
+        conversation = Conversation.objects.get( 
+            id = conversation_id
+        )
+        list_message_sent = json.loads(str(conversation.list_message_sent))
+        listMessageSent = []
+        for message_sent in list_message_sent:
+            message_sent_dict = ast.literal_eval(message_sent)
+            if next(iter(message_sent_dict)) != userCurrent.email:
+                userSent = {
+                    next(iter(message_sent_dict)): message_sent_dict[next(iter(message_sent_dict))]
+                }
+                listMessageSent.append(userSent)
+            else:
+                userSent = {
+                    next(iter(message_sent_dict)): 0
+                }
+                listMessageSent.append(userSent)
+        conversation.list_message_sent = listMessageSent
+        print('conversation.list_message_sent' , conversation.list_message_sent)
+        list_user_seen = conversation.list_user_seen
+        if checkUserSeem( userCurrent.email ,list_user_seen) == False:
+            list_user_seen.append(userCurrent.email)
+            conversation.list_user_seen = list_user_seen
+            print('conversation.list_user_seen ' , conversation.list_user_seen )
+        conversation.save()
+            
         response.data = {
             "success" : True ,
-            "is_create" : True ,
-            "conversation" : serializer.data,
+            "is_create" : False ,
             "status" : status.HTTP_200_OK
         }
         response.status_code = status.HTTP_200_OK
@@ -184,14 +234,13 @@ def create_conversation(request):
         jwtToken = request.COOKIES.get('refresh_token')
         refresh_token = RefreshToken(jwtToken)
         decoded_token = refresh_token.payload
-        userTo =User.objects.get( email = data_request['user_to'])
         userCurrent = User.objects.get(id = decoded_token['user_id'])
-        contentLast =data_request['content_last']
+        conversation_id = data_request['conversation_id']
         try:
-            return onConversation(userTo , userCurrent , contentLast)
+            return seemConversation(conversation_id , userCurrent)
         except Exception as e:
             print(e)
-            return createConvasertion(userTo , userCurrent , contentLast) 
+            return notFound()
     except Exception as e:
         print(e)
         return notFound()
@@ -289,6 +338,7 @@ def get_conversation(request , uuid):
         conversation = Conversation.objects.get(
            Q(id = uuid)
         )
+        conversation.save()
         chats = Chat.objects.filter(conversation_id = conversation)
 
         serializer = ChatSerialzier(chats , many = True)
@@ -386,6 +436,20 @@ def chat_group(request):
         conversation = Conversation.objects.get( id = conversation_id)
         conversation.content_last = contentLast
 
+        if conversation.group_id != None:
+            list_message_sent = json.loads(str(conversation.list_message_sent))
+            listMessageSent = []
+            for message_sent in list_message_sent:
+                message_sent_dict = ast.literal_eval(message_sent)
+                if next(iter(message_sent_dict)) != userCurrent.email:
+                    userSent = {
+                        next(iter(message_sent_dict)): message_sent_dict[next(iter(message_sent_dict))] + 1
+                    }
+                    listMessageSent.append(userSent)
+                else:
+                    listMessageSent.append(message_sent_dict)
+            conversation.list_message_sent = listMessageSent
+        conversation.list_user_seen = [userCurrent.email]
         conversation.save()
 
         chatCurrent = Chat.objects.create(
@@ -435,6 +499,11 @@ def create_group(request):
         groupChat = GroupChat.objects.create(
             name = name , description = description
         )
+        notification = [
+            {
+                userCurrent.email : 0
+            }
+        ]
         try:
             Member.objects.create(
                 is_manager = True ,
@@ -456,14 +525,19 @@ def create_group(request):
                     group_id = groupChat
                 )
                 listMemberNew.append(member)
+                notification.append(
+                    {
+                        userMember.email : 0
+                    }
+                )
             except:
                 pass
         try:
             conversation = Conversation.objects.create(
                 user_from = userCurrent ,
                 group_id = groupChat ,
-                is_sent = True,
-                is_seen = False
+                list_message_sent = notification ,
+                list_user_seen = [userCurrent.email]
             )
         except Exception as e:
             groupChat.delete()
@@ -553,7 +627,7 @@ def get_all_notification(request):
         }
         response.status_code = status.HTTP_404_NOT_FOUND
     def getAllNotification(userCurrent) :
-        notifications = Notification.objects.filter(user_id = userCurrent)
+        notifications = Notification.objects.filter(user_id = userCurrent).order_by('-created_at')
         serializer = NotificationSerializer(notifications , many = True)
         response.data = {
             "success" : True ,
@@ -587,14 +661,33 @@ def create_notification(request):
         response.status_code = status.HTTP_404_NOT_FOUND
     def createNotification(
             userCurrent , content ,
-            group_id , email_user_chat ,
-            type 
+            email_user_chat ,
+            type , conversation_id
         ):
-        notification = Notification.objects.create(
-            user_id = userCurrent , content = content ,
-            group_id = group_id , email_user_chat = email_user_chat ,
-            type = type
-        )
+        conversation = Conversation.objects.get(id = conversation_id)
+        if conversation.group_id == None:
+
+            if userCurrent != conversation.user_from:
+                notificationUserFrom = Notification.objects.create(
+                    user_id = conversation.user_from , content = content ,
+                    conversation_id = conversation , email_user_chat = email_user_chat ,
+                    type = type , is_seem = False
+                )
+            else:
+                notificationUserTo = Notification.objects.create(
+                    user_id = conversation.user_to , content = content ,
+                    conversation_id = conversation , email_user_chat = email_user_chat ,
+                    type = type , is_seem = False
+                )
+        else:
+            memberNotifications = Member.objects.filter(group_id = conversation.group_id)
+            for member in memberNotifications:
+                notificationMember = Notification.objects.create(
+                    user_id = member.user_id , content = content ,
+                    conversation_id = conversation , email_user_chat = email_user_chat ,
+                    type = type , is_seem = False
+                )
+        
 
         response.data = {
             "success" : True ,
@@ -610,13 +703,52 @@ def create_notification(request):
         decoded_token = refresh_token.payload
         userCurrent = User.objects.get(id = decoded_token['user_id'])
         content = data_request['content']
-        group_id = data_request['group_id']
         email_user_chat = data_request['email_user_chat']
+        conversation_id = data_request['conversation_id']
         type = data_request['type']
         return createNotification(
             userCurrent , content ,
-            group_id , email_user_chat ,
-            type 
+            email_user_chat ,
+            type , conversation_id
+        ) 
+    except Exception as e:
+        print(e)
+        return notFound()
+
+@api_view(['POST'])
+def update_seem_notification(request):
+    response = Response()
+
+    def notFound():
+        response.data = {
+            "success" : False , 'error' : {
+                'type' : "Error Auth" , 'value' : "Failed"
+            } , 
+            'status' : status.HTTP_404_NOT_FOUND
+        }
+        response.status_code = status.HTTP_404_NOT_FOUND
+    def createNotification(
+            userCurrent , notification_id 
+        ):
+        notification = Notification.objects.get( id = notification_id)
+        notification.is_seem = True
+        notification.save()
+        response.data = {
+            "success" : True ,
+            "status" : status.HTTP_200_OK
+        }
+        response.status_code = status.HTTP_200_OK
+        return response
+
+    try:
+        data_request= json.loads(request.body.decode('utf-8'))
+        jwtToken = request.COOKIES.get('refresh_token')
+        refresh_token = RefreshToken(jwtToken)
+        decoded_token = refresh_token.payload
+        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        notification_id = data_request['notification_id']
+        return createNotification(
+            userCurrent , notification_id ,
         ) 
     except Exception as e:
         print(e)

@@ -50,13 +50,24 @@ export function createConversation<T = any>(user_to: string | undefined , conten
     data: { user_to , content_last },
   })
 }
+export function chatConversation<T = any>(conversation_id: string | undefined , user_to : string , content_last : string) {
+  return post<T>({
+    url: '/conversation/chat/',
+    data: { conversation_id, user_to , content_last },
+  })
+}
 export function checkConversation<T = any>(user_to: string | undefined ) {
   return post<T>({
     url: '/conversation/check/',
     data: { user_to },
   })
 }
-
+export function seemConversation<T = any>(conversation_id: string | undefined ) {
+  return post<T>({
+    url: '/conversation/seem/',
+    data: { conversation_id },
+  })
+}
 
 /* -------------------------------------------------------------------------- */
 /*                                 MEMBER SHIP                                */
@@ -110,11 +121,21 @@ export function getAllNotification <T = any>(){
 }
 
 export function createNotification<T = any>(
-    content: string , group_id : string , 
-    email_user_chat : string , type : string 
+    content: string ,  type : string ,
+    email_user_chat : string , 
+    conversation_id : string
   ){
     return post<T>({
       url: '/notification/create/',
-      data: { content ,group_id , email_user_chat , type },
+      data: { content , email_user_chat , type ,conversation_id },
   })
+}
+
+export function seemNotification<T = any>(
+  notification_id : string
+){
+  return post<T>({
+    url: '/notification/seem/',
+    data: { notification_id },
+})
 }

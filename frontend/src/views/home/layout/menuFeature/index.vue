@@ -4,7 +4,9 @@ import { useRouter } from 'vue-router';
 import { Icon } from '@iconify/vue';
 import {
     useUserStore , useAuthStore,
-    useSettingStore , useSelectLayoutStore
+    useSettingStore , useSelectLayoutStore,
+    useNotificationStore , useConversationStore,
+    useGroupStore
 } from '@/store'
 
 // ref
@@ -15,6 +17,9 @@ const userStore = useUserStore()
 const authStore = useAuthStore()
 const settingStore = useSettingStore()
 const selectLayout = useSelectLayoutStore()
+const notificationStore = useNotificationStore()
+const conversationStore = useConversationStore()
+const groupStore = useGroupStore()
 
 //computed
 
@@ -23,6 +28,10 @@ const showLayout = computed ( () : any => {
   return selectLayout.show
 } )
 const emailUser = computed(() : string => userStore.userInfo.email )
+
+const numberNotification = computed ( () : number => {
+    return notificationStore.number_notification 
+} )
 
 // method
 
@@ -36,6 +45,9 @@ function showSetting() : void {
 }
 function selectLayoutContent( type : number) : void {
     selectLayout.selectLayout(type)
+    if(type == 4){
+        notificationStore.seem()
+    }
 }
 </script>
 <template>
@@ -45,21 +57,37 @@ function selectLayoutContent( type : number) : void {
                 <Icon icon="clarity:user-line" class="text-white fs-3" />
             </div>
             <div class="text-center w-100 mt-5">
-                <div :class="{ 'bg-feature-activate' : showLayout.isShowChat }" class="py-3 feature-option"
+                <div :class="{ 'bg-feature-activate' : showLayout.isShowChat }" 
+                class="py-3 feature-option position-relative"
                 @click="selectLayoutContent(1)" >
                     <Icon icon="material-symbols:chat" class="text-white fs-3" />
+                    <div v-if="conversationStore.getNumberNotification(emailUser) > 0" 
+                        class="position-absolute number-notification">
+                        <p class="text-white m-0"><b>{{ conversationStore.getNumberNotification(emailUser) }}</b></p>
+                    </div>
                 </div>
-                <div :class="{ 'bg-feature-activate' : showLayout.isShowGroup }" class="py-3 feature-option"
+                <div :class="{ 'bg-feature-activate' : showLayout.isShowGroup }" 
+                class="py-3 feature-option position-relative"
                 @click="selectLayoutContent(2)" >
                     <Icon icon="clarity:group-line" class="text-white fs-3" />
+                    <div v-if="groupStore.getNumberNotification(emailUser) > 0" 
+                        class="position-absolute number-notification">
+                        <p class="text-white m-0"><b>{{ groupStore.getNumberNotification(emailUser) }}</b></p>
+                    </div>
                 </div>
-                <div :class="{ 'bg-feature-activate' : showLayout.isShowFriend }" class="py-3 feature-option"
+                <div :class="{ 'bg-feature-activate' : showLayout.isShowFriend }" 
+                class="py-3 feature-option"
                 @click="selectLayoutContent(3)" >
-                    <Icon icon="carbon:friendship"  class="text-white fs-3" />
+                    <Icon icon="system-uicons:contacts"  class="text-white fs-3" />
                 </div>
-                <div :class="{ 'bg-feature-activate' : showLayout.isShowNotification }" class="py-3 feature-option"
+                <div :class="{ 'bg-feature-activate' : showLayout.isShowNotification }" 
+                class="py-3 feature-option position-relative"
                 @click="selectLayoutContent(4)" >
                     <Icon icon="iconamoon:notification-fill"  class="text-white fs-3" />
+                    <div v-if="numberNotification > 0" 
+                        class="position-absolute number-notification">
+                        <p class="text-white m-0"><b>{{ numberNotification }}</b></p>
+                    </div>
                 </div>
             </div>
 
@@ -75,6 +103,13 @@ function selectLayoutContent( type : number) : void {
     </div>
 </template>
 <style>
+.number-notification {
+    background-color: rgb(243, 70, 70);
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    top:10px;
+}
 .feature-option {
     cursor: pointer;
 }

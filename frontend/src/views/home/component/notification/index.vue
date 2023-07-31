@@ -10,6 +10,7 @@ interface IProps {
     content : string , 
     type : string ,
     group_id : string ,
+    is_seem : boolean
 }
 
 // store
@@ -24,7 +25,7 @@ const props = defineProps<IProps>()
 
 </script>
 <template>
-    <div class="d-flex mt-2 align-items-center">
+    <div class="d-flex mt-2 align-items-center position-relative">
         <div class="d-flex">
             <Icon icon="humbleicons:chat" v-if="props.type == 'NTFCT'" class="fs-3" />
             <Icon icon="clarity:group-solid" v-if="props.type == 'NTFCG'" class="fs-3" />
@@ -38,6 +39,7 @@ const props = defineProps<IProps>()
             <b>{{ groupStore.getNameGroup(props.group_id) }}</b>
             </p>
         </div>
+        <div v-if="is_seem == false" class="is-seem-notification position-absolute"></div>
     </div>
 </template>
 <style>
@@ -66,5 +68,13 @@ html, body {
 }
 .text-email-setting {
     max-width: 200px;
+}
+.is-seem-notification{
+
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgb(29, 207, 238);
+    top:0px;
 }
 </style>

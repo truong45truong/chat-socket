@@ -5,7 +5,9 @@ import { Icon } from '@iconify/vue';
 import { useUserStore, useAuthStore } from '@/store'
 import { useChatStore, useSocketStore } from '@/store'
 import { useConversationStore } from '@/store';
-import { createConversation , chatGroup } from '@/api'
+import { createConversation , chatGroup , createNotification ,
+    chatConversation
+} from '@/api'
 
 const router = useRouter()
 
@@ -38,12 +40,18 @@ async function createConversationUser(): Promise<void> {
         )
         conversationStore.updateNewMessage(contentLast.value , chatStore.group_id)
         await chatGroup(chatStore.conversation_id, contentLast.value)
+        createNotification(
+            contentLast.value,
+            'NTFCG',
+            userStore.userInfo.email ,
+            chatStore.conversation_id ,
+        )
     }
     if (chatStore.chatSelect != undefined  && chatStore.is_group == false) {
         if (chatStore.list_chat.length == 0 ) {
-            const res = await createConversation(chatStore.chatSelect, contentLast.value);
-
-            // Establish the WebSocket connection
+            const res: any = await createConversation(chatStore.chatSelect, contentLast.value);
+            conversationStore.updateNewConversation(res.conversation)
+                
             await new Promise<void>((resolve, reject) => {
                 socketStore.initSocket(
                     res.conversation.id,
@@ -60,9 +68,8 @@ async function createConversationUser(): Promise<void> {
                 userStore.userInfo.email
             );
 
-            // Set up the onmessage event handler after sending the message
         } else {
-            await createConversation(chatStore.chatSelect, contentLast.value)
+            await chatConversation(chatStore.conversation_id , chatStore.chatSelect, contentLast.value)
             if(chatStore.is_group == false){
                 socketStore.sendMessage(
                     chatStore.user_to,
@@ -72,7 +79,12 @@ async function createConversationUser(): Promise<void> {
                 )
                 conversationStore.updateNewMessage(contentLast.value , chatStore.user_to)
             }
-
+            createNotification(
+                contentLast.value,
+                'NTFCT',
+                userStore.userInfo.email ,
+                chatStore.conversation_id ,
+            )
         }
     }
 }

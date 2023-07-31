@@ -5,9 +5,29 @@ from channels.db import database_sync_to_async
 from backend import settings
 from channels.layers import get_channel_layer
 from chat.models import GroupChat , Member
+from user.models import Membership , User
 
 @database_sync_to_async
-def searchClientIsMemberGroup(group_id , user_email_chat ):
+def getClientIsMemberShip(user_email_online ) -> list:
+    userFriends = Membership.objects.filter(from_user__email = user_email_online)
+    list_client = []
+    for i in userFriends:
+        client = searchClientEmail(i.to_user.email)
+        if client != False:
+            list_client.append({ 'email' : i.to_user.email , 'is_online' : True})
+    return list_client
+
+@database_sync_to_async
+def searchClientIsMemberShip(user_email_online ) -> list:
+    userFriends = Membership.objects.filter(to_user__email = user_email_online)
+    list_client = []
+    for i in userFriends:
+        client = searchClientEmail(i.from_user.email)
+        if client != False:
+            list_client.append(client)
+    return list_client
+@database_sync_to_async
+def searchClientIsMemberGroup(group_id , user_email_chat ) -> list:
     members = Member.objects.filter( group_id__id = group_id )
     list_client = []
     for member in members:
@@ -38,6 +58,7 @@ def searchClient(address, port):
 def searchClientEmail(email):
     for i in settings.CLIENTS_ARRAY:
         if i['user_from'] == email:
+            print( i['user_from'] , email)
             return i
     return False
 def deleteClientDisconnect(address , port):
@@ -132,6 +153,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if init == 0:
             if clientCurrent != False :
                 initClient(client_id,  text_data_json['user_from'])
+                listClient = await  getClientIsMemberShip(text_data_json['user_from'])
+                await self.channel_layer.group_send(
+                    self.room_notify, {
+                        "type": "send_user_online",
+                        "list_user_online" : listClient , 
+                        "type_chat" : 'GUO' ,
+                    }
+                )
             displayClient()
         elif init == 1:
             if clientCurrent != False :
@@ -197,6 +226,20 @@ class ChatConsumer(AsyncWebsocketConsumer):
                             "type_chat" : 'NTFCG' , "group_id" : clientCurrent['group_id']
                         }
                     )
+        elif init == 5:
+            if clientCurrent != False:
+                listClient = await  searchClientIsMemberShip(text_data_json['email_user_chat'])
+                print('listClient',listClient)
+                for i in listClient:
+                    channel_name_value = str(i['channel_name'])
+                    # print('channel_name_value',channel_name_value)
+                    await self.channel_layer.group_send(
+                        channel_name_value, {
+                            "type": "chat_notification_user_online",
+                            "email_user_online" : text_data_json['email_user_chat'] , 
+                            "type_chat" : 'NTFUO' , "message": "Online" , 
+                        }
+                    )
 
 
 
@@ -233,6 +276,34 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'is_chat' : False ,
                 'type' : typeChat ,
                 'group_id' : groupId
+            }))
+        except Exception as e:
+            print("ERROR: " , e)
+            pass
+    async def chat_notification_user_online(self, event):
+        try:
+            message = event["message"]
+            emailUserChat = event['email_user_online']
+            typeChat = event["type_chat"]
+            # Send message to WebSocket
+            await self.send(text_data=json.dumps({
+                "content": message , 
+                'email_user_online' : emailUserChat ,
+                'is_chat' : False ,
+                'type' : typeChat ,
+            }))
+        except Exception as e:
+            print("ERROR: " , e)
+            pass
+    async def send_user_online(self, event):
+        try:
+            listUserOnline = event['list_user_online']
+            typeChat = event["type_chat"]
+            # Send message to WebSocket
+            await self.send(text_data=json.dumps({
+                'list_user_online' : listUserOnline ,
+                'is_chat' : False ,
+                'type' : typeChat ,
             }))
         except Exception as e:
             print("ERROR: " , e)

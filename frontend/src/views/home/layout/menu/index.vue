@@ -2,14 +2,14 @@
 import { ref , computed } from 'vue'
 import { useRouter } from 'vue-router';
 import { searchUser , checkConversation } from '@/api';
-import { Icon } from '@iconify/vue';
+import { Icon, _api } from '@iconify/vue';
 import { 
     useChatStore , useUserStore , 
     useSocketStore , useSelectLayoutStore ,
-    useConversationStore , useMemberShipStore ,
+    useConversationStore , useMemberShipStore , 
 } from '@/store'
 
-import {getAllGroup} from '@/api'
+import {getAllGroup , seemConversation} from '@/api'
 
 const router = useRouter()
 
@@ -65,19 +65,32 @@ function search(): void {
 }
 
 function selectChat(email : string): void {
-    checkConversation(email).then( (res : any) => {
-        if(res.empty == false){
-            chatStore.uploadDataChat(email,res.chats , res.conversation_id)
-            socketStore.initSocket(res.conversation_id , userStore.userInfo.email , email )
-        } else {
-            chatStore.uploadDataChat(email,[] , true)
-        }
-    })
+    keySearch.value = ''
+    var conversationCheck = conversationStore.getConversationByEmail(email)
+    if ( conversationCheck == undefined){
+        checkConversation(email).then( (res : any) => {
+            if(res.empty == false){
+                chatStore.uploadDataChat(email,res.chats , res.conversation_id)
+                socketStore.initSocket(res.conversation_id , userStore.userInfo.email , email )
+            } else {
+                chatStore.uploadDataChat(email,[] , true)
+            }
+        })
+        selectLayout.selectLayoutView(1)
+    } else {
+        console.log('conversationCheck',conversationCheck)
+        selectChatReply(
+            conversationCheck.email_user_to ,
+            conversationCheck.email_user_from ,
+            conversationCheck.id
+        )
+    }
     // chatStore.setSelectChat( email , conversation_id)
     // chatStore.fetchChats()
 }
 
 function selectChatReply(user_to : string , user_from : string , conversation_id : string): void {
+    keySearch.value = ''
     if (userStore.userInfo.email == user_to){
         chatStore.setSelectChat( user_from , conversation_id)
         socketStore.initSocket(conversation_id , user_to , user_from )
@@ -85,6 +98,8 @@ function selectChatReply(user_to : string , user_from : string , conversation_id
         chatStore.setSelectChat( user_to , conversation_id)
         socketStore.initSocket(conversation_id , user_from , user_to )
     }
+    seemConversation(conversation_id)
+    conversationStore.seemConversation(conversation_id , userStore.userInfo.email)
     chatStore.fetchChats()
     selectLayout.selectLayoutView(1)
     
@@ -124,7 +139,7 @@ function ramdomBG() : any {
             <div class="d-flex">    
                 <input v-model="keySearch" type="text" class="p-2 w-100" placeholder="Search" v-on:keyup.enter="search">
             </div>
-            <div v-if="keySearch != ''" class="p-2 position-absolute shadow bg-white border w-100">
+            <div v-if="keySearch != ''" class="p-2 list-user-search position-absolute shadow bg-white border w-100">
                 <p v-if="listUserSearch.length == 0" class="m-0 text-center text-dark">
                     No have user searched
                 </p>
@@ -132,6 +147,7 @@ function ramdomBG() : any {
                     <div :style="ramdomBG()" class="chat-no-image-search text-center p-3 text-white"> Chat </div>
                     <div class="ms-3 d-flex flex-column align-item-center justify-content-around">
                         <p class="m-0 text-dark"> <b>{{ item.email }}</b></p>
+
                     </div>
                 </div>
             </div>
@@ -145,6 +161,8 @@ function ramdomBG() : any {
                     :is_sent="item.is_sent"
                     :is_seen="item.is_seen"
                     :content_last="item.content_last"
+                    :list_message_sent="item.list_message_sent"
+                    :list_user_seen="item.list_user_seen"
                 />
             </div>
         </div>
@@ -160,8 +178,17 @@ function ramdomBG() : any {
                 <b>Friends : </b>
             </p>
             <hr class="my-1">
-            <div v-for="item in listMemberShip" class=" my-2 ">
-                <p class="m-0"> <b class=""> {{ item.email }}</b></p>
+            <div v-for="item in listMemberShip" class=" my-2  ">
+                <div class="d-flex align-items-center justify-content-between">
+                    <p class="m-0"> <b class=""> {{ item.email }}</b></p>
+
+                    <div class="d-flex align-items-center justify-content-end">
+                        <p  v-if="item.is_online" class="m-0 me-1 icon-online-friend"> Active </p>
+                        <p  v-if="item.is_online == false" class="m-0 me-1 icon-off-friend"> Inactive </p>
+                        <Icon v-if="item.is_online" class="icon-online-friend" icon="prime:circle-fill" />
+                        <Icon v-if="item.is_online == false" class="icon-off-friend" icon="prime:circle-fill" />
+                    </div>
+                </div>
             </div>
         </div>
         <div v-if="showLayout.isShowGroup" class="p-1 my-3">
@@ -170,6 +197,17 @@ function ramdomBG() : any {
     </div>
 </template>
 <style lang="scss">
+.icon-online-friend {
+    color: rgb(14, 160, 50);
+    font-size: 12px;
+}
+.icon-off-friend {
+    color: rgb(73, 73, 73);
+    font-size: 12px;
+}
+.list-user-search {
+    z-index: 99;
+}
 html,
 body {
     height: 100%;

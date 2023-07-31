@@ -1,5 +1,7 @@
 from django.db import models
 from user.models import User
+from django.contrib.postgres.fields import ArrayField
+
 # Create your models here.  
 import uuid 
 import datetime
@@ -27,8 +29,9 @@ class Conversation(models.Model):
     group_id = models.ForeignKey(GroupChat, on_delete=models.SET_NULL, null=True,blank=True,related_name='conversation_group')
     content_last = models.TextField( null = True, blank = True)
     created_at = models.DateTimeField( null = True, blank = True , default = datetime.datetime.now)
-    is_seen = models.BooleanField(null = True , blank = True)
-    is_sent = models.BooleanField(null = True , blank = True)
+    list_user_seen = ArrayField(models.TextField())
+    list_message_sent = ArrayField(models.TextField())
+
 class Chat(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     conversation_id =  models.ForeignKey(Conversation, on_delete=models.CASCADE, null=False,blank=True,related_name='chat_conversation')
@@ -40,6 +43,8 @@ class Notification(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     content = models.TextField()
     user_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True,blank=True,related_name='notification_user')
-    group_id = models.CharField(max_length=255)
+    conversation_id = models.ForeignKey(Conversation, on_delete=models.SET_NULL, null=True,blank=True,related_name='notification_conversation')
     email_user_chat = models.CharField(max_length=255)
     type = models.CharField(max_length=10)
+    is_seem = models.BooleanField()
+    created_at = models.DateTimeField( null = False, blank = True , default = datetime.datetime.now)
