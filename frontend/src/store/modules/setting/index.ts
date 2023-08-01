@@ -15,7 +15,6 @@ export const useSettingStore = defineStore('setting-store', {
 
   actions: {
     showSetting() {
-      console.log("this",this.isShow)
       this.isShow = true
     },
 

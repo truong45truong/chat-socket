@@ -53,7 +53,7 @@ const listChatReceiver = computed( () : any => {
     return socketStore.list_chat_receiver
 } )
 
-const bgSelect = computed( () : string => userBG.imgSelect)
+const bgSelect = computed( () : any => userBG.imgSelect)
 
 
 const divStyle = computed(() => {

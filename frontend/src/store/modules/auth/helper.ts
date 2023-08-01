@@ -7,7 +7,6 @@ export interface AuthState {
 }
 
 export function getAuth() : AuthState {
-  console.log('SECRET_TOKEN',ss.get(LOCAL_NAME))
   if (ss.get(LOCAL_NAME)) {
     return {
       access_token : ss.get(LOCAL_NAME)

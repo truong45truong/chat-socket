@@ -86,7 +86,7 @@ watch( userEmailComputed , (newuserEmailComputed , olduserEmailComputed) : void 
     }
 } )
 watch( notification , (newnotification , oldnotification) : void => {
-    console.log('change notify', newnotification )
+    // console.log('change notify', newnotification )
     if(newnotification.type == "GUO"  ){
       membershipStore.uploadOnline(newnotification.list_user_online)
     }

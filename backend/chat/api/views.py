@@ -352,7 +352,6 @@ def get_conversation(request , uuid):
         refresh_token = RefreshToken(jwtToken)
         decoded_token = refresh_token.payload
         userCurrent = User.objects.get(id = decoded_token['user_id'])
-        print("start get conversation")
         return getConvasertion(userCurrent)
     except Exception as e:
         print(e)

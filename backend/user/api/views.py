@@ -17,14 +17,10 @@ import base64
 import uuid 
 import os
 
-path_upload_image = str(settings.BASE_DIR)+"/media/photos"
-path_upload_video = str(settings.BASE_DIR)+"/media/videos"
 # ---------------------------------------------------------------------------- #
 #                                  LOGIN USER                                  #
 # ---------------------------------------------------------------------------- #
 @api_view(['POST'])
-@permission_classes([])
-@authentication_classes([])
 def login(request):
     def get_tokens_for_user(user):
         refresh = RefreshToken.for_user(user)
@@ -72,8 +68,6 @@ def login(request):
 #                                  LOGOUT USER                                 #
 # ---------------------------------------------------------------------------- #
 @api_view(['POST'])
-@permission_classes([])
-@authentication_classes([])
 def logout(request):
     try:
         response = Response()
@@ -106,26 +100,6 @@ def register_user(request):
             'refresh': str(refresh),
             'access': str(refresh.access_token),
     }
-    def decodeFile(image_data,is_image,is_video):
-        
-        file_format, file_string = image_data.split(';base64,')
-        file_ext = file_format.split('/')[-1]
-        file_bytes = base64.b64decode(file_string)
-        if is_image is True:
-            name_file = 'blog' + str(uuid.uuid4()) + '.' + file_ext
-            with open( os.path.join(path_upload_image, "blogs" , name_file), 'wb+') as decoded_image_file:
-                decoded_image_file.write(file_bytes)
-                list_name_file_blog.append({ 'name' : name_file ,
-                                                'file' : 'media/photos/blogs/' + name_file
-                })
-        if is_video is True:
-            name_file = 'blog' + str(uuid.uuid4()) + '.' + file_ext
-            with open( os.path.join(path_upload_video, "blogs",name_file), 'wb+') as decoded_image_file:
-                decoded_image_file.write(file_bytes)
-                list_name_file_blog.append({
-                                                'name' : name_file,
-                                                'file' : 'media/videos/blogs' + name_file
-                })
     # ---------------------------- check params input ---------------------------- #
     try:
         data_request= json.loads(request.body.decode('utf-8'))
@@ -196,6 +170,7 @@ def register_user(request):
             "user" : serializer.data ,'status' : status.HTTP_200_OK
         }
         response.status_code = status.HTTP_200_OK
+        return response
     except:
         return Response({ 
             'user' : False , 'status' : status.HTTP_404_NOT_FOUND ,
@@ -205,8 +180,6 @@ def register_user(request):
 #SEARCH USER
 
 @api_view(['GET'])
-@permission_classes([])
-@authentication_classes([JWTAuthentication])
 def search_user(request):
     response = Response()
     def notFound():
@@ -237,8 +210,6 @@ def search_user(request):
         return notFound()
     
 @api_view(['POST'])
-@permission_classes([])
-@authentication_classes([JWTAuthentication])
 def add_friend(request):
     response = Response()
     def notFound():

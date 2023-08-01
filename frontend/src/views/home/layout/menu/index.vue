@@ -78,7 +78,6 @@ function selectChat(email : string): void {
         })
         selectLayout.selectLayoutView(1)
     } else {
-        console.log('conversationCheck',conversationCheck)
         selectChatReply(
             conversationCheck.email_user_to ,
             conversationCheck.email_user_from ,

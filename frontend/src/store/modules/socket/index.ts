@@ -156,7 +156,6 @@ export const useSocketStore = defineStore('socket-store', {
       content : string , email_user_chat : string
   ) : void {
       this.conversation = conversation
-      console.log("send mess group")
       if(this.is_group == true){
         this.socket.send(JSON.stringify({
           'message': content,

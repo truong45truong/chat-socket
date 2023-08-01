@@ -30,7 +30,6 @@ function logout(): void {
 }
 
 async function createConversationUser(): Promise<void> {
-    console.log('chatStore.group_id',chatStore.group_id , 'chatStore.is_group' , chatStore.is_group)
     if(chatStore.group_id != undefined && chatStore.is_group == true){
         socketStore.sendMessageGroup(
             chatStore.group_id,

@@ -34,9 +34,7 @@ const emailUser = computed(() : string => userStore.userInfo.email )
 // method
 function numberMessage (list_message_sent : Array<any> ) : number {
     try {
-        console.log(list_message_sent, typeof list_message_sent)
         for( let item of list_message_sent ){
-            console.log("item:", item , typeof item);
             const convertedDict = JSON.parse(item.replace(/'/g, '"'));   
             var keys =Object.keys(convertedDict)
             if( keys[0] ==  userStore.userInfo.email ){
@@ -53,9 +51,7 @@ function numberMessage (list_message_sent : Array<any> ) : number {
 } 
 function checkSeem (list_user_seen : Array<any>) : boolean {
     try {
-        console.log(list_user_seen, typeof list_user_seen)
         for( let item of list_user_seen ){
-            console.log( item ,  userStore.userInfo.email )
             if( item ==  userStore.userInfo.email ){
                 return true
             }
