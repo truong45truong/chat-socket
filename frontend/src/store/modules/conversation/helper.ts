@@ -6,7 +6,7 @@ export interface Conversation {
   content_last: string,
   list_message_sent: Array<any>,
   list_user_seen: Array<any>,
-
+  
 }
 
 export interface ConversationState {

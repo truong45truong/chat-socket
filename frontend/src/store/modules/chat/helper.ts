@@ -7,6 +7,7 @@ export interface ChatState {
   is_group : boolean ,
   group_name : string | undefined ,
   group_id : string | undefined
+  list_user_sent : Array<any> | undefined
 }
 
 export function getChatState() : ChatState {
@@ -17,7 +18,8 @@ export function getChatState() : ChatState {
     list_chat : undefined ,
     is_group : false ,
     group_name : undefined ,
-    group_id : undefined
+    group_id : undefined ,
+    list_user_sent : undefined
   }
 }
 

@@ -6,7 +6,7 @@ import {
     useChatStore , useUserStore , 
     useBGStore , useSocketStore ,
     useConversationStore ,
-    useNotificationStore ,
+    useGroupStore ,
     useMemberShipStore ,
 } from '@/store'
 import { addMemberShip } from '@/api';
@@ -20,7 +20,7 @@ const userStore = useUserStore()
 const userBG = useBGStore()
 const socketStore = useSocketStore()
 const membershipStore = useMemberShipStore()
-
+const groupStore = useGroupStore()
 // computed
 
 const userChatSelect = computed( () : string | undefined => {
@@ -40,6 +40,11 @@ const isUserChatOnline = computed( () : boolean | undefined => {
 const listChatSelected = computed(() : any | undefined => {
     return chatStore.list_chat
 })
+
+const listUserSent = computed( () : any | undefined => {
+    return chatStore.list_user_sent
+})
+
 const userCurrent = computed(() : string | undefined => {
     return userStore.userInfo.email
 })
@@ -57,6 +62,9 @@ const divStyle = computed(() => {
     backgroundSize: 'cover',
   };
 });
+
+// ref 
+
 
 onUpdated(() => {
   if (chatLayout.value) {
@@ -90,11 +98,22 @@ async function removeFriend(user_to : string) : Promise<void> {
     isFriend.value = checkIsFriend()
 }
 
+
+
 // watch 
 
-watch( userChatSelect , (newuserChatSelect , olduserChatSelect) : void => {
-        isFriend.value = checkIsFriend()
-} )
+// watch( listUserSent , (newlistUserSent , oldlistUserSent) : void => {
+//         console.log('listUserSent',newlistUserSent)
+// } )
+
+// watch( userEmailComputed , (newuserEmailComputed , olduserEmailComputed) : void => {
+//     if (newuserEmailComputed == ''){
+//         router.push({name : 'login'})
+//     }
+// } )
+
+// script
+
 
 </script>
 <template>
@@ -129,7 +148,13 @@ watch( userChatSelect , (newuserChatSelect , olduserChatSelect) : void => {
             <div v-for="item in listChatSelected " class="row mt-2">
                 <div class="col-6 d-flex justify-content-start ps-3">
                     <div v-if="userCurrent != item.email_user_chat " class="chat-no-image text-center p-3 text-white border border-dark border-2"> Chat </div>
-                    <div v-if="userCurrent != item.email_user_chat " class="chat-no-current ms-2 p-3 mb-3">
+                    <div v-if="userCurrent != item.email_user_chat " class="chat-no-current ms-2 px-3 pb-3 pt-1 mb-3">
+                        <p v-if="userCurrent != item.email_user_chat" class="m-0">
+                            <b class="">
+                                {{ item.email_user_chat }}
+                            </b>
+                        </p>
+                        <hr class="m-0">
                         <p class="m-0 text-start text-dark">{{item.content}}</p>
                     </div>
                 </div>
@@ -143,6 +168,12 @@ watch( userChatSelect , (newuserChatSelect , olduserChatSelect) : void => {
                 <div class="col-6 d-flex justify-content-start ps-3">
                     <div v-if="userCurrent != item.email_user_chat " class="chat-no-image text-center p-3 text-white border border-dark border-2"> Chat </div>
                     <div v-if="userCurrent != item.email_user_chat " class="chat-no-current ms-2 p-3 mb-3">
+                        <p v-if="userCurrent != item.email_user_chat" class="m-0">
+                            <b class="">
+                                {{ item.email_user_chat }}
+                            </b>
+                        </p>
+                        <hr class="m-0">
                         <p class="m-0 text-start text-dark">{{item.content}}</p>
                     </div>
                 </div>

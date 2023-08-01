@@ -22,7 +22,6 @@ export const useMemberShipStore = defineStore('membership-store', {
     },
     checkMemberShip(user_to : MenberShip) : boolean{
         for( let item of this.list_membership){
-            console.log("check friend" , item)
             if(item.email == user_to) return true
         }
         return false

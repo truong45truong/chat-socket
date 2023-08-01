@@ -86,7 +86,7 @@ watch( userEmailComputed , (newuserEmailComputed , olduserEmailComputed) : void 
     }
 } )
 watch( notification , (newnotification , oldnotification) : void => {
-    console.log("change notify" ,newnotification )
+    console.log('change notify', newnotification )
     if(newnotification.type == "GUO"  ){
       membershipStore.uploadOnline(newnotification.list_user_online)
     }
@@ -110,7 +110,10 @@ watch( notification , (newnotification , oldnotification) : void => {
         let conversationGroup = groupStore.getGroupById(newnotification.group_id)
         if ( conversationGroup != false){
           groupStore.updateNewMessage( newnotification.content , newnotification.group_id )
-          if(userStore.userInfo.email  != newnotification.email_user_chat){
+          if(
+            userStore.userInfo.email  != newnotification.email_user_chat
+            && chatStore.group_id !=  newnotification.group_id
+          ){
             groupStore.uploadSentMessageConversation(newnotification.group_id, userStore.userInfo.email   )
           }
         }

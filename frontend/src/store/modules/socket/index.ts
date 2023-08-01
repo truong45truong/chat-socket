@@ -35,7 +35,6 @@ export const useSocketStore = defineStore('socket-store', {
       chatSocket.onmessage = (e) => {
         const data = JSON.parse(e.data);
         if( data.is_chat == false){
-          console.log("notify : ", data)
           this.notification =  data
           if(data.type != "GUO" && data.type != "NTFUO"){
             var audio = new Audio(soundNoticy);
@@ -88,7 +87,6 @@ export const useSocketStore = defineStore('socket-store', {
       chatSocket.onmessage = (e) => {
         const data = JSON.parse(e.data);
         if (data.is_chat == true){
-          console.log("clients : ", data)
           this.list_chat_receiver = [...this.list_chat_receiver , data]
           // conversationStore.updateNewMessage( data )
         } 
@@ -127,7 +125,6 @@ export const useSocketStore = defineStore('socket-store', {
       chatSocket.onmessage = (e) => {
         const data = JSON.parse(e.data);
         if (data.is_chat == true){
-          console.log("clients : ", data)
           this.list_chat_receiver = [...this.list_chat_receiver , data]
           // conversationStore.updateNewMessage( data )
         } 

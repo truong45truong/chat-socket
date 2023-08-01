@@ -131,6 +131,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Leave room group
         clients = settings.CLIENTS
         try:
+            clientCurrent = searchClient(self.scope['client'][0] , self.scope['client'][1] )
+            if clientCurrent != False:
+                listClient = await  searchClientIsMemberShip(clientCurrent['user_from'])
+                for i in listClient:
+                    channel_name_value = str(i['channel_name'])
+                    # print('channel_name_value',channel_name_value)
+                    await self.channel_layer.group_send(
+                        channel_name_value, {
+                            "type": "chat_notification_user_online",
+                            "email_user_online" : clientCurrent['user_from'] , 
+                            "type_chat" : 'NTFUO' , "message": "Offline" , 
+                        }
+                    )
             deleteClientDisconnect(self.scope['client'][0] , self.scope['client'][1])
             await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
         except Exception as e:
@@ -148,7 +161,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         client_id = text_data_json['client_id']
 
         clientCurrent = searchClient(self.scope['client'][0] , self.scope['client'][1] )
-        print("clientCurrent",clientCurrent)
         print("intit: " , init)
         if init == 0:
             if clientCurrent != False :
@@ -185,7 +197,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 user_to_value = clientCurrent['user_to']
                 clientTo =searchClientEmail(user_to_value)
                 if clientTo != False:
-                    print('clientTo: ',clientTo)
                     if clientTo != False:
                         channel_name_value = str(clientTo['channel_name'])
                         await self.channel_layer.group_send(
@@ -202,7 +213,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     client_id , text_data_json['user_from'] , 
                     text_data_json['conversation'] ,  text_data_json['group_id']
                 )
-            print("init Group chat")
             displayClient()
         elif init == 4:
             if clientCurrent != False:
@@ -229,7 +239,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         elif init == 5:
             if clientCurrent != False:
                 listClient = await  searchClientIsMemberShip(text_data_json['email_user_chat'])
-                print('listClient',listClient)
                 for i in listClient:
                     channel_name_value = str(i['channel_name'])
                     # print('channel_name_value',channel_name_value)

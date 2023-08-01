@@ -60,7 +60,6 @@ export const useConversationStore = defineStore('conversation-store', {
       function checkSeem(email: string, list_user_seen: Array<any>): boolean {
         try {
           for (let item of list_user_seen) {
-            console.log(item, email)
             if (item == email) {
               return true
             }
@@ -97,7 +96,6 @@ export const useConversationStore = defineStore('conversation-store', {
         try {
           var listUserSeem: string[] = []
           for (let item of list_user_seen) {
-            console.log(item, email)
             if (item != email) {
               listUserSeem = [...listUserSeem , item]
             }

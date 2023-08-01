@@ -3,7 +3,7 @@ import { type BgState , getBG, removeBG, setBG } from './helper'
 import { store } from '@/store'
 
 
-export const useBGStore = defineStore('auth-store', {
+export const useBGStore = defineStore('background-store', {
   state: (): BgState => getBG(),
 
   getters: {

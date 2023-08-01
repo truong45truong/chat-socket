@@ -31,9 +31,9 @@ function showCreateGroup() : void {
     selectLayoutStore.selectLayoutView(2)
 }
 
-function selectChatGroup(conversation_id : string , group_name : string  , group_id : string ){
+function selectChatGroup(conversation_id : string , group_name : string  , group_id : string , list_message_sent : any ){
     socketStore.initSocketChatGroup(conversation_id ,userStore.userInfo.email , group_id)
-    chatStore.selectGroupChat(conversation_id , group_name , group_id)
+    chatStore.selectGroupChat(conversation_id , group_name , group_id , list_message_sent)
     seemConversation(conversation_id)
     groupStore.seemConversation(conversation_id , userStore.userInfo.email)
     chatStore.fetchChats()
@@ -41,9 +41,7 @@ function selectChatGroup(conversation_id : string , group_name : string  , group
 }
 function numberMessage (list_message_sent : Array<any> ) : number {
     try {
-        console.log(list_message_sent, typeof list_message_sent)
         for( let item of list_message_sent ){
-            console.log("item:", item , typeof item);
             const convertedDict = JSON.parse(item.replace(/'/g, '"'));   
             var keys =Object.keys(convertedDict)
             if( keys[0] ==  userStore.userInfo.email ){
@@ -60,9 +58,7 @@ function numberMessage (list_message_sent : Array<any> ) : number {
 } 
 function checkSeem (list_user_seen : Array<any>) : boolean {
     try {
-        console.log(list_user_seen, typeof list_user_seen)
         for( let item of list_user_seen ){
-            console.log( item ,  userStore.userInfo.email )
             if( item ==  userStore.userInfo.email ){
                 return true
             }
@@ -95,7 +91,7 @@ function ramdomBG() : any {
     </p>
     <hr class="my-1">
     <div v-for="item in listGroup" class="d-flex align-items-center mb-2 chat-item position-relative" >
-        <div class="d-flex align-items-center " @click="selectChatGroup(item.id,item.group_name,item.group_id)">
+        <div class="d-flex align-items-center " @click="selectChatGroup(item.id,item.group_name,item.group_id,item.list_message_sent)">
             <p :style="ramdomBG()" class="group-img  m-0 me-2 text-white"> Group </p>
             <div class="d-flex flex-column">
                 <p class="my-2"> <b class=""> {{ item.group_name }}</b></p>

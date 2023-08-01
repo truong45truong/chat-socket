@@ -22,12 +22,14 @@ export const useChatStore = defineStore('chat-store', {
     selectGroupChat( 
       conversation_id : string | boolean , 
       group_name : string | undefined ,
-      group_id : string | undefined
+      group_id : string | undefined ,
+      list_message_sent : any
     ){
       this.conversation_id = conversation_id
       this.is_group = true
       this.group_name = group_name 
       this.group_id = group_id
+      this.list_user_sent = list_message_sent
     },
     setSelectChat(userTo: string , conversation_id : string | boolean) : void {
       this.user_to = userTo

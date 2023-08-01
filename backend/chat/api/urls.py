@@ -16,11 +16,9 @@ urlpatterns = [
     path('group/', get_all_group_user, name = "get_all_group_user"),
     path('conversation/', get_all_conversation, name = "get_all_conversation"),
     path('conversation/seem/', seem_conversation, name = "seem_conversation"),
-
     path('conversation/check/', checked_conversation, name = "check_conversation"),
     path('notification/', get_all_notification, name = "get_all_notification"),
     path('notification/create/', create_notification, name = "create_notification"),
     path('notification/seem/', update_seem_notification, name = "update_seem_notification"),
     re_path(r'^conversation/(?P<uuid>[0-9a-f-]+)/$',get_conversation, name='get_conversation'),
-
 ]

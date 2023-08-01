@@ -2,7 +2,7 @@
 import { ref, onMounted ,computed , defineProps } from 'vue'
 import { useRouter } from 'vue-router';
 import { Icon } from '@iconify/vue';
-import {useUserStore , useAuthStore, useSettingStore} from '@/store'
+import {useUserStore , useConversationStore} from '@/store'
 
 // interface
 
@@ -27,11 +27,10 @@ const router = useRouter()
 // store
 
 const userStore = useUserStore()
-
+const conversationStore = useConversationStore()
 // computed
 
 const emailUser = computed(() : string => userStore.userInfo.email )
-
 // method
 function numberMessage (list_message_sent : Array<any> ) : number {
     try {
@@ -86,12 +85,12 @@ function ramdomBG() : any {
             <p v-if="emailUser == props.email_user_from" class="m-0 text-dark"> <b>{{props.email_user_to}}</b></p>
             <p  v-else="emailUser == props.email_user_to" class="m-0 text-dark"> <b>{{props.email_user_from}}</b></p>
 
-            <p  v-if="!props.is_seen" class="m-0 text-content-last"> 
+            <p  v-if="numberMessage(props.list_message_sent) > 0" class="m-0 text-content-last"> 
                 <b > 
                     <span>{{props.content_last}}</span>
                 </b>
             </p>
-            <p  v-if="props.is_seen" class="m-0"> 
+            <p  v-else="numberMessage(props.list_message_sent) > 0" class="m-0"> 
                     <span v-if="!props.is_sent" >{{props.content_last}}</span>
                     <span v-if="props.is_sent" > You : {{props.content_last}}</span>
             </p>

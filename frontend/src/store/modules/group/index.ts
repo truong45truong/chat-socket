@@ -27,7 +27,6 @@ export const useGroupStore = defineStore('group-store', {
     getNameGroup(group_id : string) : boolean | string {
       for( let group of this.list_group){
         if(group_id == group.group_id){
-          console.log(group.group_name)
           return group.group_name
         }
       }
@@ -60,7 +59,6 @@ export const useGroupStore = defineStore('group-store', {
       function checkSeem(email: string, list_user_seen: Array<any>): boolean {
         try {
           for (let item of list_user_seen) {
-            console.log(item, email)
             if (item == email) {
               return true
             }
@@ -97,7 +95,6 @@ export const useGroupStore = defineStore('group-store', {
         try {
           var listUserSeem: string[] = []
           for (let item of list_user_seen) {
-            console.log(item, email)
             if (item != email) {
               listUserSeem = [...listUserSeem , item]
             }

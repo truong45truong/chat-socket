@@ -22,10 +22,8 @@ import uuid
 import os
 import ast
 
-path_upload_image = str(settings.BASE_DIR)+"/media/photos"
-path_upload_video = str(settings.BASE_DIR)+"/media/videos"
 # ---------------------------------------------------------------------------- #
-#                                  LOGIN USER                                  #
+#                                 CONVERSATION                                 #
 # ---------------------------------------------------------------------------- #
 @api_view(['POST'])
 def create_conversation(request):
@@ -34,7 +32,7 @@ def create_conversation(request):
     def notFound():
         response.data = {
             "success" : False , 'error' : {
-                'type' : "Error Auth" , 'value' : "Failed"
+                'type' : "Error" , 'value' : "Failed"
             } , 
             'status' : status.HTTP_404_NOT_FOUND
         }
@@ -112,7 +110,7 @@ def chat_conversation(request):
     def notFound():
         response.data = {
             "success" : False , 'error' : {
-                'type' : "Error Auth" , 'value' : "Failed"
+                'type' : "Error" , 'value' : "Failed"
             } , 
             'status' : status.HTTP_404_NOT_FOUND
         }
@@ -183,7 +181,7 @@ def seem_conversation(request):
     def notFound():
         response.data = {
             "success" : False , 'error' : {
-                'type' : "Error Auth" , 'value' : "Failed"
+                'type' : "Error" , 'value' : "Failed"
             } , 
             'status' : status.HTTP_404_NOT_FOUND
         }
@@ -208,17 +206,16 @@ def seem_conversation(request):
                 }
                 listMessageSent.append(userSent)
             else:
+                print( 'seem ' ,next(iter(message_sent_dict)), userCurrent.email )
                 userSent = {
                     next(iter(message_sent_dict)): 0
                 }
                 listMessageSent.append(userSent)
         conversation.list_message_sent = listMessageSent
-        print('conversation.list_message_sent' , conversation.list_message_sent)
         list_user_seen = conversation.list_user_seen
         if checkUserSeem( userCurrent.email ,list_user_seen) == False:
             list_user_seen.append(userCurrent.email)
             conversation.list_user_seen = list_user_seen
-            print('conversation.list_user_seen ' , conversation.list_user_seen )
         conversation.save()
             
         response.data = {
@@ -252,7 +249,7 @@ def get_conversation(request):
     def notFound():
         response.data = {
             "success" : False , 'error' : {
-                'type' : "Error Auth" , 'value' : "Failed"
+                'type' : "Error" , 'value' : "Failed"
             } , 
             'status' : status.HTTP_404_NOT_FOUND
         }
@@ -289,7 +286,7 @@ def get_all_conversation(request):
     def notFound():
         response.data = {
             "success" : False , 'error' : {
-                'type' : "Error Auth" , 'value' : "Failed"
+                'type' : "Error" , 'value' : "Failed"
             } , 
             'status' : status.HTTP_404_NOT_FOUND
         }
@@ -327,7 +324,7 @@ def get_conversation(request , uuid):
     def notFound():
         response.data = {
             "success" : False , 'error' : {
-                'type' : "Error Auth" , 'value' : "Failed"
+                'type' : "Error" , 'value' : "Failed"
             } , 
             'status' : status.HTTP_404_NOT_FOUND
         }
@@ -339,7 +336,7 @@ def get_conversation(request , uuid):
            Q(id = uuid)
         )
         conversation.save()
-        chats = Chat.objects.filter(conversation_id = conversation)
+        chats = Chat.objects.filter(conversation_id = conversation)[:99]
 
         serializer = ChatSerialzier(chats , many = True)
         response.data = {
@@ -368,7 +365,7 @@ def checked_conversation(request):
     def notFound():
         response.data = {
             "success" : False , 'error' : {
-                'type' : "Error Auth" , 'value' : "Failed"
+                'type' : "Error" , 'value' : "Failed"
             } , 
             'status' : status.HTTP_404_NOT_FOUND
         }
@@ -426,7 +423,7 @@ def chat_group(request):
     def notFound():
         response.data = {
             "success" : False , 'error' : {
-                'type' : "Error Auth" , 'value' : "Failed"
+                'type' : "Error" , 'value' : "Failed"
             } , 
             'status' : status.HTTP_404_NOT_FOUND
         }
@@ -490,7 +487,7 @@ def create_group(request):
     def notFound():
         response.data = {
             "success" : False , 'error' : {
-                'type' : "Error Auth" , 'value' : "Failed"
+                'type' : "Error" , 'value' : "Failed"
             } , 
             'status' : status.HTTP_404_NOT_FOUND
         }
@@ -580,7 +577,7 @@ def get_all_group_user(request):
     def notFound():
         response.data = {
             "success" : False , 'error' : {
-                'type' : "Error Auth" , 'value' : "Failed"
+                'type' : "Error" , 'value' : "Failed"
             } , 
             'status' : status.HTTP_404_NOT_FOUND
         }
@@ -654,7 +651,7 @@ def create_notification(request):
     def notFound():
         response.data = {
             "success" : False , 'error' : {
-                'type' : "Error Auth" , 'value' : "Failed"
+                'type' : "Error" , 'value' : "Failed"
             } , 
             'status' : status.HTTP_404_NOT_FOUND
         }
@@ -722,7 +719,7 @@ def update_seem_notification(request):
     def notFound():
         response.data = {
             "success" : False , 'error' : {
-                'type' : "Error Auth" , 'value' : "Failed"
+                'type' : "Error" , 'value' : "Failed"
             } , 
             'status' : status.HTTP_404_NOT_FOUND
         }

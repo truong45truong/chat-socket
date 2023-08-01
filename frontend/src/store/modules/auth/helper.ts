@@ -6,12 +6,16 @@ export interface AuthState {
   access_token: string | undefined
 }
 
-export function getAuth() : string {
+export function getAuth() : AuthState {
+  console.log('SECRET_TOKEN',ss.get(LOCAL_NAME))
   if (ss.get(LOCAL_NAME)) {
-    console.log(ss.get(LOCAL_NAME))
-    return ss.get(LOCAL_NAME)
+    return {
+      access_token : ss.get(LOCAL_NAME)
+    }
   }
-  return ''
+  return {
+    access_token : undefined
+}
 }
 
 export function setAuth(access_token : string) {
