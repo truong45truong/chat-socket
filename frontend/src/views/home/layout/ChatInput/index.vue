@@ -28,6 +28,18 @@ function logout(): void {
     userStore.resetUserInfo()
     authStore.removeAuth()
 }
+function selectChatReply(user_to : string , user_from : string , conversation_id : string): void {
+    if (userStore.userInfo.email == user_to){
+        chatStore.setSelectChat( user_from , conversation_id)
+        socketStore.initSocket(conversation_id , user_to , user_from )
+    } else{
+        chatStore.setSelectChat( user_to , conversation_id)
+        socketStore.initSocket(conversation_id , user_from , user_to )
+    }
+    conversationStore.seemConversation(conversation_id , userStore.userInfo.email)
+    chatStore.fetchChats()
+    
+}
 
 async function createConversationUser(): Promise<void> {
     if(chatStore.group_id != undefined && chatStore.is_group == true){
@@ -51,21 +63,8 @@ async function createConversationUser(): Promise<void> {
             const res: any = await createConversation(chatStore.chatSelect, contentLast.value);
             conversationStore.updateNewConversation(res.conversation)
                 
-            await new Promise<void>((resolve, reject) => {
-                socketStore.initSocket(
-                    res.conversation.id,
-                    userStore.userInfo.email,
-                    chatStore.chatSelect
-                );
-            });
-
+            selectChatReply(chatStore.chatSelect , userStore.userInfo.email, res.conversation.id, )
             // Send the message once the WebSocket is fully established
-            socketStore.sendMessage(
-                chatStore.user_to,
-                chatStore.conversation_id,
-                contentLast.value,
-                userStore.userInfo.email
-            );
 
         } else {
             await chatConversation(chatStore.conversation_id , chatStore.chatSelect, contentLast.value)
