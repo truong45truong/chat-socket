@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
+from user.api.authenticate import CustomAuthentication
 from user.models import User
 from chat.models import Chat , Conversation , GroupChat , Member
 from chat.models import Notification
@@ -26,6 +27,7 @@ import ast
 #                                 CONVERSATION                                 #
 # ---------------------------------------------------------------------------- #
 @api_view(['POST'])
+@authentication_classes([CustomAuthentication])
 def create_conversation(request):
     response = Response()
 
@@ -89,11 +91,8 @@ def create_conversation(request):
 
     try:
         data_request= json.loads(request.body.decode('utf-8'))
-        jwtToken = request.COOKIES.get('refresh_token')
-        refresh_token = RefreshToken(jwtToken)
-        decoded_token = refresh_token.payload
         userTo =User.objects.get( email = data_request['user_to'])
-        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        userCurrent = request.user
         contentLast =data_request['content_last']
         try:
             return createConvasertion(userTo , userCurrent ,contentLast )
@@ -104,6 +103,7 @@ def create_conversation(request):
         return notFound()
 
 @api_view(['POST'])
+@authentication_classes([CustomAuthentication])
 def chat_conversation(request):
     response = Response()
 
@@ -158,11 +158,7 @@ def chat_conversation(request):
 
     try:
         data_request= json.loads(request.body.decode('utf-8'))
-        jwtToken = request.COOKIES.get('refresh_token')
-        refresh_token = RefreshToken(jwtToken)
-        decoded_token = refresh_token.payload
-        userTo =User.objects.get( email = data_request['user_to'])
-        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        userCurrent = request.user
         conversation_id = data_request['conversation_id']
         contentLast =data_request['content_last']
         try:
@@ -175,6 +171,7 @@ def chat_conversation(request):
         return notFound()
 
 @api_view(['POST'])
+@authentication_classes([CustomAuthentication])
 def seem_conversation(request):
     response = Response()
 
@@ -228,10 +225,7 @@ def seem_conversation(request):
 
     try:
         data_request= json.loads(request.body.decode('utf-8'))
-        jwtToken = request.COOKIES.get('refresh_token')
-        refresh_token = RefreshToken(jwtToken)
-        decoded_token = refresh_token.payload
-        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        userCurrent = request.user
         conversation_id = data_request['conversation_id']
         try:
             return seemConversation(conversation_id , userCurrent)
@@ -243,6 +237,7 @@ def seem_conversation(request):
         return notFound()
     
 @api_view(['GET'])
+@authentication_classes([CustomAuthentication])
 def get_conversation(request):
     response = Response()
 
@@ -270,16 +265,14 @@ def get_conversation(request):
         return response
 
     try:
-        jwtToken = request.COOKIES.get('refresh_token')
-        refresh_token = RefreshToken(jwtToken)
-        decoded_token = refresh_token.payload
-        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        userCurrent = request.user
         return getConvasertion(userCurrent)
     except Exception as e:
         print(e)
         return notFound()
 
 @api_view(['GET'])
+@authentication_classes([CustomAuthentication])
 def get_all_conversation(request):
     response = Response()
 
@@ -308,19 +301,18 @@ def get_all_conversation(request):
         return response
 
     try:
-        jwtToken = request.COOKIES.get('refresh_token')
-        refresh_token = RefreshToken(jwtToken)
-        decoded_token = refresh_token.payload
-        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        userCurrent = request.user
         return getConvasertion(userCurrent)
     except Exception as e:
         print(e)
         return notFound()
 
+
 @api_view(['GET'])
+@authentication_classes([CustomAuthentication])
 def get_conversation(request , uuid):
     response = Response()
-
+    print("User:", request.user)
     def notFound():
         response.data = {
             "success" : False , 'error' : {
@@ -348,16 +340,14 @@ def get_conversation(request , uuid):
         return response
 
     try:
-        jwtToken = request.COOKIES.get('refresh_token')
-        refresh_token = RefreshToken(jwtToken)
-        decoded_token = refresh_token.payload
-        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        userCurrent = request.user
         return getConvasertion(userCurrent)
     except Exception as e:
         print(e)
         return notFound()
 
 @api_view(['POST'])
+@authentication_classes([CustomAuthentication])
 def checked_conversation(request):
     response = Response()
 
@@ -398,11 +388,8 @@ def checked_conversation(request):
 
     try:
         data_request= json.loads(request.body.decode('utf-8'))
-        jwtToken = request.COOKIES.get('refresh_token')
-        refresh_token = RefreshToken(jwtToken)
-        decoded_token = refresh_token.payload
         userTo =User.objects.get( email = data_request['user_to'])
-        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        userCurrent = request.user
         
         return checkConversation(userTo , userCurrent)
     
@@ -416,6 +403,7 @@ def checked_conversation(request):
 # ---------------------------------------------------------------------------- #
 
 @api_view(['POST'])
+@authentication_classes([CustomAuthentication])
 def chat_group(request):
     response = Response()
 
@@ -466,10 +454,7 @@ def chat_group(request):
 
     try:
         data_request= json.loads(request.body.decode('utf-8'))
-        jwtToken = request.COOKIES.get('refresh_token')
-        refresh_token = RefreshToken(jwtToken)
-        decoded_token = refresh_token.payload
-        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        userCurrent = request.user
         conversation_id = data_request['conversation_id']
         contentLast =data_request['content_last']
         
@@ -480,6 +465,7 @@ def chat_group(request):
         return notFound()
     
 @api_view(['POST'])
+@authentication_classes([CustomAuthentication])
 def create_group(request):
     response = Response()
 
@@ -554,22 +540,17 @@ def create_group(request):
 
     try:
         data_request= json.loads(request.body.decode('utf-8'))
-        jwtToken = request.COOKIES.get('refresh_token')
-        refresh_token = RefreshToken(jwtToken)
-        decoded_token = refresh_token.payload
-        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        userCurrent = request.user
         name = data_request['name']
         description =  data_request['description']
         listMember = data_request['list_member']
-        print(listMember)
-        for i in listMember:
-            print(i)
         return createGroup(userCurrent,listMember , name , description) 
     except Exception as e:
         print(e)
         return notFound()
 
 @api_view(['GET'])
+@authentication_classes([CustomAuthentication])
 def get_all_group_user(request):
     response = Response()
 
@@ -597,10 +578,7 @@ def get_all_group_user(request):
         return response
 
     try:
-        jwtToken = request.COOKIES.get('refresh_token')
-        refresh_token = RefreshToken(jwtToken)
-        decoded_token = refresh_token.payload
-        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        userCurrent = request.user
         return getAllGroup(userCurrent) 
     except Exception as e:
         print(e)
@@ -611,13 +589,14 @@ def get_all_group_user(request):
 # ---------------------------------------------------------------------------- #
 
 @api_view(['GET'])
+@authentication_classes([CustomAuthentication])
 def get_all_notification(request):
     response = Response()
 
     def notFound():
         response.data = {
             "success" : False , 'error' : {
-                'type' : "Error Auth" , 'value' : "Failed"
+                'type' : "Error" , 'value' : "Failed"
             } , 
             'status' : status.HTTP_404_NOT_FOUND
         }
@@ -634,16 +613,14 @@ def get_all_notification(request):
         return response
 
     try:
-        jwtToken = request.COOKIES.get('refresh_token')
-        refresh_token = RefreshToken(jwtToken)
-        decoded_token = refresh_token.payload
-        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        userCurrent = request.user
         return getAllNotification(userCurrent) 
     except Exception as e:
         print(e)
         return notFound()
 
 @api_view(['POST'])
+@authentication_classes([CustomAuthentication])
 def create_notification(request):
     response = Response()
 
@@ -694,10 +671,7 @@ def create_notification(request):
 
     try:
         data_request= json.loads(request.body.decode('utf-8'))
-        jwtToken = request.COOKIES.get('refresh_token')
-        refresh_token = RefreshToken(jwtToken)
-        decoded_token = refresh_token.payload
-        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        userCurrent = request.user
         content = data_request['content']
         email_user_chat = data_request['email_user_chat']
         conversation_id = data_request['conversation_id']
@@ -712,6 +686,7 @@ def create_notification(request):
         return notFound()
 
 @api_view(['POST'])
+@authentication_classes([CustomAuthentication])
 def update_seem_notification(request):
     response = Response()
 
@@ -738,10 +713,7 @@ def update_seem_notification(request):
 
     try:
         data_request= json.loads(request.body.decode('utf-8'))
-        jwtToken = request.COOKIES.get('refresh_token')
-        refresh_token = RefreshToken(jwtToken)
-        decoded_token = refresh_token.payload
-        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        userCurrent = request.user
         notification_id = data_request['notification_id']
         return createNotification(
             userCurrent , notification_id ,

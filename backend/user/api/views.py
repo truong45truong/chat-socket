@@ -1,26 +1,23 @@
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
-from django.middleware.csrf import get_token
 from django.middleware import csrf
 from django.conf import settings
-from rest_framework.decorators import api_view,action,permission_classes,authentication_classes
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.decorators import api_view,permission_classes,authentication_classes
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
 from user.models import User , Membership
 from .serializers import UserSerializer , MemberShipSerializer
-import uuid
+from user.api.authenticate import CustomAuthentication
 import json
-import base64
 import uuid 
-import os
 
 # ---------------------------------------------------------------------------- #
 #                                  LOGIN USER                                  #
 # ---------------------------------------------------------------------------- #
 @api_view(['POST'])
+@permission_classes([])
+@authentication_classes([])
 def login(request):
     def get_tokens_for_user(user):
         refresh = RefreshToken.for_user(user)
@@ -93,7 +90,6 @@ def logout(request):
 @authentication_classes([])
 def register_user(request):
     response = Response()
-    list_name_file_blog = []
     def get_tokens_for_user(user):
         refresh = RefreshToken.for_user(user)
         return {
@@ -180,6 +176,7 @@ def register_user(request):
 #SEARCH USER
 
 @api_view(['GET'])
+@authentication_classes([CustomAuthentication])
 def search_user(request):
     response = Response()
     def notFound():
@@ -204,18 +201,18 @@ def search_user(request):
         return response
     try:
         key_search = request.GET.get('key_search')
-
         return getUsers(key_search)
     except Exception as e :
         return notFound()
     
 @api_view(['POST'])
+@authentication_classes([CustomAuthentication])
 def add_friend(request):
     response = Response()
     def notFound():
         response.data = {
             "success" : False , 'error' : {
-                'type' : "Error Auth" , 'value' : "Failed"
+                'type' : "Error" , 'value' : "Failed"
             } , 
             'status' : status.HTTP_404_NOT_FOUND
         }
@@ -241,23 +238,19 @@ def add_friend(request):
     try:
         data_request= json.loads(request.body.decode('utf-8'))
         user_added = data_request['user_to']
-        jwtToken = request.COOKIES.get('refresh_token')
-        refresh_token = RefreshToken(jwtToken)
-        decoded_token = refresh_token.payload
-        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        userCurrent = request.user
         return AddMemberShip(user_added , userCurrent)
     except Exception as e :
         return notFound()
 
 @api_view(['GET'])
-@permission_classes([])
-@authentication_classes([JWTAuthentication])
+@authentication_classes([CustomAuthentication])
 def get_all_membership(request):
     response = Response()
     def notFound():
         response.data = {
             "success" : False , 'error' : {
-                'type' : "Error Auth" , 'value' : "Failed"
+                'type' : "Error" , 'value' : "Failed"
             } , 
             'status' : status.HTTP_404_NOT_FOUND
         }
@@ -275,10 +268,7 @@ def get_all_membership(request):
         response.status_code = status.HTTP_200_OK
         return response
     try:
-        jwtToken = request.COOKIES.get('refresh_token')
-        refresh_token = RefreshToken(jwtToken)
-        decoded_token = refresh_token.payload
-        userCurrent = User.objects.get(id = decoded_token['user_id'])
+        userCurrent = request.user
         return getMemberShip(userCurrent)
     except Exception as e :
         print(e)

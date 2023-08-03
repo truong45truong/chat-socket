@@ -112,10 +112,9 @@ CHANNEL_LAYERS = {
 # ------------------------------ REST FRAMEWORK ------------------------------ #
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'user.api.authenticate.CustomAuthentication',
     ),
 }
@@ -150,13 +149,13 @@ SIMPLE_JWT = {
   'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 
   # custom
-  'AUTH_COOKIE': 'access_token',  # Cookie name. Enables cookies if value is set.
+  'AUTH_COOKIE': 'access_token', 
   'AUTH_COOKIE_REFRESH': 'refresh_token',
-  'AUTH_COOKIE_DOMAIN': None ,     # A string like "example.com", or None for standard domain cookie.
-  'AUTH_COOKIE_SECURE': None,    # Whether the auth cookies should be secure (https:// only).
-  'AUTH_COOKIE_HTTP_ONLY' : True, # Http only cookie flag.It's not fetch by javascript.
-  'AUTH_COOKIE_PATH': '/',        # The path of the auth cookie.
-  'AUTH_COOKIE_SAMESITE': 'Lax',  # Whether to set the flag restricting cookie leaks on cross-site requests. This can be 'Lax', 'Strict', or None to disable the flag.
+  'AUTH_COOKIE_DOMAIN': None ,    
+  'AUTH_COOKIE_SECURE': None,    
+  'AUTH_COOKIE_HTTP_ONLY' : True,
+  'AUTH_COOKIE_PATH': '/',   
+  'AUTH_COOKIE_SAMESITE': 'Lax',
 }
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -222,18 +221,6 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-import pandas as pd
-
-data = { 
-        'id' : pd.Series(dtype=str),
-        'user_from': pd.Series(dtype=int),
-        'address': pd.Series(dtype=str),
-        'port': pd.Series(dtype=str),
-        'conversation': pd.Series(dtype=bool),
-        'user_to': pd.Series(dtype=str),
-        'channel_name' : pd.Series()
-    }
-CLIENTS = pd.DataFrame(data)
-
+# DATA Socket
 LENGTH_CLIENT = 0
 CLIENTS_ARRAY = []

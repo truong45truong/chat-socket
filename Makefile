@@ -5,8 +5,9 @@ compose-up:
 	sudo docker compose up
 compose-build:
 	sudo docker compose build
-migrate:
+makemigrations:
 	make backend-terminal cmd="python3 manage.py makemigrations"
+migrate:
 	make backend-terminal cmd="python3 manage.py migrate"
 create-admin:
 	make backend-terminal cmd="python3 manage.py createsuperuser"
@@ -25,4 +26,4 @@ backend-terminal:
 	sudo docker exec -it socketchat-backend-1 $(cmd)
 postgres:
 	sudo docker exec -it postgres psql -U User  simple_chat
-.PHONY: compose createdb dropdb postgres compose-up compose-build startapp backend-terminal create-admin
+.PHONY: compose createdb dropdb postgres compose-up compose-build startapp backend-terminal create-admin makemigrations

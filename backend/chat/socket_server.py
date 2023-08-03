@@ -42,16 +42,12 @@ def deleteLoggedInCLient(id_client):
             settings.CLIENTS_ARRAY.remove(i)
 def searchClientById(id):
     for i in settings.CLIENTS_ARRAY:
-        # print("email _ search" , address , len(settings.CLIENTS_ARRAY) )
-        # print("client:", i['id'], "email:", i['user_from'], 'conversation:', i['conversation'])
         if i['id'] == id:
             return i
     return False
 
 def searchClient(address, port):
     for i in settings.CLIENTS_ARRAY:
-        # print("email _ search" , address , len(settings.CLIENTS_ARRAY) )
-        # print("client:", i['id'], "email:", i['user_from'], 'conversation:', i['conversation'])
         if i['address'] == address and i['port'] == port :
             return i
     return False
@@ -63,8 +59,6 @@ def searchClientEmail(email):
     return False
 def deleteClientDisconnect(address , port):
     for i in settings.CLIENTS_ARRAY:
-        # print("email _ search" , address)
-        # print("client:", i['id'], "email:", i['user_from'], 'conversation:', i['conversation'])
         if i['address'] == address and i['port'] == port :
             settings.CLIENTS_ARRAY.remove(i)
 
@@ -129,7 +123,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         # Leave room group
-        clients = settings.CLIENTS
         try:
             clientCurrent = searchClient(self.scope['client'][0] , self.scope['client'][1] )
             if clientCurrent != False:
@@ -155,7 +148,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         displayClient()
     # Receive message from WebSocket
     async def receive(self, text_data):
-        clients = settings.CLIENTS
         text_data_json = json.loads(text_data)
         init = text_data_json['init_socket']
         client_id = text_data_json['client_id']
