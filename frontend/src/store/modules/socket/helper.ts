@@ -1,7 +1,10 @@
 
+
+export const URL_SOCKET = '192.168.1.19:8000'
+
 function generateUUID() {
   // Generate a random hexadecimal string of length 32 (representing 16 bytes)
-  const getRandomHex = (size) => [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+  const getRandomHex = (size: any) => [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
 
   // Generate four different segments of the UUID
   const segment1 = getRandomHex(8);

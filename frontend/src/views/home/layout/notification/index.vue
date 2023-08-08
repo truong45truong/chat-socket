@@ -43,14 +43,14 @@ const emailUser = computed(() : string => userStore.userInfo.email )
                 :email_user_chat="item.email_user_chat"
                 :content="item.content"
                 :type="item.type"
-                :group_id="''"
+                :conversation_id="''"
                 :is_seem="item.is_seem"
             />
             <NotificationComponent   v-if="item.type == 'NTFCG'"
                 :email_user_chat="item.email_user_chat"
                 :content="item.content"
                 :type="item.type"
-                :group_id="item.group_id"
+                :conversation_id="item.conversation_id"
                 :is_seem="item.is_seem"
             />
         </div>

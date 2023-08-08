@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineEmits, ref, onMounted , computed , watch } from 'vue';
+import { defineEmits as customEmits, ref, onMounted , computed , watch } from 'vue';
 import { useRouter } from 'vue-router';
 import  { loginUser , registerUser}  from '@/api';
 import {useUserStore , useAuthStore} from '@/store'
@@ -40,7 +40,7 @@ function isShowSigIn() : void {
     isSignUp.value = false;
 }
 async function login() : Promise<boolean> {
-    loginUser( usernameLogin.value , passwordLogin.value ).then( (res : any) => {
+    loginUser( usernameLogin.value.toLowerCase() , passwordLogin.value ).then( (res : any) => {
         userStore.updateUserInfo(res.user)
         authStore.setAuth(res.access_token)
     })
@@ -71,7 +71,7 @@ watch(userData, (newUserData, oldUserData) => {
     <div class="container px-4 p-5 px-md-5 text-center text-lg-start">
         <div class="row gx-lg-5 mb-5">
             <div  v-if="isSignUp"  class="col-sm-6 mb-5 mb-lg-0">
-                <form class="border border-5 border-white p-5">
+                <form class="border border-5 border-dark p-5">
                     <!-- Email input -->
                     <div class="form-outline mb-4">
                         <input v-model="usernameLogin" type="text" id="form3Example3" class="form-control input-chat" placeholder="Username" />
@@ -85,7 +85,7 @@ watch(userData, (newUserData, oldUserData) => {
                 </form>
             </div>
             <div  v-if="isSignIn"  class="col-sm-6 mb-5 mb-lg-0">
-                <form class="border border-5 border-white p-5">
+                <form class="border border-5 border-dark p-5">
                     <!-- Email input -->
                     <div class="form-outline mb-4">
                         <input v-model="usernameRegister" type="text" id="form3Example3" class="form-control input-chat" placeholder="Enter Username" />
@@ -114,10 +114,10 @@ watch(userData, (newUserData, oldUserData) => {
                     <button v-if="isSignUp" type="submit" class="btn btn-primary p-3 mb-4" @click="login">
                             Sign Up
                     </button>
-                    <p v-if="isSignIn" class="text-white cursor" @click="isShowSigUp">
+                    <p v-if="isSignIn" class="text-dark cursor shadow-text" @click="isShowSigUp">
                         Click to Sign up
                     </p>
-                    <p v-if="isSignUp" class="text-white cursor" @click="isShowSigIn">
+                    <p v-if="isSignUp" class="text-dark cursor shadow-text" @click="isShowSigIn">
                         If you don't have an account, please Sign in
                     </p>
                 </div>
@@ -139,4 +139,12 @@ watch(userData, (newUserData, oldUserData) => {
 .cursor:hover  {
     text-decoration: underline;
 }
+.shadow-text {
+  text-shadow: 3px 3px 5px rgba(243, 235, 235, 0.5); /* The shadow properties: horizontal offset, vertical offset, blur radius, and shadow color */
+  /* Play around with the values to achieve the desired shadow effect */
+}
+
+
+
+
 </style>

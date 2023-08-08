@@ -1,6 +1,6 @@
 export interface MenberShip {
     email : string
-    is_online : boolean
+    is_online : boolean | undefined
 }
 export interface MemberShipState {
     list_membership : Array<MenberShip>

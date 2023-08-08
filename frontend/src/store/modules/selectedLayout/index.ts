@@ -55,6 +55,19 @@ export const useSelectLayoutStore = defineStore('select-layout-store', {
           break;
       }
     },
+    selectLayoutReponsive(type : number){
+      switch(type) {
+        case 1:
+          this.view_reponsice.isSelectLayouMenu = true
+          break;
+        case 2:
+          this.view_reponsice.isSelectLayouMenu = false
+          break;
+      }
+    },
+    showMenuReponse(){
+      this.view_show_menu_reponsive.isShowMenu = ! this.view_show_menu_reponsive.isShowMenu
+    }
   }
 })
 

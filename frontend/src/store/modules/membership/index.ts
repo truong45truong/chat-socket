@@ -20,7 +20,7 @@ export const useMemberShipStore = defineStore('membership-store', {
       }
       this.list_membership = arrayList
     },
-    checkMemberShip(user_to : MenberShip) : boolean{
+    checkMemberShip(user_to : string | undefined) : boolean{
         for( let item of this.list_membership){
             if(item.email == user_to) return true
         }
@@ -28,7 +28,7 @@ export const useMemberShipStore = defineStore('membership-store', {
     },
     addFriend(friend : string ){
         
-        this.list_membership = [...this.list_membership,{ email : friend} ]
+        this.list_membership = [...this.list_membership,{ email : friend , is_online : undefined} ]
     },
     removeFriend(friend : string) {
         this.list_membership = this.list_membership.filter( (item : any) => {

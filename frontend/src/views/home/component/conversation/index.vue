@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { ref, onMounted ,computed , defineProps } from 'vue'
+import { onMounted ,computed  } from 'vue'
 import { useRouter } from 'vue-router';
-import { Icon } from '@iconify/vue';
 import {useUserStore , useConversationStore} from '@/store'
 
 // interface
@@ -9,11 +8,10 @@ import {useUserStore , useConversationStore} from '@/store'
 interface IProps {
     email_user_from : string,
     email_user_to : string , 
-    is_seen : boolean ,
-    is_sent : boolean ,
     content_last : string ,
     list_message_sent : Array<any> ,
-    list_user_seen : Array<any>
+    list_user_seen : Array<any>,
+    user_chat : string
 }
 
 // props
@@ -73,22 +71,44 @@ function ramdomBG() : any {
     }
 }
 
+async function changeWidthContentLast(){
+      const [contentConversation  , overflowText , chatImage ]: any = await Promise.all([
+        document.querySelector('.conversion-content'),
+        document.querySelectorAll('.overflow-text'),
+        document.querySelector('.chat-no-image'),
+      ])
+      overflowText.forEach((element: any) => {
+        element.style.width = contentConversation.offsetWidth - chatImage.offsetWidth + "px"
+      });
+
+}
+
+onMounted(() => {
+  changeWidthContentLast();
+  window.addEventListener('resize', changeWidthContentLast);
+});
+
 </script>
 <template>
-    <div class="d-flex w-100 position-relative">
-        <div :style="ramdomBG()" class="chat-no-image text-center p-3 text-white"> Chat </div>
-        <div class="ms-3 d-flex flex-column align-item-center justify-content-around">
+    <div class="d-flex conversion-content position-relative">
+        <div :style="ramdomBG()" class="chat-no-image text-center p-3 text-white"> <p class="m-0">Chat</p> </div>
+        <div class="ms-3 content-info d-flex flex-column align-item-center justify-content-around">
             <p v-if="emailUser == props.email_user_from" class="m-0 text-dark"> <b>{{props.email_user_to}}</b></p>
             <p  v-else="emailUser == props.email_user_to" class="m-0 text-dark"> <b>{{props.email_user_from}}</b></p>
 
-            <p  v-if="numberMessage(props.list_message_sent) > 0" class="m-0 text-content-last"> 
+            <p v-if="numberMessage(props.list_message_sent) > 0" class="m-0 overflow-text"> 
                 <b > 
-                    <span>{{props.content_last}}</span>
+                    <span v-if="user_chat == emailUser" class="me-1">
+                        You: 
+                    </span> 
+                    <span class="w-100">{{props.content_last}}</span>
                 </b>
             </p>
-            <p  v-else="numberMessage(props.list_message_sent) > 0" class="m-0"> 
-                    <span v-if="!props.is_sent" >{{props.content_last}}</span>
-                    <span v-if="props.is_sent" > You : {{props.content_last}}</span>
+            <p  v-else="numberMessage(props.list_message_sent) > 0" class="m-0 overflow-text"> 
+                <span v-if="user_chat == emailUser" class="me-1">
+                        You: 
+                    </span> 
+                   {{props.content_last}}
             </p>
     
         </div>
@@ -105,12 +125,12 @@ function ramdomBG() : any {
 }
 .number-notification {
     font-size: 14px;
+    padding: 3px 0;
 }
 .text-content-last {
-  white-space: nowrap; /* Ngăn không cho chữ xuống dòng */
-  overflow: hidden; /* Ẩn phần vượt quá khung của p */
-  text-overflow: ellipsis; /* Thêm dấu "..." vào cuối văn bản bị cắt */
-  max-width: 100%; /* Đảm bảo chiều rộng tối đa của p không vượt quá cha của nó */
+  white-space: nowrap; 
+  text-overflow: ellipsis; 
+  max-width: 300px; 
 }
 
 .bg-login {
@@ -129,10 +149,23 @@ function ramdomBG() : any {
 }
 .overflow-text {
   white-space: nowrap; 
-  overflow: hidden;
   text-overflow: ellipsis; 
 }
 .text-email-setting {
     max-width: 200px;
+}
+.conversion-content {
+    max-width: 100%;
+}
+
+@media screen and (max-width: 720px) {
+    .message-sent-notification {
+        top:60% !important;
+        left:3% !important;
+        padding: 0 !important;
+    }
+    .number-notification {
+        font-size: 11px !important;
+    }
 }
 </style>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed , onMounted } from 'vue'
 import { Icon } from '@iconify/vue';
 import {
     useGroupStore ,
@@ -17,6 +17,8 @@ const chatStore = useChatStore()
 const socketStore = useSocketStore()
 const userStore = useUserStore()
 const groupStore = useGroupStore()
+const selectLayout = useSelectLayoutStore()
+
 
 //computed
 
@@ -24,6 +26,9 @@ const listGroup = computed( () : any => {
     return groupStore.list_group
 } )
 
+const emailUser = computed( () : string => {
+    return userStore.userInfo.email
+})
 
 // method
 
@@ -38,6 +43,9 @@ function selectChatGroup(conversation_id : string , group_name : string  , group
     groupStore.seemConversation(conversation_id , userStore.userInfo.email)
     chatStore.fetchChats()
     selectLayoutStore.selectLayoutView(1)
+    if(window.innerWidth <= 720){
+        selectLayout.selectLayoutReponsive(1)
+    }
 }
 function numberMessage (list_message_sent : Array<any> ) : number {
     try {
@@ -80,6 +88,22 @@ function ramdomBG() : any {
         backgroundColor : predefinedColors[randomInteger]
     }
 }
+async function changeWidthContentLast(){
+      const [contentConversation  , overflowText , chatImage ]: any = await Promise.all([
+        document.querySelector('.group-content'),
+        document.querySelectorAll('.text-content-last'),
+        document.querySelector('.group-img'),
+      ])
+      overflowText.forEach((element: any) => {
+        element.style.width = contentConversation.offsetWidth - chatImage.offsetWidth + "px"
+      });
+
+}
+
+onMounted(() => {
+  changeWidthContentLast();
+  window.addEventListener('resize', changeWidthContentLast);
+});
 </script>
 <template>
     <div class="d-flex align-items-center p-2 cursor" @click="showCreateGroup">
@@ -90,17 +114,29 @@ function ramdomBG() : any {
         <b>Group : </b>
     </p>
     <hr class="my-1">
-    <div v-for="item in listGroup" class="d-flex align-items-center mb-2 chat-item position-relative" >
+    <div v-for="item in listGroup" class="d-flex group-content  align-items-center mb-2 chat-item position-relative" >
         <div class="d-flex align-items-center " @click="selectChatGroup(item.id,item.group_name,item.group_id,item.list_message_sent)">
             <p :style="ramdomBG()" class="group-img  m-0 me-2 text-white"> Group </p>
             <div class="d-flex flex-column">
                 <p class="my-2"> <b class=""> {{ item.group_name }}</b></p>
-                <p  v-if="checkSeem(item.list_user_seen) == false" class="m-0 text-content-last"> 
+                <p  v-if="checkSeem(item.list_user_seen) == false" class="m-0 text-content-last text-dark"> 
                     <b > 
+                        <span v-if="item.user_chat == emailUser" class="me-1 text-dark">
+                            You: 
+                        </span> 
+                        <span v-else="item.user_chat == emailUser" class="me-1 text-dark">
+                            {{ item.user_chat  }}: 
+                        </span>
                         <span>{{item.content_last}}</span>
                     </b>
                 </p>
-                <p  v-if="checkSeem(item.list_user_seen)" class="m-0 text-content-last"> 
+                <p  v-if="checkSeem(item.list_user_seen)" class="m-0 text-content-last text-dark"> 
+                        <span v-if="item.user_chat == emailUser" class="me-1 text-dark">
+                            You: 
+                        </span> 
+                        <span v-else="item.user_chat == emailUser" class="me-1 text-dark">
+                            {{ item.user_chat  }}: 
+                        </span>
                         <span>{{item.content_last}}</span>
                 </p>
             </div>
@@ -116,10 +152,14 @@ function ramdomBG() : any {
     background-color: rgb(127, 127, 206);
     padding : 20px 10px;
 }
+.group-content {
+    overflow:  hidden;
+    padding: 15px;
+}
 .message-sent-notification {
     position: absolute;
     top:60%;
-    left:40px;
+    left:0%;
 }
 .number-notification {
     font-size: 14px;

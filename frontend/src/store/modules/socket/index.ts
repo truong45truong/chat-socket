@@ -2,9 +2,8 @@ import { defineStore } from 'pinia'
 import type { SocketSate } from './helper'
 import { intialSocketState } from './helper'
 import soundNoticy from './../../../assets/sound/mixkit-elevator-tone-2863.wav'
-// import {useConversationStore} from '@/store/modules/conversation/index'
+import { URL_SOCKET } from './helper'
 
-// const conversationStore = useConversationStore()
 
 export const useSocketStore = defineStore('socket-store', {
   state: (): SocketSate => intialSocketState(),
@@ -12,12 +11,12 @@ export const useSocketStore = defineStore('socket-store', {
     async initSocketNotification(user_from : string){
       const chatSocket = new WebSocket(
         'ws://'
-        + "0.0.0.0:8000"
+        + URL_SOCKET
         + '/ws/notification/'
         + this.id_socket
         + '/'
       );
-      await new Promise((resolve) => {
+      await new Promise<void>((resolve) => {
         chatSocket.addEventListener('open', () => {
           resolve();
         });
@@ -27,11 +26,11 @@ export const useSocketStore = defineStore('socket-store', {
           'init_socket' : 0,
           'client_id' : this.id_socket ,
         }));
-      chatSocket.send(JSON.stringify({
-        'email_user_chat' : user_from ,
-        'init_socket' : 5,
-        'client_id' : this.id_socket ,
-      }));
+        chatSocket.send(JSON.stringify({
+          'email_user_chat' : user_from ,
+          'init_socket' : 5,
+          'client_id' : this.id_socket ,
+        }));
       chatSocket.onmessage = (e) => {
         const data = JSON.parse(e.data);
         if( data.is_chat == false){
@@ -41,9 +40,7 @@ export const useSocketStore = defineStore('socket-store', {
             const promise = audio.play();
             if(promise !== undefined){
                 promise.then(() => {
-                  // Autoplay started
               }).catch(error => {
-                  // Autoplay was prevented.
                   audio.muted = true;
                   audio.play();
               });
@@ -64,7 +61,7 @@ export const useSocketStore = defineStore('socket-store', {
       }
       const chatSocket = new WebSocket(
         'ws://'
-        + "0.0.0.0:8000"
+        + URL_SOCKET
         + '/ws/chat/'
         + conversation
         + '/'
@@ -72,7 +69,7 @@ export const useSocketStore = defineStore('socket-store', {
         + '/'
       );
       this.socket = chatSocket
-      await new Promise((resolve) => {
+      await new Promise<void>((resolve) => {
         chatSocket.addEventListener('open', () => {
           resolve();
         });
@@ -88,7 +85,6 @@ export const useSocketStore = defineStore('socket-store', {
         const data = JSON.parse(e.data);
         if (data.is_chat == true){
           this.list_chat_receiver = [...this.list_chat_receiver , data]
-          // conversationStore.updateNewMessage( data )
         } 
        };
        
@@ -102,7 +98,7 @@ export const useSocketStore = defineStore('socket-store', {
       }
       const chatSocket = new WebSocket(
         'ws://'
-        + "0.0.0.0:8000"
+        + URL_SOCKET
         + '/ws/chat/'
         + conversation
         + '/'
@@ -110,7 +106,7 @@ export const useSocketStore = defineStore('socket-store', {
         + '/'
       );
       this.socket = chatSocket
-      await new Promise((resolve) => {
+      await new Promise<void>((resolve) => {
         chatSocket.addEventListener('open', () => {
           resolve();
         });
@@ -126,7 +122,6 @@ export const useSocketStore = defineStore('socket-store', {
         const data = JSON.parse(e.data);
         if (data.is_chat == true){
           this.list_chat_receiver = [...this.list_chat_receiver , data]
-          // conversationStore.updateNewMessage( data )
         } 
         
        };
@@ -152,9 +147,9 @@ export const useSocketStore = defineStore('socket-store', {
         }
     },
     sendMessageGroup(
-      group_id : string | undefined , conversation : string , 
-      content : string , email_user_chat : string
-  ) : void {
+      group_id : string | undefined , conversation : string | undefined , 
+      content : string | undefined, email_user_chat : string | undefined
+    ) : void {
       this.conversation = conversation
       if(this.is_group == true){
         this.socket.send(JSON.stringify({
@@ -166,6 +161,28 @@ export const useSocketStore = defineStore('socket-store', {
           'group_id' : group_id
         }))
       }
-  },
+    },
+    sendNotifiCreateGroup(
+      email_user_chat : string | undefined ,
+      group_id : string | undefined
+    ){
+      this.socket.send(JSON.stringify({
+        'init_socket' : 6,
+        'client_id' : this.id_socket ,
+        'email_user_chat' : email_user_chat ,
+        'group_id' : group_id
+      }))
+    },
+    sendNotifiCreateChat(
+      email_user_chat : string | undefined ,
+      user_to : string | undefined
+    ){
+      this.socket.send(JSON.stringify({
+        'init_socket' : 7,
+        'client_id' : this.id_socket ,
+        'email_user_chat' : email_user_chat ,
+        'user_to' : user_to
+      }))
+    }
   },
 })

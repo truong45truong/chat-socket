@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { type GroupState , type Group , getGroupState } from './helper'
 import { store } from '@/store'
-
+import {getAllGroup} from '@/api'
 
 export const useGroupStore = defineStore('group-store', {
   state: (): GroupState => getGroupState(),
@@ -13,6 +13,11 @@ export const useGroupStore = defineStore('group-store', {
   },
 
   actions: {
+    async fetchDataGroup(){
+      await getAllGroup().then((res: any) => {
+        this.list_group = res.groups
+      })
+    },
     uploadData(list_group : Array<Group> ) {
       this.list_group = list_group
     },
@@ -24,9 +29,9 @@ export const useGroupStore = defineStore('group-store', {
       }
       return false
     },
-    getNameGroup(group_id : string) : boolean | string {
+    getNameGroup(conversation_id : string) : boolean | string {
       for( let group of this.list_group){
-        if(group_id == group.group_id){
+        if(conversation_id == group.id){
           return group.group_name
         }
       }
@@ -45,12 +50,27 @@ export const useGroupStore = defineStore('group-store', {
       }
       return countMessageSented
     },
-    updateNewMessage(message_new: string, group_id: string): void {
+    updateNewMessage( 
+      message_new: string, group_id: string , 
+      email_user_chat : string , user_email : string
+    ): void {
       this.list_group = this.list_group.filter((conversation: any) => {
         if (
           conversation.group_id == group_id
         ) {
           conversation.content_last = message_new
+          conversation.user_chat = email_user_chat
+          conversation.list_user_seen = []
+          conversation.list_message_sent =  conversation.list_message_sent.filter(
+            (item: any) =>{
+              const convertedDict = JSON.parse(item.replace(/'/g, '"'));
+              var keys = Object.keys(convertedDict)
+              if(keys[0] == user_email){
+                item = "{'" + user_email + "' : " +  (convertedDict[keys[0]] + 1) +"}"
+              }
+              return item
+            }
+          )
         }
         return conversation
       })

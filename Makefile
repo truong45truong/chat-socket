@@ -3,6 +3,8 @@ compose:
 	sudo docker compose up
 compose-up:
 	sudo docker compose up
+run-redis:
+	sudo docker run --rm -p 6379:6379 redis:5
 compose-build:
 	sudo docker compose build
 makemigrations:
@@ -26,4 +28,4 @@ backend-terminal:
 	sudo docker exec -it socketchat-backend-1 $(cmd)
 postgres:
 	sudo docker exec -it postgres psql -U User  simple_chat
-.PHONY: compose createdb dropdb postgres compose-up compose-build startapp backend-terminal create-admin makemigrations
+.PHONY: compose createdb dropdb postgres compose-up compose-build startapp backend-terminal create-admin makemigrations run-redis

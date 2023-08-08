@@ -1,4 +1,5 @@
 export interface Group {
+    id : string ,
     group_name : string ,
     description : string ,
     group_id : string ,

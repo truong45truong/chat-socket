@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineProps } from 'vue'
+import {  } from 'vue'
 
 import { Icon } from '@iconify/vue';
 import { useGroupStore } from '@/store'
@@ -9,7 +9,7 @@ interface IProps {
     email_user_chat : string,
     content : string , 
     type : string ,
-    group_id : string ,
+    conversation_id : string ,
     is_seem : boolean
 }
 
@@ -36,10 +36,10 @@ const props = defineProps<IProps>()
            </p>
            <p v-if="props.type == 'NTFCG'" class="M-0"> 
             <b>{{ props.email_user_chat }}</b> sent Message into group 
-            <b>{{ groupStore.getNameGroup(props.group_id) }}</b>
+            <b>{{ groupStore.getNameGroup(props.conversation_id) }}</b>
             </p>
         </div>
-        <div v-if="is_seem == false" class="is-seem-notification position-absolute"></div>
+        <div v-if="props.is_seem == false" class="is-seem-notification position-absolute"></div>
     </div>
 </template>
 <style>

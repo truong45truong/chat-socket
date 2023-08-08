@@ -12,7 +12,7 @@ const user = computed(()=> {
     <div class="d-flex flex-column align-items-center w-100 h-100 bg-introduce">
         <h1 class="mt-5"> WelCome</h1>
         <h3> {{ user }} </h3>
-        <p class="p-5 w-75">
+        <p class="p-4 w-75">
             We are delighted to welcome you into our amazing chat experience. This online chat site will help you connect and communicate with new people and old friends in an easy and fun way.
 
             With a simple and friendly interface, you can start chatting right away. Enter your name and start a fun chat with us.
@@ -38,5 +38,10 @@ const user = computed(()=> {
 }
 .bg-introduce{
     background-image: linear-gradient(45deg,#efefef 25%,rgba(239,239,239,0) 25%,rgba(239,239,239,0) 75%,#efefef 75%,#efefef),linear-gradient(45deg,#efefef 25%,rgba(239,239,239,0) 25%,rgba(239,239,239,0) 75%,#efefef 75%,#efefef) !important;
+}
+@media screen and (max-width: 720px) {
+  .img-introduce {
+    display: none;
+  }
 }
 </style>

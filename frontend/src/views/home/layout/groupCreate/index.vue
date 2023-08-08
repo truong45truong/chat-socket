@@ -2,7 +2,9 @@
 import { computed , ref } from 'vue'
 import { Icon } from '@iconify/vue';
 import {
-    useGroupStore
+    useGroupStore , useChatStore ,
+    useUserStore , useSocketStore ,
+    useSelectLayoutStore , 
 } from '@/store'
 import {createGroup, getAllGroup , searchUser} from '@/api'
 
@@ -19,6 +21,10 @@ const keySearch = ref<string>('')
 // store 
 
 const groupStore = useGroupStore()
+const chatStore = useChatStore()
+const userStore = useUserStore()
+const socketStore = useSocketStore()
+const selectLayout = useSelectLayoutStore()
 
 // fetch data
 getAllGroup().then( (res : any) => {
@@ -42,7 +48,7 @@ function search(): void {
 }
 function addUserGroup (email: string) : void {
     var check = false
-    listUserAddGroup.value.filter( item => {
+    listUserAddGroup.value.filter( (item: any) => {
         if (item == email) {
             check = true
         }
@@ -50,7 +56,7 @@ function addUserGroup (email: string) : void {
     if( check == false) listUserAddGroup.value.push(email)
 }
 function removeUserGroup( email : string ) : void {
-    listUserAddGroup.value=listUserAddGroup.value.filter( item => {
+    listUserAddGroup.value=listUserAddGroup.value.filter( (item : any) => {
         return item != email
     } )
 }
@@ -65,7 +71,25 @@ function createNewGroup() : void {
     if ( listUserAddGroup.value.length == 0) showErrorUserSelect.value = true;
     else showErrorUserSelect.value = false;
     if ( showErrorUserSelect.value == false && showErrorNameGroup.value == false ){
-        createGroup(  nameGroupCreate.value , listUserAddGroup.value ,  descriptionGroupCreate.value  )
+        createGroup(  nameGroupCreate.value , listUserAddGroup.value ,  descriptionGroupCreate.value  ).then( async (res: any) => {
+            let conversation_id = res.conversation.id
+            groupStore.fetchDataGroup()
+            await socketStore.initSocketChatGroup(
+                conversation_id ,userStore.userInfo.email , 
+                res.conversation.group_id
+            )
+            chatStore.selectGroupChat(
+                conversation_id , res.conversation.group_name , 
+                res.conversation.group_id , res.conversation.list_message_sent
+            )
+            groupStore.seemConversation(conversation_id , userStore.userInfo.email)
+            chatStore.fetchChats()
+            selectLayout.selectLayoutView(1)
+            if(window.innerWidth <= 720){
+                selectLayout.selectLayoutReponsive(1)
+            }
+            socketStore.sendNotifiCreateGroup(res.conversation.group_id , userStore.userInfo.email )
+        })
     }
 }
 </script>

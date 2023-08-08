@@ -8,7 +8,7 @@ const router = useRouter()
 const userStore = useUserStore()
 onMounted(() => {
 
-    if( userStore.userInfo.email){
+    if( userStore.userInfo.email  ){
         router.push({name : 'home'})
     }
 
@@ -27,7 +27,8 @@ html, body {
 .bg-login {
     height:100%;
 
-    background: url('./../../../public/15835.jpg');
+    background-image: linear-gradient(45deg,#efefef 25%,rgba(239,239,239,0) 25%,rgba(239,239,239,0) 75%,#efefef 75%,#efefef),linear-gradient(45deg,#efefef 25%,rgba(239,239,239,0) 25%,rgba(239,239,239,0) 75%,#efefef 75%,#efefef) !important;
+
 }
 #app {
     height:100%;

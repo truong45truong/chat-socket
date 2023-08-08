@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref , computed } from 'vue'
+import { ref , computed , onMounted } from 'vue'
 import { useRouter } from 'vue-router';
 import { searchUser , checkConversation } from '@/api';
 import { Icon, _api } from '@iconify/vue';
@@ -55,6 +55,9 @@ const listMemberShip = computed( () : any => {
     return membershipStore.list_membership
 })
 
+const selectLayouReponse = computed( (): any => {
+    return selectLayout.view_reponsice.isSelectLayouMenu
+})
 // method
 
 
@@ -62,6 +65,7 @@ function search(): void {
     searchUser(keySearch.value).then((res : any ) => {
         listUserSearch.value = res.users 
     })
+
 }
 
 function selectChat(email : string): void {
@@ -86,6 +90,9 @@ function selectChat(email : string): void {
     }
     // chatStore.setSelectChat( email , conversation_id)
     // chatStore.fetchChats()
+    if(window.innerWidth <= 720){
+        selectLayout.selectLayoutReponsive(1)
+    }
 }
 
 function selectChatReply(user_to : string , user_from : string , conversation_id : string): void {
@@ -101,6 +108,9 @@ function selectChatReply(user_to : string , user_from : string , conversation_id
     conversationStore.seemConversation(conversation_id , userStore.userInfo.email)
     chatStore.fetchChats()
     selectLayout.selectLayoutView(1)
+    if(window.innerWidth <= 720){
+        selectLayout.selectLayoutReponsive(1)
+    }
     
 }
 function ramdomBG() : any {
@@ -112,9 +122,10 @@ function ramdomBG() : any {
         backgroundColor : predefinedColors[randomInteger]
     }
 }
+
 </script>
 <template>
-    <div class="p-3">
+    <div class="p-3 w-100">
         <div class="d-flex align-items-center mb-2">
             <div class="ms-1 ">
                 <p class="text-dark m-0 ms-1"><b>{{ user }}</b></p>
@@ -153,15 +164,14 @@ function ramdomBG() : any {
         </div>
 
         <div v-if="showLayout.isShowChat" class="p-1 my-3">
-            <div v-for="item in listDataConversation" class="d-flex align-items-center mb-2 chat-item" @click="selectChatReply(item.email_user_to, item.email_user_from , item.id)" >
+            <div v-for="item in listDataConversation" class="d-flex align-items-center mb-2 w-100 chat-item" @click="selectChatReply(item.email_user_to, item.email_user_from , item.id)" >
                 <ConversationComponent   
                     :email_user_from="item.email_user_from" 
                     :email_user_to="item.email_user_to"
-                    :is_sent="item.is_sent"
-                    :is_seen="item.is_seen"
                     :content_last="item.content_last"
                     :list_message_sent="item.list_message_sent"
                     :list_user_seen="item.list_user_seen"
+                    :user_chat="item.user_chat"
                 />
             </div>
         </div>
@@ -284,5 +294,16 @@ body {
       left: 43px;
     }
   }    
+}
+@media screen and (max-width: 720px) {
+  p {
+    font-size: 14px;
+  }
+  .chat-no-image{
+    width:47px;
+    height:47px;
+    padding: 10px 7px !important;
+  }
+
 }
 </style>
