@@ -1,7 +1,6 @@
 from rest_framework.decorators import api_view,permission_classes,authentication_classes
 from rest_framework import status
 from rest_framework.response import Response
-from chat_base.core.middlewares.authenticate import CustomAuthentication
 from chat_user.user.services.services_user import UserService
 
 #LOGIN
@@ -42,21 +41,18 @@ def register_user(request):
 
 #SEARCH USER
 @api_view(['GET'])
-@authentication_classes([CustomAuthentication])
 def search_user(request):
     userSerice =  UserService()
     return userSerice.search_user(request)
 
 #ADD MEMBER SHIP
 @api_view(['POST'])
-@authentication_classes([CustomAuthentication])
 def add_friend(request):
     userSerice =  UserService()
     return userSerice.add_member_ship(request)
 
 #GET ALL MEMBER SHIP
 @api_view(['GET'])
-@authentication_classes([CustomAuthentication])
 def get_all_membership(request):
     userSerice =  UserService()
     return userSerice.get_all_member_ship(request)
