@@ -14,6 +14,9 @@ urlpatterns = [
     path('group/', view_api.get_all_group_user, name = "get_all_group_user"),
     path('group/create/', view_api.create_group, name = "create_group"),
     path('group/chat/', view_api.chat_group, name = "chat_group"),
+    path('group/update/', view_api.update_group, name = "chat_group"),
+    path('search-user/add-group/', view_api.search_user_add_group, name = "search_user_add_group"),
+    re_path(r'^group/member/(?P<uuid>[0-9a-f-]+)/$',view_api.get_list_member, name='get_list_member'),
 
     # NOTIFICATION
     path('notification/', view_api.get_all_notification, name = "get_all_notification"),

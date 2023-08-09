@@ -20,10 +20,17 @@ export const useSelectLayoutStore = defineStore('select-layout-store', {
         case 1:
           this.view_layout.isShowConversation = true
           this.view_layout.isShowCreateGroup = false
+          this.view_layout.isShowSettingGroup = false
           break;
         case 2:
           this.view_layout.isShowConversation = false
           this.view_layout.isShowCreateGroup = true
+          this.view_layout.isShowSettingGroup = false
+          break;
+        case 3:
+          this.view_layout.isShowConversation = false
+          this.view_layout.isShowCreateGroup = false
+          this.view_layout.isShowSettingGroup = true
           break;
       }
     },
@@ -52,7 +59,9 @@ export const useSelectLayoutStore = defineStore('select-layout-store', {
           this.show.isShowGroup = false
           this.show.isShowFriend = false
           this.show.isShowNotification = true
+          
           break;
+
       }
     },
     selectLayoutReponsive(type : number){

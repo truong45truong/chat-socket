@@ -188,15 +188,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 user_to_value = clientCurrent['user_to']
                 clientTo =searchClientEmail(user_to_value)
                 if clientTo != False:
-                    if clientTo != False:
-                        channel_name_value = str(clientTo['channel_name'])
-                        await self.channel_layer.group_send(
-                            channel_name_value, {
-                                "type": "chat_message_notification", "message": message , 
-                                "email_user_chat" : text_data_json['email_user_chat'] , 
-                                "type_chat" : 'NTFCT' 
-                            }
-                        )
+                    channel_name_value = str(clientTo['channel_name'])
+                    await self.channel_layer.group_send(
+                        channel_name_value, {
+                            "type": "chat_message_notification", "message": message , 
+                            "email_user_chat" : text_data_json['email_user_chat'] , 
+                            "type_chat" : 'NTFCT' 
+                        }
+                    )
+                    
         # init chat group          
         elif init == 3:
             if clientCurrent != False :
@@ -249,7 +249,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         channel_name_value, {
                             "type": "send_notification_create","type_chat" : 'NTFCREATE' , 
                             "email_user_chat" : text_data_json['email_user_chat'] , 
-                            "group_id" : clientCurrent['group_id']  , 'is_chat' : False
+                            "group_id" : clientCurrent['group_id']  , 'is_chat' : False ,
+                            'fetch_chat' : False
                         }
                     )
         elif init == 7:
@@ -264,7 +265,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                             channel_name_value, {
                                 "type": "send_notification_create","type_chat" : 'NTFCREATE' , 
                                 "email_user_chat" : text_data_json['email_user_chat'] , 
-                                'is_chat' : True 
+                                'is_chat' : False , 'fetch_chat' : True
                             }
                         )
 
@@ -339,11 +340,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
             emailUserCreate = event['email_user_chat']
             typeChat = event["type_chat"]
             isChat = event["is_chat"]
+            fetchChat = event['fetch_chat']
+            print('emailUserCreate: ' , event['email_user_chat'])
             # Send message to WebSocket
             await self.send(text_data=json.dumps({
                 'email_user_chat' : emailUserCreate ,
                 'is_chat' : isChat ,
                 'type' : typeChat ,
+                'fetch_chat' : fetchChat
             }))
         except Exception as e:
             print("ERROR: " , e)

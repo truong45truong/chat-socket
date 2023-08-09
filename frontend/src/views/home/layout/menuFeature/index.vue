@@ -85,8 +85,8 @@ function selectLayoutContent( type : number) : void {
 <template>
     <div class="d-flex flex-column align-items-center  justify-content-between w-100 h-100">
         <div class="d-flex flex-column w-100">
-                <div class="cursor img-user border border-2 border-white text-center mt-4 mx-2">
-                    <Icon icon="mingcute:user-2-line"  class="text-white icon-user-menu" />
+                <div class="cursor img-user  text-center mt-4 mx-2">
+                    <img src="./../../../../assets//images//media/user-profile.png"  class="text-white icon-user-menu" />
                 </div>
             <div class="text-center w-100 mt-5">
                 <div :class="{ 'bg-feature-activate' : showLayout.isShowChat }" 
@@ -177,6 +177,7 @@ html, body {
 }
 .icon-user-menu {
     font-size: 24px;
+    max-width: 100% ;
 }
 .bg-feature-activate {
     background-color: #1577c2 ;

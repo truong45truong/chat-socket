@@ -90,8 +90,11 @@ onMounted(() => {
 
 </script>
 <template>
-    <div class="d-flex conversion-content position-relative">
-        <div :style="ramdomBG()" class="chat-no-image text-center p-3 text-white"> <p class="m-0">Chat</p> </div>
+    <div class="d-flex conversion-content position-relative mb-3">
+        <div  
+            class="d-flex justify-content-center align-items-center text-white"> 
+            <img class="chat-user-image" src="./../../../../assets/images/media/speech-bubble.png" alt="">
+        </div>
         <div class="ms-3 content-info d-flex flex-column align-item-center justify-content-around">
             <p v-if="emailUser == props.email_user_from" class="m-0 text-dark"> <b>{{props.email_user_to}}</b></p>
             <p  v-else="emailUser == props.email_user_to" class="m-0 text-dark"> <b>{{props.email_user_from}}</b></p>
@@ -167,5 +170,12 @@ onMounted(() => {
     .number-notification {
         font-size: 11px !important;
     }
+    .chat-user-image {
+        max-width: 50px ;
+    }
+}
+@media screen and (max-width: 420px) {
+
+    
 }
 </style>

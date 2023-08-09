@@ -79,6 +79,8 @@ class ChatService:
         try:
             data_request= json.loads(req_data.body.decode('utf-8'))
             data_request['user_from'] = user_current.email
+            print('req_data.body' , req_data.body, type(req_data.body) )
+            print('req_data' , req_data.POST)
         except:
             raise CustomAPIException(detail=message_code.INVALID_INPUT)
         
@@ -197,7 +199,6 @@ class ChatService:
         }
         response.status_code = status.HTTP_200_OK
         return response
-    
     def check_conversation(self,req_data) -> Response:
         response = Response()
         user_current  = req_data.user
@@ -208,18 +209,24 @@ class ChatService:
         except:
             raise CustomAPIException(detail=message_code.INVALID_INPUT)
         
-        conversation = Conversation.objects.get( 
+        conversation = Conversation.objects.filter( 
             Q(user_from = user_current , user_to__email = user_to)
-            | Q(user_from = user_to, user_to = user_current)
+            | Q(user_from__email = user_to, user_to = user_current)
         )
-        chats = Chat.objects.filter(conversation_id = conversation)
-        serializer = ChatSerialzier(chats , many = True)
-        response.data = {
-            "empty" : False ,
-            "conversation_id": str(conversation.id) ,
-            "chats" : serializer.data,
-            "status" : status.HTTP_200_OK
-        } 
+        if len(conversation) == 0:
+            response.data = {
+                "empty" : True ,
+                "status" : status.HTTP_200_OK
+            } 
+        else:
+            chats = Chat.objects.filter(conversation_id = conversation[0])
+            serializer = ChatSerialzier(chats , many = True)
+            response.data = {
+                "empty" : False ,
+                "conversation_id": str(conversation.id) ,
+                "chats" : serializer.data,
+                "status" : status.HTTP_200_OK
+            } 
         response.status_code = status.HTTP_200_OK
         return response
     

@@ -77,7 +77,7 @@ class UserService(AuthService):
             expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
             secure=settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
             httponly=settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
-            samesite=settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
+            samesite=None
         )
         serializer = UserSerializer(user,many = False)
         response.data = {
@@ -88,11 +88,16 @@ class UserService(AuthService):
         return response
     def search_user(self,req_data):
         response = Response()
+        user_current = req_data.user
         try:
             key_search = req_data.GET.get('key_search')
         except:
             raise CustomAPIException(detail=message_code.INVALID_INPUT)
-        userSearches = User.objects.filter(email__icontains=key_search)[:5]
+        userSearches = User.objects.filter(
+            email__icontains=key_search
+        ).exclude(
+            email= user_current.email
+        )[:5]
         serializer = UserSerializer(userSearches,many = True)
 
         response.data = {

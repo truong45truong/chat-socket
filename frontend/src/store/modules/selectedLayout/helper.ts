@@ -4,11 +4,12 @@ export interface selectLayoutState {
     isShowChat : boolean ,
     isShowFriend : boolean ,
     isShowGroup : boolean ,
-    isShowNotification : boolean
+    isShowNotification : boolean 
   }
   view_layout : {
     isShowCreateGroup : boolean,
     isShowConversation : boolean
+    isShowSettingGroup :  boolean
   }
   view_reponsice : {
     isSelectLayouMenu : boolean
@@ -29,7 +30,8 @@ export function getSelectLayoutState() : selectLayoutState {
     },
     view_layout : {
       isShowCreateGroup : false ,
-      isShowConversation : false
+      isShowConversation : false ,
+      isShowSettingGroup :  false
     },
     view_reponsice : {
       isSelectLayouMenu : false

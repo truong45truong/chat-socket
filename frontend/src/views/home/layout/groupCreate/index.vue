@@ -95,15 +95,16 @@ function createNewGroup() : void {
 </script>
 <template>
     <div class="p-2 h-100 bg-white bg-introduce ">
-        <div class="p-5 w-100">
-            <input type="text" v-model="nameGroupCreate" class="input-name-group p-2 w-100" placeholder="Enter name group" />
+        <div class="layout-form-group  w-100">
+            <p class="text-dark"> <b> Group information : </b> </p>
+            <input type="text" v-model="nameGroupCreate" class="form-input input-name-group layout-form-group  w-100" placeholder="Enter name group" />
             <p v-if="showErrorNameGroup" class="text-danger m-0"> Name group is empty </p>
         </div>
-        <div class="px-5 pb-5 position-relative">
-            <input v-model="descriptionGroupCreate" type="text" class=" p-2 w-100" placeholder="Enter description">
+        <div class="layout-form-group  position-relative">
+            <input v-model="descriptionGroupCreate" type="text" class="form-input p-2 w-100" placeholder="Enter description">
         </div>
-        <div class="p-1 px-5 position-relative">
-            <input v-model="keySearch" type="text" class=" p-2 w-100" placeholder="Add member into group" v-on:keyup.enter="search">
+        <div class="layout-form-group  position-relative">
+            <input v-model="keySearch" type="text" class="form-input p-2 w-100" placeholder="Add member into group" v-on:keyup.enter="search">
         </div>
         <div class="position-relative list-user-search">
             <div v-if="keySearch != ''" class="p-2 shadow position-absolute bg-white border w-100 px-3"
@@ -113,7 +114,9 @@ function createNewGroup() : void {
                 </p>
             
                     <div v-for="item in listUserSearch" class="d-flex align-items-center mb-2 chat-item" @click="addUserGroup(item.email)">
-                        <div class="chat-no-image-search text-center p-3 text-white"> Chat </div>
+                        <div class="text-center p-3 text-white"> 
+                            <img src="./../../../../assets/images/media/user.png" alt="" class="chat-image-search ">
+                        </div>
                         <div class="ms-3 d-flex flex-column align-item-center justify-content-around">
                             <p class="m-0 text-dark"> <b>{{ item.email }}</b></p>
                         </div>
@@ -121,20 +124,24 @@ function createNewGroup() : void {
                 
             </div>
         </div>
-        <div class="position-relative p-5">
+        <div class="position-relative layout-form-group">
              <p class="text-dark"> <b> User Select : </b> </p>
-            <div class="p-2 bg-white border w-100 px-3" :class="{'border-danger' : showErrorUserSelect}" >
+            <div class="p-2 bg-white border w-100 layout-user-select" :class="{'border-danger' : showErrorUserSelect}" >
                 <p v-if="listUserAddGroup.length == 0" class="m-0 text-center text-dark">
                     User select empty
                 </p>
-                <div v-for="item in listUserAddGroup" class="d-flex align-items-center justify-content-between mb-2" >
-                    <div class="d-flex">
-                        <div class="chat-no-image-search text-center p-3 text-white"> Chat </div>
-                        <div class="ms-3 d-flex flex-column align-item-center justify-content-around">
-                            <p class="m-0 text-dark"> <b>{{ item }}</b></p>
+                <div v-for="item in listUserAddGroup" class="d-flex w-100 align-items-center justify-content-between mb-2" >
+                    <div class="row layout-form-group w-100 justify-content-between">
+                        <div class="col-2 col-img-search text-center py-3 text-white"> 
+                            <img src="./../../../../assets/images/media/user.png" alt="" class="chat-image-search ">
+                        </div>
+                        <div class="col-6 d-flex flex-column align-item-center justify-content-around">
+                            <p class="m-0 overflow-text w-100  text-dark"> <b>{{ item }}</b></p>
+                        </div>
+                        <div class="col-4 d-flex flex-column align-items-center justify-content-center">
+                            <Icon icon="mdi:remove-box-outline" class="fs-1" @click="removeUserGroup(item)" />
                         </div>
                     </div>
-                    <Icon icon="mdi:remove-box-outline" class="fs-1" @click="removeUserGroup(item)" />
                 </div>     
             </div>
         </div>
@@ -146,6 +153,9 @@ function createNewGroup() : void {
     </div>
 </template>
 <style>
+.layout-form-group {
+    padding: 10px 30px;
+}
 .input-add-member {
     border: 1px solid black;
     border-radius: 15px;
@@ -155,5 +165,46 @@ function createNewGroup() : void {
 }
 .list-user-search {
     z-index:99;
+}
+.col-img-search {
+    display: block;
+}
+.chat-image-search {
+    max-width: 40px;
+}
+.layout-user-select{
+    max-width: 100%;
+    overflow-y: scroll;
+    overflow-x: none;
+    max-height: 25vh;
+}
+.overflow-text {
+  white-space: nowrap; 
+  text-overflow: ellipsis; 
+}
+@media screen and (max-width: 720px) {
+    .layout-form-group {
+        padding: 10px;
+    }
+    .form-input {
+        padding: 5px !important;
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .col-img-search {
+        max-width: 20px;
+        display: none;
+    }
+    p {
+        font-size: 14px;
+    }
+    .chat-image-search{
+        max-width: 30px;
+    }
+    .chat-no-image  p {
+        font-size: 11px;
+        }
 }
 </style>

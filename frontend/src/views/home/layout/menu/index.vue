@@ -23,7 +23,7 @@ import GroupLayout from './../group/index.vue'
 const keySearch = ref<string>('')
 const listUserSearch = ref<any>([])
 const isOnline = ref<boolean>(true)
-    const dataConversation = ref<any>([])
+const dataConversation = ref<any>([])
 
 // store
 
@@ -154,7 +154,10 @@ function ramdomBG() : any {
                     No have user searched
                 </p>
                 <div v-for="item in listUserSearch" class="d-flex align-items-center mb-2 chat-item" @click="selectChat(item.email)">
-                    <div :style="ramdomBG()" class="chat-no-image-search text-center p-3 text-white"> Chat </div>
+                    <div :style="ramdomBG()" 
+                    class="chat-no-image d-flex align-items-center justify-content-center text-white"> 
+                        <p class="m-0">Chat</p> 
+                    </div>
                     <div class="ms-3 d-flex flex-column align-item-center justify-content-around">
                         <p class="m-0 text-dark"> <b>{{ item.email }}</b></p>
 
@@ -164,7 +167,9 @@ function ramdomBG() : any {
         </div>
 
         <div v-if="showLayout.isShowChat" class="p-1 my-3">
-            <div v-for="item in listDataConversation" class="d-flex align-items-center mb-2 w-100 chat-item" @click="selectChatReply(item.email_user_to, item.email_user_from , item.id)" >
+            <div v-for="item in listDataConversation" 
+                class="d-flex align-items-center mb-2 w-100 chat-item" 
+                @click="selectChatReply(item.email_user_to, item.email_user_from , item.id)" >
                 <ConversationComponent   
                     :email_user_from="item.email_user_from" 
                     :email_user_to="item.email_user_to"
@@ -238,6 +243,8 @@ body {
 .chat-no-image {
     background-color: rgb(1, 35, 85);
     border-radius: 50%;
+    width:67px;
+    height:67px;
 }
 
 .chat-no-image-search {
@@ -302,7 +309,6 @@ body {
   .chat-no-image{
     width:47px;
     height:47px;
-    padding: 10px 7px !important;
   }
 
 }

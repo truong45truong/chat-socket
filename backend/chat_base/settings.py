@@ -155,10 +155,10 @@ SIMPLE_JWT = {
   'AUTH_COOKIE': os.getenv('AUTH_COOKIE'),
   'AUTH_COOKIE_REFRESH': os.getenv('AUTH_COOKIE_REFRESH'),
   'AUTH_COOKIE_DOMAIN': os.getenv('AUTH_COOKIE_DOMAIN'), 
-  'AUTH_COOKIE_SECURE': os.getenv('AUTH_COOKIE_SECURE'),
+  'AUTH_COOKIE_SECURE': None,
   'AUTH_COOKIE_HTTP_ONLY' : os.getenv('AUTH_COOKIE_HTTP_ONLY'),
   'AUTH_COOKIE_PATH': os.getenv('AUTH_COOKIE_PATH'),  
-  'AUTH_COOKIE_SAMESITE': os.getenv('AUTH_COOKIE_SAMESITE'),
+  'AUTH_COOKIE_SAMESITE': None,
 }
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

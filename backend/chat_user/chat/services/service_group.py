@@ -5,6 +5,8 @@ from chat_user.user.models import User
 from ..serializers.serializer_group import ChatGroupValidSerializer
 from ..serializers.serializer_group import GroupValidSerializer
 from ..serializers.serializer_group import ConversationGroupSerializer
+from ..serializers.serializer_group import MemberSerializer
+from chat_user.user.serializers.serializers import UserSerializer
 from rest_framework import status
 from rest_framework.response import Response
 import json
@@ -160,4 +162,65 @@ class GroupService:
         response.status_code = status.HTTP_200_OK
         return response
     
+    def search_user_add(self , req_data):
+        response = Response()
+        user_current = req_data.user
+        try:
+            key_search = req_data.GET.get('key_search')
+            group_id = req_data.GET.get('group_id')
+            group = GroupChat.objects.get(id = group_id)
+        except:
+            raise CustomAPIException(detail=message_code.INVALID_INPUT)
+        
+        list_member = Member.objects.filter( group_id =  group)
+        member_user_ids = list_member.values_list('user_id', flat=True)
+        userSearches = User.objects.filter(
+            email__icontains=key_search
+        ).exclude(
+            email= user_current.email
+        ).exclude(
+            id__in=member_user_ids
+        )[:5]
+        serializer = UserSerializer(userSearches,many = True)
+
+        response.data = {
+            "users" : serializer.data,
+            "success" : True ,
+            "status"  : status.HTTP_200_OK
+        }
+        response.status_code = status.HTTP_200_OK
+        return response
     
+    def update_group(self , req_data):
+        response = Response()
+        user_current  = req_data.user
+
+        try:
+            data_request= json.loads(req_data.body.decode('utf-8'))
+            data_request['user_from'] = user_current.email
+            
+        except:
+            raise CustomAPIException(detail=message_code.INVALID_INPUT)
+        print(data_request)
+        return response
+        
+    def get_list_member(self, req_data,uuid):
+        response = Response()
+        user_current  = req_data.user
+        try:
+            Member.objects.get( user_id = user_current , group_id__id = uuid )
+        except:
+            raise CustomAPIException(detail=message_code.INVALID_INPUT)
+        
+        queryset = Member.objects.filter( group_id__id = uuid)
+        serializer = MemberSerializer(queryset, many = True)
+
+        response.data = {
+            "success" : True ,
+            "members" : serializer.data,
+            "status" : status.HTTP_200_OK
+        }
+        response.status_code = status.HTTP_200_OK
+        return response
+        
+        

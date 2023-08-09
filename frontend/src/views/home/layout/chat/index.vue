@@ -11,7 +11,7 @@ useSelectLayoutStore,
 import { addMemberShip } from '@/api';
 const router = useRouter()
 const chatLayout = ref<any>(null);
-
+const moutedChat = ref<boolean>(false)
 // store
 
 const chatStore = useChatStore()
@@ -73,6 +73,9 @@ onUpdated(() => {
 });
 
 // method 
+function showSettingGroup(){
+    selectLayout.selectLayoutView(3)
+}
 function checkIsFriend() : boolean {
     if (membershipStore.checkMemberShip(chatStore.user_to) == true){
         return true
@@ -115,8 +118,9 @@ async function showMenuReponsive(){
 // } )
 
 // script
-
-
+onMounted(() => {
+    moutedChat.value = true
+});
 </script>
 <template>
     <div :style="divStyle" :id="'list-chat-layout'">
@@ -148,12 +152,16 @@ async function showMenuReponsive(){
                     <p  class="m-0 text-dark"> <b>{{nameGroup}}</b></p>
                 </div>     
             </div>
+            <div class="me-3">
+                <img src="./../../../../assets/images/media/settings.png" alt="" class="cursor"
+                @click="showSettingGroup">
+            </div>
         </div>
         <div class="layout-chat" id="conversation-chat-layout" ref="chatLayout" >
             <div v-for="item in listChatSelected " class=" mt-2 px-1">
                 <div  v-if="userCurrent != item.email_user_chat "  class="row">
                     <div class="col d-flex justify-content-start ps-3">
-                        <div class="chat-no-image text-center p-3 text-white border border-dark border-2">
+                        <div class="chat-no-image d-flex justify-content-center align-items-center text-white border border-dark border-2">
                             <p class="m-0">Chat</p>
                          </div>
                         <div v-if="userCurrent != item.email_user_chat " class="chat-no-current ms-2 px-3 pb-3 pt-1 mb-3">
@@ -181,7 +189,7 @@ async function showMenuReponsive(){
             <div v-for="item in listChatReceiver " class="row-content-chat mt-2">
                 <div  v-if="userCurrent != item.email_user_chat"  class="row">
                     <div class="col d-flex justify-content-start ps-3">
-                        <div class="chat-no-image text-center p-3 text-white border border-dark border-2">
+                        <div class="chat-no-image d-flex justify-content-center align-items-center text-white border border-dark border-2">
                             <p class="m-0">Chat</p>
                          </div>
                         <div v-if="userCurrent != item.email_user_chat " class="chat-no-current ms-2 px-3 pb-3 pt-1 mb-3">
@@ -257,11 +265,11 @@ html, body {
     text-overflow: ellipsis;
 }
 .chat-no-image {
-    width:67px;
-    height:67px;
+    width:47px;
+    height:47px;
 }
 .chat-no-image  p {
-    font-size: 18px;
+    font-size: 16px;
 }
 .row-content-chat {
     max-width: 100%;
@@ -271,25 +279,30 @@ html, body {
     font-size: 14px;
   }
   .chat-no-image  p {
-    font-size: 14px;
+    font-size: 12px;
   }
   .chat-no-image{
     width:47px;
     height:47px;
-    padding: 12px 10px !important;
   }
 }
 @media screen and (max-width: 720px) {
+    p {
+        font-size: 14px;
+    }
+    .chat-no-image  p {
+        font-size: 11px;
+    }
+
+}
+
+@media screen and (max-width: 420px) {
   p {
     font-size: 14px;
   }
-  .chat-no-image{
-    width:42px;
-    height:42px;
-  }
+
   .chat-no-image  p {
     font-size: 11px;
+    }
 }
-}
-
 </style>

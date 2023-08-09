@@ -34,6 +34,9 @@ const emailUser = computed( () : string => {
 
 function showCreateGroup() : void {
     selectLayoutStore.selectLayoutView(2)
+    if(window.innerWidth <= 720){
+        selectLayout.selectLayoutReponsive(1)
+    }
 }
 
 function selectChatGroup(conversation_id : string , group_name : string  , group_id : string , list_message_sent : any ){
@@ -116,7 +119,10 @@ onMounted(() => {
     <hr class="my-1">
     <div v-for="item in listGroup" class="d-flex group-content  align-items-center mb-2 chat-item position-relative" >
         <div class="d-flex align-items-center " @click="selectChatGroup(item.id,item.group_name,item.group_id,item.list_message_sent)">
-            <p :style="ramdomBG()" class="group-img  m-0 me-2 text-white"> Group </p>
+            <div :style="ramdomBG()" 
+                class="group-img d-flex justify-content-center align-items-center m-0 me-2  text-white"> 
+                <img src="./../../../../assets/images/media/group.png" class="icon-group-items" alt="">
+            </div>
             <div class="d-flex flex-column">
                 <p class="my-2"> <b class=""> {{ item.group_name }}</b></p>
                 <p  v-if="checkSeem(item.list_user_seen) == false" class="m-0 text-content-last text-dark"> 
@@ -150,7 +156,12 @@ onMounted(() => {
 .group-img {
     border-radius: 50%;
     background-color: rgb(127, 127, 206);
-    padding : 20px 10px;
+    width: 67px;
+    height: 67px;
+    text-align: center;
+}
+.icon-group-items {
+    max-width: 100%;
 }
 .group-content {
     overflow:  hidden;
@@ -169,5 +180,35 @@ onMounted(() => {
   overflow: hidden; /* Ẩn phần vượt quá khung của p */
   text-overflow: ellipsis; /* Thêm dấu "..." vào cuối văn bản bị cắt */
   max-width: 100%; /* Đảm bảo chiều rộng tối đa của p không vượt quá cha của nó */
+}
+@media screen and (max-width: 1024px) {
+  p {
+    font-size: 14px;
+  }
+  .group-img{
+    width:57px;
+    height:57px;
+  }
+}
+@media screen and (max-width: 720px) {
+  p {
+    font-size: 14px;
+  }
+  .group-img{
+    width:47px;
+    height:47px;
+  }
+}
+@media screen and (max-width: 420px) {
+  p {
+    font-size: 11px;
+  }
+  .group-img {
+    font-size: 11px;
+  }
+  .group-img{
+    width:42px;
+    height:42px;
+  }
 }
 </style>

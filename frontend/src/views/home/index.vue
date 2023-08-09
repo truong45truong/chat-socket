@@ -22,7 +22,7 @@ import SettingLayout from './layout/setting/index.vue'
 import MenuSettingLayout from './layout/menuFeature/index.vue'
 import IntroductLayout from './layout/introduce/index.vue'
 import CreateGroupLayout from './layout/groupCreate/index.vue'
-
+import SettingGroupLayout from './../home/layout/settingGroup/index.vue'
 const router = useRouter()
 
 // storeIntroductLayout
@@ -104,7 +104,7 @@ watch(userEmailComputed, (newuserEmailComputed, olduserEmailComputed): void => {
   }
 })
 watch(notification, (newnotification, oldnotification): void => {
-  // console.log('change notify', newnotification )
+  console.log('change notify', newnotification )
   if (newnotification.type == "GUO") {
     membershipStore.uploadOnline(newnotification.list_user_online)
   }
@@ -143,11 +143,11 @@ watch(notification, (newnotification, oldnotification): void => {
     }
   }
   if(newnotification.type == 'NTFCREATE'){
-    if(newnotification.is_chat == true){
+    if(newnotification.fetch_chat == true){
       conversationStore.fetchData()
       console.log('conversationStore.fetchData()')
     }
-    if(newnotification.is_chat == false){
+    if(newnotification.fetch_chat == false){
       groupStore.fetchDataGroup()
     }
   }
@@ -178,11 +178,6 @@ async function adjustChatLayoutMenu() {
         width: '250px'
       }
       widthLayoutSetting.value = chatLayoutWidthValue;
-      if (window.innerWidth > 1024) {
-        widthLayoutSetting.value = {
-          width: '300px'
-        }
-      }
       if (window.innerWidth <= 720) {
         const [LayoutMenuSetting, LayoutMenu]: any = await Promise.all([
           document.querySelector('#layout-menu-setting'),
@@ -194,7 +189,13 @@ async function adjustChatLayoutMenu() {
         widthLayoutSetting.value = chatLayoutWidthValue;
       }
     }
+    else {
+      widthLayoutSetting.value = {
+        width: '300px'
+      }
+    }
   }
+
   catch (e) {
 
   }
@@ -254,7 +255,8 @@ onBeforeUnmount(() => {
       <IntroductLayout v-if="!conversationChat && !isShowLayout.isShowCreateGroup" :style="chatLayoutHeight"
         class="d-flex flex-column bg-white" />
       <CreateGroupLayout v-if="isShowLayout.isShowCreateGroup" />
-      <ChatInputLayout v-if="!isShowLayout.isShowCreateGroup" :id="'chat-input-layout'" />
+      <ChatInputLayout v-if="!isShowLayout.isShowCreateGroup && !isShowLayout.isShowSettingGroup" :id="'chat-input-layout'" />
+      <SettingGroupLayout v-if="isShowLayout.isShowSettingGroup" />
     </div>
     <SettingLayout v-if="isShowSetting" class="position-fixed setting-layout" />
   </main>

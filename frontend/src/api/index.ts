@@ -28,6 +28,13 @@ export function searchUser<T = any>(key_search: string,) {
   })
 }
 
+export function searchUserAddGroup<T = any>(key_search: string, group_id : string | undefined) {
+  return get<T>({
+    url: '/search-user/add-group/',
+    data: { key_search , group_id },
+  })
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                CONVERSATION                                */
 /* -------------------------------------------------------------------------- */
@@ -97,6 +104,14 @@ export function createGroup<T = any>(name: string , list_member : Array<string> 
   })
 }
 
+export function updateGroup<T = any>(name: string , list_member_add : Array<string> ,
+  list_member_remove : Array<string>   , description : string ) {
+  return post<T>({
+    url: '/group/update/',
+    data: { name ,list_member_add , list_member_remove , description},
+  })
+}
+
 export function chatGroup<T = any>(conversation_id: string , content_last : string ) {
   return post<T>({
     url: '/group/chat/',
@@ -110,6 +125,11 @@ export function getAllGroup <T = any>(){
   })
 }
 
+export function getListMember <T = any>(group_id : string | undefined){
+  return get<T>({
+    url : '/group/' + 'member/' + group_id + "/"
+  })
+}
 /* -------------------------------------------------------------------------- */
 /*                                NOTIFICATION                                */
 /* -------------------------------------------------------------------------- */

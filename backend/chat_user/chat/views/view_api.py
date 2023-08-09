@@ -1,8 +1,7 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view 
 from ..services.service_chat import ChatService
 from ..services.service_notification import NotificationService
 from ..services.service_group import GroupService
-
 
 # ---------------------------------------------------------------------------- #
 #                                 CONVERSATION                                 #
@@ -54,6 +53,21 @@ def create_group(request):
 def get_all_group_user(request):
     groupService = GroupService()
     return groupService.get_all_group_user(request)
+
+@api_view(['GET'])
+def search_user_add_group(request):
+    groupService = GroupService()
+    return groupService.search_user_add(request)
+
+@api_view(['POST'])
+def update_group(request):
+    groupService = GroupService()
+    return groupService.update_group(request)
+
+@api_view(['GET'])
+def get_list_member(request,uuid):
+    groupService = GroupService()
+    return groupService.get_list_member(request , uuid)
 
 # ---------------------------------------------------------------------------- #
 #                                 NOTIFICATION                                 #
