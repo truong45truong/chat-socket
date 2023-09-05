@@ -25,7 +25,7 @@ kill-port:
 start-app:
 	python3 ./backend/manage.py startapp  $(name)
 backend-terminal:
-	sudo docker exec -it socketchat-backend-1 $(cmd)
+	sudo docker exec -it backend $(cmd)
 postgres:
 	sudo docker exec -it postgres psql -U User  simple_chat
 .PHONY: compose createdb dropdb postgres compose-up compose-build startapp backend-terminal create-admin makemigrations run-redis
