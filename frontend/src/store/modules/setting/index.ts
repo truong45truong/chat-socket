@@ -7,7 +7,7 @@ export const useSettingStore = defineStore('setting-store', {
   state: (): SettingState => getSettingState(),
 
   getters: {
-    isShowState(state): boolean {
+    isShowState(state): boolean | undefined {
       return state.isShow
     },
    

@@ -41,9 +41,11 @@ export const useChatStore = defineStore('chat-store', {
       this.is_online = isOnline
     },
     fetchChats() : void {
-      getConversation( this.conversation_id ).then( (res) : any => {
-        this.list_chat = res.chats
-      })
+      if (typeof this.conversation_id === 'string') {
+        getConversation( this.conversation_id ).then( (res : any) => {
+          this.list_chat = res.chats
+        })
+      }
     },
     uploadDataChat(userTo : string , chats : any , conversation_id : string | boolean ) {
       this.user_to = userTo

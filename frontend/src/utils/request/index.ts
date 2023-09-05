@@ -42,7 +42,7 @@ function http<T = any>(
 			authStore.removeAuth()
 		}
 
-		throw new Error(error?.response?.data?.detail || error?.message || 'Error', {cause: error?.response?.status})
+		throw new Error(error?.response?.data?.detail || error?.message || 'Error')
   }
 
   beforeRequest?.()

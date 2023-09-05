@@ -137,6 +137,7 @@ function updateGroupCurrent() : void {
 }
 onMounted( () => {
     var listMessageSent: string[] = [];
+    if(chatStore.list_user_sent != undefined)
     for (let item of chatStore.list_user_sent) {
         const convertedDict = JSON.parse(item.replace(/'/g, '"'));
         var keys = Object.keys(convertedDict)

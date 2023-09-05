@@ -28,7 +28,7 @@ function logout(): void {
     userStore.resetUserInfo()
     authStore.removeAuth()
 }
-function selectBG(url){
+function selectBG(url: any){
     BgStore.setBG(url)
 }
 function hideSetting(){
@@ -50,7 +50,7 @@ onMounted(() => {
         <p class="text-dark mt-2"><b> Background:  </b></p>
        <div class="row">
         <div v-for="item,index in dataBG" class="col-6 mt-2 img-col d-flex flex-column align-items-center justify-content-center">
-            <img :src="item.url" :alt="index" class=" img-display">
+            <img :src="item.url" :alt="index+ ''" class=" img-display">
             <button class="btn-select-bg px-3 py-2 cursor mt-2" @click="selectBG(item.url)">
                 Select
             </button>

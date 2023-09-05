@@ -2,9 +2,7 @@ import { defineStore } from 'pinia'
 import { type selectLayoutState , getSelectLayoutState } from './helper'
 import { store } from '@/store'
 
-export interface ChatResponse {
-  chats : Array<any>
-}
+
 export const useSelectLayoutStore = defineStore('select-layout-store', {
   state: (): selectLayoutState => getSelectLayoutState(),
 

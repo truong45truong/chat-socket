@@ -73,7 +73,7 @@ const divStyle = computed(() => {
   };
 });
 
-const isShowSetting = computed((): boolean => {
+const isShowSetting = computed((): boolean | undefined => {
   return settingStore.isShowState
 })
 

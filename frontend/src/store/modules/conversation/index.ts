@@ -1,11 +1,8 @@
 import { defineStore } from 'pinia'
 import { type ConversationState, type Conversation, getConversationState } from './helper'
-import { store } from '@/store'
 import { getAllConversation } from '@/api'
 
-export interface ChatResponse {
-  chats: Array<any>
-}
+
 export const useConversationStore = defineStore('conversation-store', {
   state: (): ConversationState => getConversationState(),
 

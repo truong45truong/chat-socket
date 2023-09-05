@@ -17,7 +17,6 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-    env_file: ./backend/.env
     restart: always
     volumes:
       - ./backend/:/app/
@@ -29,7 +28,7 @@ services:
       - 8000
     ports:
       - "8000:8000"
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    command: "python manage.py runserver 0.0.0.0:8000"
 
   redis:
     image: redis:5  
@@ -39,15 +38,38 @@ services:
     volumes:
       - redisdata:/data 
 
-  pg-admin:
-    image: dpage/pgadmin4:6
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@email.com
-      - PGADMIN_DEFAULT_PASSWORD=admin
-      - PGADMIN_LISTEN_PORT=5050
+  # pg-admin:
+  #   image: dpage/pgadmin4:6
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=admin@email.com
+  #     - PGADMIN_DEFAULT_PASSWORD=admin
+  #     - PGADMIN_LISTEN_PORT=5050
+  #   ports:
+  #     - "5050:5050"
+  frontend:
+    image: node:19 
+    container_name: frontend
+    working_dir: /app
+    volumes:
+      - frontend_files:/frontend/dist
+      - ./frontend:/app 
     ports:
-      - "5050:5050"
+      - "8080:8080" 
+    command: npm run dev
+  nginx:
+    build:
+      context: .
+      dockerfile: ./dockers/nginx/Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d
+      - ./frontend/dist/:/home/app/frontend_files
+    depends_on:
+      - frontend
 
 volumes:
   dbdata:
   redisdata:
+  static_files:
+  frontend_files:
