@@ -67,6 +67,7 @@ services:
       - ./frontend/dist/:/home/app/frontend_files
     depends_on:
       - frontend
+      - backend
 
 volumes:
   dbdata:
