@@ -1,6 +1,6 @@
 
 
-export const URL_SOCKET = '34.238.160.245'
+export const URL_SOCKET = '0.0.0.0'
 
 function generateUUID() {
   // Generate a random hexadecimal string of length 32 (representing 16 bytes)
