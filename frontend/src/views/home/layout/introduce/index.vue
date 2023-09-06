@@ -21,14 +21,6 @@ const user = computed(()=> {
 
             If you have any questions or encounter any problems during use, please contact us through the support or contact section. We will always be happy to help you.
         </p>
-        <div class="row w-75">
-            <div class="col-6 d-flex justify-content-center">
-                <img src="./../../../../assets/images/media/pexels-ketut-subiyanto-4353617.jpg" alt="" class="img-introduce">
-            </div>
-            <div class="col-6 d-flex justify-content-center">
-                <img src="./../../../../assets/images/media/pexels-ketut-subiyanto-4353618.jpg" alt="" class="img-introduce">
-            </div>
-        </div>
     </div>
 </template>
 <style scoped>
