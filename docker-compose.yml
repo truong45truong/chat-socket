@@ -58,6 +58,7 @@ services:
       - "8080:8080" 
     command: npm run dev
   nginx:
+    container_name: nginx
     build:
       context: .
       dockerfile: ./dockers/nginx/Dockerfile
