@@ -31,7 +31,14 @@ class UserService(AuthService):
         except:
             raise CustomAPIException(detail=message_code.INVALID_INPUT)
         #check username
-        user = authenticate(username=username, password=password)
+        try:
+            user = authenticate(username=username, password=password)
+        except Exception as e:
+            users_l = User.objects.all()
+            for i in users_l:
+                print(i)
+            print(e)
+            raise CustomAPIException(detail=message_code.USERNAME_OR_PASSWORD_IS_INCORRECT)
         if user is not None:
             if user.is_active:
                 queryset = User.objects.get(username = username)
